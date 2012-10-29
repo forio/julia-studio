@@ -45,7 +45,8 @@ SUBDIRS   = plugin_coreplugin \
             plugin_madde \
             plugin_valgrind \
             plugin_todo \
-            plugin_qnx
+            plugin_qnx \
+    JuliaEditor/juliaeditor.pro
 
 isEmpty(IDE_PACKAGE_MODE) {
     SUBDIRS += plugin_helloworld \

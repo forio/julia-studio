@@ -31,6 +31,7 @@
 #define MANAGER_H
 
 #include "highlightdefinitionmetadata.h"
+#include "../texteditor_global.h"
 
 #include <coreplugin/mimedatabase.h>
 
@@ -61,7 +62,7 @@ class ManagerProcessor;
 
 // This is the generic highlighter manager. It is not thread-safe.
 
-class Manager : public QObject
+class TEXTEDITOR_EXPORT Manager : public QObject
 {
     Q_OBJECT
 public:

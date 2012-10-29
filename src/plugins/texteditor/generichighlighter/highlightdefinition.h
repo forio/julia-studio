@@ -30,6 +30,8 @@
 #ifndef HIGHLIGHTDEFINITION_H
 #define HIGHLIGHTDEFINITION_H
 
+#include "../texteditor_global.h"
+
 #include <QString>
 #include <QHash>
 #include <QSet>
@@ -42,7 +44,7 @@ class KeywordList;
 class Context;
 class ItemData;
 
-class HighlightDefinition
+class TEXTEDITOR_EXPORT HighlightDefinition
 {
 public:
     HighlightDefinition();

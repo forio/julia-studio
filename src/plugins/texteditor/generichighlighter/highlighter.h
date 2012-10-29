@@ -53,7 +53,7 @@ class Context;
 class HighlightDefinition;
 class ProgressData;
 
-class Highlighter : public TextEditor::SyntaxHighlighter
+class TEXTEDITOR_EXPORT Highlighter : public TextEditor::SyntaxHighlighter
 {
     Q_OBJECT
 
