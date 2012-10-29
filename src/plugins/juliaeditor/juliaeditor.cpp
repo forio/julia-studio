@@ -1,5 +1,5 @@
 #include "juliaeditor.h"
-#include "juliaeditorconstants.h"
+#include "juliaeditor_constants.h"
 
 #include <coreplugin/mimedatabase.h>
 #include <coreplugin/icore.h>
@@ -43,6 +43,7 @@ bool JuliaEditor::open(QString *errorString, const QString &fileName, const QStr
 JuliaEditorWidget::JuliaEditorWidget(QWidget *parent)
   : TextEditor::BaseTextEditorWidget( parent )
 {
+  setParenthesesMatchingEnabled( true );
   TextEditor::Internal::Highlighter* highlighter = new TextEditor::Internal::Highlighter();
   baseTextDocument()->setSyntaxHighlighter( highlighter );
 

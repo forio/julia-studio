@@ -32,6 +32,7 @@
 
 #include "../basetextdocumentlayout.h"
 #include "../syntaxhighlighter.h"
+#include "context.h"
 
 #include <QString>
 #include <QVector>
@@ -49,7 +50,6 @@ class TabSettings;
 namespace Internal {
 
 class Rule;
-class Context;
 class HighlightDefinition;
 class ProgressData;
 

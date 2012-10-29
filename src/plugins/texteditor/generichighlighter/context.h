@@ -31,6 +31,7 @@
 #define CONTEXT_H
 
 #include "includerulesinstruction.h"
+#include "../texteditor_global.h"
 
 #include <QString>
 #include <QList>
@@ -42,7 +43,7 @@ namespace Internal {
 class Rule;
 class HighlightDefinition;
 
-class Context
+class TEXTEDITOR_EXPORT Context
 {
 public:
     Context();
