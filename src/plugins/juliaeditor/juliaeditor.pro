@@ -39,7 +39,7 @@ SOURCES += juliaeditorplugin.cpp\
 
 HEADERS += juliaeditorplugin.h\
         juliaeditor_global.h\
-        juliaeditorconstants.h\
+        juliaeditor_constants.h\
         juliaeditor.h\
         juliaconsolemanager.h\
         console.h\

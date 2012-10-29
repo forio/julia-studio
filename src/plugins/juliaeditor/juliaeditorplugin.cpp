@@ -1,5 +1,5 @@
 #include "juliaeditorplugin.h"
-#include "juliaeditorconstants.h"
+#include "juliaeditor_constants.h"
 #include "juliaeditor.h"
 #include "juliaconsolemanager.h"
 
