@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/juliaeditor">
+        <file>juliaeditor.mimetypes.xml</file>
+        <file>julia.xml</file>
+    </qresource>
+</RCC>

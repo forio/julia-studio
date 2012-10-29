@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+    <mime-type type="text/julia">
+        <sub-class-of type="text/plain"/>
+        <comment>Julia script file</comment>
+        <glob pattern="*.jl"/>
+        <glob pattern="*.julia"/>
+        <glob pattern="*.jul"/>
+    </mime-type>
+
+    <mime-type type="text/julia-project">
+         <comment>Julia project file</comment>
+         <sub-class-of type="text/plain"/>
+         <glob pattern="*.jlp"/>
+    </mime-type>
+
+</mime-info>

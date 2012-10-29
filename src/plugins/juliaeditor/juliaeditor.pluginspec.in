@@ -1,0 +1,11 @@
+<plugin name=\"JuliaEditor\" version=\"0.0.1\" compatVersion=\"0.0.1\">
+    <vendor>Forio</vendor>
+    <copyright>(C) Forio</copyright>
+    <license>Put your license text here</license>
+    <description>Put a short description of your plugin here</description>
+    <url>http://www.forio.com/julia</url>
+    <dependencyList>
+        <dependency name=\"Core\" version=\"$$QTCREATOR_VERSION\"/>
+    </dependencyList>
+</plugin>
+
