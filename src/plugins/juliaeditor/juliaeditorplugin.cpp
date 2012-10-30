@@ -2,6 +2,8 @@
 #include "juliaeditor_constants.h"
 #include "juliaeditor.h"
 #include "juliaconsolemanager.h"
+#include "juliasettingspage.h"
+#include "singleton.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -51,6 +53,9 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   if (!Core::ICore::mimeDatabase()->addMimeTypes(QLatin1String(":/juliaeditor/juliaeditor.mimetypes.xml"), errorString))
       return false;
 
+  addAutoReleasedObject( new JuliaSettingsPage() );
+  Singleton<JuliaSettings>::GetInstance()->FromSettings(Core::ICore::settings());
+
   JuliaEditorFactory* editor_factory = new JuliaEditorFactory(this);
   connect( editor_factory, SIGNAL(newEditor(JuliaEditorWidget*)), SLOT(initEditor(JuliaEditorWidget*)) );
 
@@ -65,7 +70,7 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   action_handler->initializeActions();
 
   console_manager = new JuliaConsoleManager( this );
-  
+
   Q_UNUSED(arguments)
   Q_UNUSED(errorString)
   Core::ActionManager *am = Core::ICore::instance()->actionManager();

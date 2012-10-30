@@ -1,7 +1,9 @@
 #include "juliaconsolemanager.h"
 #include "console.h"
 #include "run.h"
-#include "juliaeditorconstants.h"
+#include "juliaeditor_constants.h"
+#include "singleton.h"
+#include "juliasettingspage.h"
 
 #include <extensionsystem/pluginmanager.h>
 #include <texteditor/texteditorsettings.h>
@@ -17,6 +19,8 @@ JuliaConsoleManager::JuliaConsoleManager(QObject *parent)
 
   console_pane = new JuliaConsolePane( console, this );
   ExtensionSystem::PluginManager::addObject( console_pane );
+
+  connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&)), SLOT(ResetConsole()) );
 }
 
 JuliaConsoleManager::~JuliaConsoleManager()
@@ -50,7 +54,12 @@ void JuliaConsoleManager::InitConsole()
 void JuliaConsoleManager::ShowConsolePane()
 {
   if ( console_pane )
-      console_pane->popup(Core::IOutputPane::ModeSwitch);
+    console_pane->popup(Core::IOutputPane::ModeSwitch);
+}
+
+void JuliaConsoleManager::ResetConsole()
+{
+  console->Reset(false);
 }
 
 Run *JuliaConsoleManager::InternalCreateRun(const QString &working_dir)

@@ -30,22 +30,6 @@ include(juliaeditor_dependencies.pri)
 
 DEFINES += JULIAEDITOR_LIBRARY
 
-SOURCES += juliaeditorplugin.cpp\
-        juliaconsolemanager.cpp\
-        juliaeditor.cpp\
-        console.cpp\
-        run.cpp\
-        juliaconsolepane.cpp
-
-HEADERS += juliaeditorplugin.h\
-        juliaeditor_global.h\
-        juliaeditor_constants.h\
-        juliaeditor.h\
-        juliaconsolemanager.h\
-        console.h\
-        run.h\
-        juliaconsolepane.h
-
 OTHER_FILES += juliaeditor.pluginspec\
             juliaeditor.mimetypes.xml
 
@@ -56,6 +40,26 @@ LIBS += -L$$IDE_PLUGIN_PATH/Nokia
 OTHER_FILES += \
     julia.xml
 
+FORMS += \
+    juliasettingspage.ui
 
+SOURCES += juliaeditorplugin.cpp\
+        juliaconsolemanager.cpp\
+        juliaeditor.cpp\
+        console.cpp\
+        run.cpp\
+        juliaconsolepane.cpp\
+        juliasettingspage.cpp
 
-
+HEADERS += juliaeditorplugin.h\
+        juliaeditor_global.h\
+        juliaeditor_constants.h\
+        juliaeditor.h\
+        juliaconsolemanager.h\
+        console.h\
+        run.h\
+        juliaconsolepane.h\
+        juliasettingspage.h\
+        singleton.h\
+        creationpolicies.h\
+        lifetimepolicies.h

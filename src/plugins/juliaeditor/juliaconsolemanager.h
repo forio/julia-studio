@@ -21,6 +21,7 @@ public:
 public slots:
   void InitConsole();
   void ShowConsolePane();
+  void ResetConsole();
 
 signals:
   

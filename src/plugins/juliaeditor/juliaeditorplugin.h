@@ -3,9 +3,12 @@
 
 #include "juliaeditor_global.h"
 #include "juliaeditor.h"
+#include "juliasettingspage.h"
 
 #include <extensionsystem/iplugin.h>
 #include <coreplugin/editormanager/ieditorfactory.h>
+
+#include <QSharedPointer>
 
 namespace TextEditor {
   class TextEditorActionHandler;

@@ -1,4 +1,6 @@
 #include "run.h"
+#include "juliasettingspage.h"
+#include "singleton.h"
 
 #include <QDebug>
 #include <QDir>
@@ -338,7 +340,9 @@ void LocalRun::CreateProcess()
 // ----------------------------------------------------------------------------
 void LocalRun::StartJulia( QStringList args )
 {
-  process_string = "/julia/bin/julia-release-basic"; //Settings->GetJuliaExecutablePath();
+  QDir julia_dir(Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
+
+  process_string = julia_dir.absoluteFilePath("bin/julia-release-basic");
 
 #if defined(Q_OS_WIN)
   //args.insert( args.begin(), QString("-q") );

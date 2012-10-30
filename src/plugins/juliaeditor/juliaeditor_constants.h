@@ -16,9 +16,11 @@ namespace JuliaPlugin {
 
     char const * const JULIA_SETTINGS_ID = "Julia";
     char const * const JULIA_SETTINGS_NAME = QT_TRANSLATE_NOOP("JuliaPlugin", "Julia");
-
-  } // namespace JuliaEditor
-} // namespace Constants
+    char const * const JULIA_SETTINGS_CATEGORY = "Julia";
+    char const * const JULIA_SETTINGS_TR_CATEGORY = QT_TRANSLATE_NOOP("JuliaPlugin", "Julia");
+    char const * const JULIA_SETTINGS_GROUP = "Julia";
+  } // namespace Constants
+} // namespace JuliaEditor
 
 #endif // JULIAEDITORCONSTANTS_H
 
