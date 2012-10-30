@@ -36,8 +36,10 @@ const QString &JuliaSettings::GetPathToBinaries() const
 
 void JuliaSettings::SetPathToBinaries(const QString &path)
 {
-  path_to_binaries = path;
-  emit PathToBinariesChanged( path_to_binaries );
+  if (path_to_binaries != path) {
+    path_to_binaries = path;
+    emit PathToBinariesChanged(path_to_binaries);
+  }
 }
 
 // JuliaSettingsWidget *******
