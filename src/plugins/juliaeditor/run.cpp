@@ -222,7 +222,7 @@ void LocalRun::Evaluate( const QFileInfo *file_info )
     StartJulia( args );
   }
   else if ( mode == Run::Mode_KeepAlive )
-    process->write( ("load(\"" + file_info->fileName() + "\")\n").toAscii() );
+    process->write( ("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); load(\"" + file_info->fileName() + "\")\n").toAscii() );
 }
 
 // ----------------------------------------------------------------------------

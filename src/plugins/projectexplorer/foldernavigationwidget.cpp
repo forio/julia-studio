@@ -308,6 +308,9 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
     const bool hasCurrentItem = current.isValid();
     QAction *actionOpen = menu.addAction(actionOpenText(m_fileSystemModel, current));
     actionOpen->setEnabled(hasCurrentItem);
+
+    QAction* actionJuliaRun = menu.addAction(tr("Run"));
+
     // Explorer & teminal
     QAction *actionExplorer = menu.addAction(Core::FileUtils::msgGraphicalShellAction());
     actionExplorer->setEnabled(hasCurrentItem);
@@ -355,6 +358,10 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
             findOnFileSystem(info.absoluteFilePath());
         else
             findOnFileSystem(info.absolutePath());
+        return;
+    }
+    if (action == actionJuliaRun) {
+        //bleeeeep bloooooop
         return;
     }
     Core::DocumentManager::executeOpenWithMenuAction(action);

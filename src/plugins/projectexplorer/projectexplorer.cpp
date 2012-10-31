@@ -884,7 +884,7 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     connect(Core::ICore::instance(), SIGNAL(saveSettingsRequested()),
         this, SLOT(savePersistentSettings()));
 
-    addAutoReleasedObject(new ProjectTreeWidgetFactory);
+    //addAutoReleasedObject(new ProjectTreeWidgetFactory);
     addAutoReleasedObject(new FolderNavigationWidgetFactory);
     addAutoReleasedObject(new DeployConfigurationFactory);
 
