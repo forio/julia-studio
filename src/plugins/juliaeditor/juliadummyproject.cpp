@@ -1,5 +1,7 @@
 #include "juliadummyproject.h"
 
+#include <texteditor/basetextdocument.h>
+
 namespace JuliaPlugin {
 
 JuliaDummyProject::JuliaDummyProject(QObject *parent) :
@@ -18,7 +20,7 @@ Core::Id JuliaDummyProject::id() const
 
 Core::IDocument *JuliaDummyProject::document() const
 {
-  return NULL;
+  return new TextEditor::BaseTextDocument();
 }
 
 ProjectExplorer::IProjectManager *JuliaDummyProject::projectManager() const

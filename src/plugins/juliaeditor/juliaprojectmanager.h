@@ -13,7 +13,7 @@ class JuliaProjectManager : public ProjectExplorer::IProjectManager
 public:
   explicit JuliaProjectManager()  {}
 
-  virtual QString mimeType() const  { return ".jl"; }
+  virtual QString mimeType() const  { return "text/julia-project"; }
   virtual ProjectExplorer::Project* openProject(const QString &fileName, QString *errorString = 0)
   {
     return new JuliaDummyProject();
