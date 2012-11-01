@@ -1,7 +1,9 @@
 #include "juliaruncontrolfactory.h"
 #include "juliarunconfiguration.h"
+#include "juliaconsolemanager.h"
 
 namespace JuliaPlugin {
+
     JuliaRunControlFactory::JuliaRunControlFactory(QObject *parent)
     {
 
@@ -16,7 +18,7 @@ namespace JuliaPlugin {
     }
 
     ProjectExplorer::RunControl *JuliaRunControlFactory::create(ProjectExplorer::RunConfiguration *runConfiguration, ProjectExplorer::RunMode mode, QString *errorMessage) {
-        return NULL;
+      return new JuliaConsoleManager( runConfiguration, mode );
     }
 
     QString JuliaRunControlFactory::displayName() const {

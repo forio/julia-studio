@@ -6,6 +6,8 @@
 #include "singleton.h"
 #include "juliaruncontrolfactory.h"
 #include "juliarunconfigurationfactory.h"
+#include "juliadummyproject.h"
+#include "juliaprojectmanager.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -58,8 +60,12 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   addAutoReleasedObject( new JuliaSettingsPage() );
   Singleton<JuliaSettings>::GetInstance()->FromSettings(Core::ICore::settings());
 
+  JuliaProjectManager* project_manager = new JuliaProjectManager();
+  addAutoReleasedObject( project_manager );
   addAutoReleasedObject(new JuliaRunConfigurationFactory());
   addAutoReleasedObject(new JuliaRunControlFactory());
+
+  project_manager->openProject( "DA PROJECT" );
 
   JuliaEditorFactory* editor_factory = new JuliaEditorFactory(this);
   connect( editor_factory, SIGNAL(newEditor(JuliaEditorWidget*)), SLOT(initEditor(JuliaEditorWidget*)) );
@@ -73,8 +79,6 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
     | TextEditor::TextEditorActionHandler::FollowSymbolUnderCursor );
 
   action_handler->initializeActions();
-
-  console_manager = new JuliaConsoleManager( this );
 
   Q_UNUSED(arguments)
   Q_UNUSED(errorString)

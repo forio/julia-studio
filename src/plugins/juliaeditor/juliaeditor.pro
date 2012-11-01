@@ -81,3 +81,15 @@ HEADERS += \
 
 SOURCES += \
     juliarunconfigurationfactory.cpp
+
+HEADERS += \
+    juliadummyproject.h
+
+SOURCES += \
+    juliadummyproject.cpp
+
+HEADERS += \
+    juliaprojectmanager.h
+
+SOURCES += \
+    juliaprojectmanager.cpp

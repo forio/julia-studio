@@ -12,10 +12,18 @@
 
 using namespace JuliaPlugin;
 
-JuliaConsoleManager::JuliaConsoleManager(QObject *parent)
-  : QObject(parent), run(NULL), console(NULL)
+JuliaConsoleManager::JuliaConsoleManager(ProjectExplorer::RunConfiguration* config, ProjectExplorer::RunMode mode)
+  : ProjectExplorer::RunControl(config, mode), run(NULL), console(NULL)
+{}
+
+JuliaConsoleManager::~JuliaConsoleManager()
 {
-  InitConsole();
+  stop();
+}
+
+void JuliaConsoleManager::start()
+{
+  init();
 
   console_pane = new JuliaConsolePane( console, this );
   ExtensionSystem::PluginManager::addObject( console_pane );
@@ -23,13 +31,36 @@ JuliaConsoleManager::JuliaConsoleManager(QObject *parent)
   connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&)), SLOT(ResetConsole()) );
 }
 
-JuliaConsoleManager::~JuliaConsoleManager()
+ProjectExplorer::RunControl::StopResult JuliaConsoleManager::stop()
 {
   if ( console_pane )
     ExtensionSystem::PluginManager::removeObject( console_pane );
+
+  return ProjectExplorer::RunControl::AsynchronousStop;
 }
 
-void JuliaConsoleManager::InitConsole()
+bool JuliaConsoleManager::isRunning() const
+{
+  return true;
+}
+
+QIcon JuliaConsoleManager::icon() const
+{
+  return QIcon();
+}
+
+void JuliaConsoleManager::showConsolePane()
+{
+  if ( console_pane )
+    console_pane->popup(Core::IOutputPane::ModeSwitch);
+}
+
+void JuliaConsoleManager::reset( bool keep_history )
+{
+  console->Reset(keep_history);
+}
+
+void JuliaConsoleManager::init()
 {
   if ( console )
     console->deleteLater();
@@ -49,17 +80,6 @@ void JuliaConsoleManager::InitConsole()
   connect( console, SIGNAL( Reseting(bool) ), run, SLOT( Reset() ) );
 
   run->SetMode( Run::Mode_KeepAlive );
-}
-
-void JuliaConsoleManager::ShowConsolePane()
-{
-  if ( console_pane )
-    console_pane->popup(Core::IOutputPane::ModeSwitch);
-}
-
-void JuliaConsoleManager::ResetConsole()
-{
-  console->Reset(false);
 }
 
 Run *JuliaConsoleManager::InternalCreateRun(const QString &working_dir)

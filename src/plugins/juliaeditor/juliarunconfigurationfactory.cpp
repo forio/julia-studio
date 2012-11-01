@@ -1,5 +1,6 @@
 #include "juliarunconfigurationfactory.h"
 #include "juliarunconfiguration.h"
+#include <QDebug>
 
 using namespace ProjectExplorer;
 
@@ -27,6 +28,7 @@ bool JuliaRunConfigurationFactory::canCreate(Target *parent, const Core::Id id) 
 }
 
 RunConfiguration *JuliaRunConfigurationFactory::create(Target *parent, const Core::Id id) {
+  qDebug() << parent;
     return new JuliaRunConfiguration(parent, id);
 }
 

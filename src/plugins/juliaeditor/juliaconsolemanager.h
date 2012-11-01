@@ -2,6 +2,9 @@
 #define JULIACONSOLEMANAGER_H
 
 #include "juliaconsolepane.h"
+#include "juliarunconfiguration.h"
+
+#include <projectexplorer/runconfiguration.h>
 
 #include <QObject>
 
@@ -11,21 +14,24 @@ class Run;
 class LocalRun;
 class Console;
 
-class JuliaConsoleManager : public QObject
+class JuliaConsoleManager : public ProjectExplorer::RunControl
 {
   Q_OBJECT
 public:
-  explicit JuliaConsoleManager(QObject *parent = 0);
+  explicit JuliaConsoleManager(ProjectExplorer::RunConfiguration* config, ProjectExplorer::RunMode mode);
   ~JuliaConsoleManager();
 
 public slots:
-  void InitConsole();
-  void ShowConsolePane();
-  void ResetConsole();
+  virtual void start();
+  virtual ProjectExplorer::RunControl::StopResult stop();
+  virtual bool isRunning() const;
+  virtual QIcon icon() const;
 
-signals:
-  
-public slots:
+  virtual void reset(bool keep_history = false);
+  virtual void showConsolePane();
+
+private slots:
+  void init();
 
 private:
   Run* InternalCreateRun( const QString& working_dir );
