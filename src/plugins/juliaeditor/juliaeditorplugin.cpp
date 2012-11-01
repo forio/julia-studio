@@ -4,6 +4,8 @@
 #include "juliaconsolemanager.h"
 #include "juliasettingspage.h"
 #include "singleton.h"
+#include "juliaruncontrolfactory.h"
+#include "juliarunconfigurationfactory.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -55,6 +57,9 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
 
   addAutoReleasedObject( new JuliaSettingsPage() );
   Singleton<JuliaSettings>::GetInstance()->FromSettings(Core::ICore::settings());
+
+  addAutoReleasedObject(new JuliaRunConfigurationFactory());
+  addAutoReleasedObject(new JuliaRunControlFactory());
 
   JuliaEditorFactory* editor_factory = new JuliaEditorFactory(this);
   connect( editor_factory, SIGNAL(newEditor(JuliaEditorWidget*)), SLOT(initEditor(JuliaEditorWidget*)) );

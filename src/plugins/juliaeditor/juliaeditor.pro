@@ -7,11 +7,11 @@ QT += network
 
 ## set the QTC_SOURCE environment variable to override the setting here
 QTCREATOR_SOURCES = $$(QTC_SOURCE)
-isEmpty(QTCREATOR_SOURCES):QTCREATOR_SOURCES=/Users/westley/Code/qt-creator
+isEmpty(QTCREATOR_SOURCES):QTCREATOR_SOURCES=../../../../qt-creator
 
 ## set the QTC_BUILD environment variable to override the setting here
 IDE_BUILD_TREE = $$(QTC_BUILD)
-isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=/Users/westley/Code/qtcreator-build-desktop-Desktop_Qt_4_8_1_for_GCC__Qt_SDK__Debug
+isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../qtcreator-build-desktop-Desktop_Qt_4_8_1_for_GCC__Qt_SDK__Debug
 
 ## uncomment to build plugin into user config directory
 ## <localappdata>/plugins/<ideversion>
@@ -26,6 +26,7 @@ PROVIDER = Forio
 include($$QTCREATOR_SOURCES/src/qtcreatorplugin.pri)
 include($$QTCREATOR_SOURCES/src/plugins/coreplugin/coreplugin.pri)
 include($$QTCREATOR_SOURCES/src/plugins/texteditor/texteditor.pri)
+include($$QTCREATOR_SOURCES/src/plugins/projectexplorer/projectexplorer.pri)
 include(juliaeditor_dependencies.pri)
 
 DEFINES += JULIAEDITOR_LIBRARY
@@ -39,7 +40,6 @@ LIBS += -L$$IDE_PLUGIN_PATH/Nokia
 
 OTHER_FILES += \
     julia.xml
-
 FORMS += \
     juliasettingspage.ui
 
@@ -63,3 +63,21 @@ HEADERS += juliaeditorplugin.h\
         singleton.h\
         creationpolicies.h\
         lifetimepolicies.h
+
+HEADERS += \
+    juliaruncontrolfactory.h
+
+SOURCES += \
+    juliaruncontrolfactory.cpp
+
+HEADERS += \
+    juliarunconfiguration.h
+
+SOURCES += \
+    juliarunconfiguration.cpp
+
+HEADERS += \
+    juliarunconfigurationfactory.h
+
+SOURCES += \
+    juliarunconfigurationfactory.cpp
