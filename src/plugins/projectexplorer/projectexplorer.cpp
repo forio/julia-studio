@@ -341,8 +341,11 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
 
     d->m_kitManager = new KitManager; // register before ToolChainManager
     d->m_toolChainManager = new ToolChainManager;
-    addAutoReleasedObject(new Internal::ToolChainOptionsPage);
-    addAutoReleasedObject(new KitOptionsPage);
+
+    // JULIA STUDIO -------
+    //addAutoReleasedObject(new Internal::ToolChainOptionsPage);
+    //addAutoReleasedObject(new KitOptionsPage);
+    // -------
 
     d->m_taskHub = new TaskHub;
     addAutoReleasedObject(d->m_taskHub);
@@ -433,8 +436,10 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     addAutoReleasedObject(new ProjectFileWizardExtension);
 
     // Settings pages
-    addAutoReleasedObject(new ProjectExplorerSettingsPage);
-    addAutoReleasedObject(new DeviceSettingsPage);
+    // JULIA STUDIO -------
+    //addAutoReleasedObject(new ProjectExplorerSettingsPage);
+    //addAutoReleasedObject(new DeviceSettingsPage);
+    // -------
 
     // context menus
     Core::ActionContainer *msessionContextMenu =
