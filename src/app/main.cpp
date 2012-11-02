@@ -62,7 +62,7 @@ using namespace ExtensionSystem;
 
 enum { OptionIndent = 4, DescriptionIndent = 34 };
 
-static const char appNameC[] = "Qt Creator";
+static const char appNameC[] = "Julia Studio";
 static const char corePluginNameC[] = "Core";
 static const char fixedOptionsC[] =
 " [OPTION]... [FILE]...\n"

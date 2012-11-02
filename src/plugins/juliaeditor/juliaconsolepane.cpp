@@ -28,7 +28,7 @@ QList<QWidget *> JuliaConsolePane::toolBarWidgets() const
 
 QString JuliaConsolePane::displayName() const
 {
-  return tr("Julia Console");
+  return tr("Console");
 }
 
 int JuliaConsolePane::priorityInStatusBar() const

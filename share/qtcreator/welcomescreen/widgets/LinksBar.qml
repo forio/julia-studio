@@ -52,7 +52,7 @@ Item {
             id: text
             horizontalAlignment: Qt.AlignHCenter; verticalAlignment: Qt.AlignVCenter
             anchors.fill: parent
-            text: qsTr("Qt Creator")
+            text: qsTr("Julia Studio")
         }
     }
 

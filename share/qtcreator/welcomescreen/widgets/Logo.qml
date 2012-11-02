@@ -35,7 +35,7 @@ Image {
     Text {
         y: 21
         color: "#424242"
-        text: "Qt Creator"
+        text: "Julia Studio"
         font.bold: true
         anchors.left: parent.left
         anchors.leftMargin: 52

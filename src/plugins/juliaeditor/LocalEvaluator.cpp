@@ -23,14 +23,14 @@ LocalEvaluator::~LocalEvaluator()
   // out process is a child, it will be cleaned up automatically
 }
 
-
 // ----------------------------------------------------------------------------
 void LocalEvaluator::eval( const QFileInfo *file_info )
 {
   if ( process->state() != QProcess::Running )
     return;
 
-  process->write( ("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); load(\"" + file_info->fileName() + "\")\n").toAscii() );
+  output( file_info->baseName() + "\n" );
+  process->write( ("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); load(\"" + file_info->absoluteFilePath() + "\")\n").toAscii() );
 }
 
 // ----------------------------------------------------------------------------

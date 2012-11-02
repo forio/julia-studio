@@ -178,7 +178,7 @@ MainWindow::MainWindow() :
 
     Utils::HistoryCompleter::setSettings(m_settings);
 
-    setWindowTitle(tr("Qt Creator"));
+    setWindowTitle(tr("Julia Studio"));
 #ifndef Q_OS_MAC
     QApplication::setWindowIcon(QIcon(QLatin1String(Constants::ICON_QTLOGO_128)));
 #endif

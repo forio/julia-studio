@@ -385,10 +385,12 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     Core::Context globalcontext(Core::Constants::C_GLOBAL);
     Core::Context projecTreeContext(Constants::C_PROJECT_TREE);
 
-    d->m_projectsMode = new ProjectsMode(d->m_proWindow);
-    d->m_projectsMode->setEnabled(false);
-    addAutoReleasedObject(d->m_projectsMode);
-    d->m_proWindow->layout()->addWidget(new Core::FindToolBarPlaceHolder(d->m_proWindow));
+    // JULIA STUDIO -------
+    //d->m_projectsMode = new ProjectsMode(d->m_proWindow);
+    //d->m_projectsMode->setEnabled(false);
+    //addAutoReleasedObject(d->m_projectsMode);
+    //d->m_proWindow->layout()->addWidget(new Core::FindToolBarPlaceHolder(d->m_proWindow));
+    // -------
 
     addAutoReleasedObject(new CopyTaskHandler);
     addAutoReleasedObject(new ShowInEditorTaskHandler);
@@ -506,14 +508,17 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     msubProjectContextMenu->appendGroup(Constants::G_PROJECT_LAST);
     msubProjectContextMenu->appendGroup(Constants::G_PROJECT_TREE);
 
+///*~~~
     Core::ActionContainer *runMenu = Core::ActionManager::createMenu(Constants::RUNMENUCONTEXTMENU);
     runMenu->setOnAllDisabledBehavior(Core::ActionContainer::Hide);
+//    */
     QIcon runIcon = QIcon(QLatin1String(Constants::ICON_RUN));
     runIcon.addFile(QLatin1String(Constants::ICON_RUN_SMALL));
+//    /*
     runMenu->menu()->setIcon(runIcon);
     runMenu->menu()->setTitle(tr("Run"));
     msubProjectContextMenu->addMenu(runMenu, ProjectExplorer::Constants::G_PROJECT_RUN);
-
+//*/
     mfolderContextMenu->appendGroup(Constants::G_FOLDER_FILES);
     mfolderContextMenu->appendGroup(Constants::G_FOLDER_OTHER);
     mfolderContextMenu->appendGroup(Constants::G_FOLDER_CONFIG);
@@ -711,7 +716,7 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     cmd = Core::ActionManager::registerAction(d->m_cancelBuildAction, Constants::CANCELBUILD, globalcontext);
     mbuild->addAction(cmd, Constants::G_BUILD_CANCEL);
 
-    // run action
+    // run action ~~~
     d->m_runAction = new QAction(runIcon, tr("Run"), this);
     cmd = Core::ActionManager::registerAction(d->m_runAction, Constants::RUN, globalcontext);
     cmd->setAttribute(Core::Command::CA_UpdateText);
@@ -770,6 +775,7 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     cmd = Core::ActionManager::registerAction(d->m_deployActionContextMenu, Constants::DEPLOYCM, projecTreeContext);
     mprojectContextMenu->addAction(cmd, Constants::G_PROJECT_RUN);
 
+    /*~~~*/
     d->m_runActionContextMenu = new QAction(runIcon, tr("Run"), this);
     cmd = Core::ActionManager::registerAction(d->m_runActionContextMenu, Constants::RUNCONTEXTMENU, projecTreeContext);
     mprojectContextMenu->addAction(cmd, Constants::G_PROJECT_RUN);
