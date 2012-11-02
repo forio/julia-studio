@@ -13,8 +13,6 @@
         <file>images/filesave.png</file>
         <file>images/find.png</file>
         <file>images/findnext.png</file>
-        <file>images/logo/128/QtProject-qtcreator.png</file>
-        <file>images/logo/32/QtProject-qtcreator.png</file>
         <file>images/inputfield.png</file>
         <file>images/inputfield_disabled.png</file>
         <file>images/linkicon.png</file>
@@ -72,5 +70,7 @@
         <file>images/splitbutton_closetop.png</file>
         <file>images/splitbutton_vertical.png</file>
         <file>images/panel_manage_button.png</file>
+        <file>images/logo/128/icon_128x128.png</file>
+        <file>images/logo/32/icon_32x32.png</file>
     </qresource>
 </RCC>
