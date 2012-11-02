@@ -50,6 +50,10 @@ class ProjectExplorerPlugin;
 class Project;
 class Node;
 
+// JULIA STUDIO -------
+class IEvaluator;
+// -------
+
 namespace Internal {
 
 class FolderNavigationWidget : public QWidget
@@ -86,6 +90,13 @@ private:
     QSortFilterProxyModel *m_filterModel;
     QLabel *m_title;
     bool m_autoSync;
+
+    // JULIA STUDIO HACKS -----
+    // There does not seem to be a way to register actions for the contextMenuEvent
+    // and we cannot subclass cleanly because this class is not exported.
+    // TODO: We should refactor this class and submit a pull request
+    IEvaluator* findEvaluatorFor( const QString& extension );
+    // -----
 };
 
 class FolderNavigationWidgetFactory : public Core::INavigationWidgetFactory

@@ -284,3 +284,6 @@ RESOURCES += projectexplorer.qrc
 }
 
 DEFINES += PROJECTEXPLORER_LIBRARY
+
+HEADERS += \
+    ievaluator.h

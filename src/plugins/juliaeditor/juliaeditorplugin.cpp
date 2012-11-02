@@ -1,13 +1,14 @@
 #include "juliaeditorplugin.h"
 #include "juliaeditor_constants.h"
 #include "juliaeditor.h"
-#include "juliaconsolemanager.h"
 #include "juliasettingspage.h"
 #include "singleton.h"
 #include "juliaruncontrolfactory.h"
 #include "juliarunconfigurationfactory.h"
 #include "juliadummyproject.h"
 #include "juliaprojectmanager.h"
+#include "juliaconsolepane.h"
+#include "localevaluator.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -34,7 +35,7 @@ using namespace JuliaPlugin::Internal;
 // JuliaEditorPlugin *******
 
 JuliaEditorPlugin::JuliaEditorPlugin()
-  : action_handler(NULL), console_manager(NULL)
+  : action_handler(NULL), evaluator(NULL), console_pane(NULL)
 {}
 
 JuliaEditorPlugin::~JuliaEditorPlugin()
@@ -79,6 +80,22 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
     | TextEditor::TextEditorActionHandler::FollowSymbolUnderCursor );
 
   action_handler->initializeActions();
+
+  // Julia console -------
+  evaluator = new LocalEvaluator(this);
+  console_pane = new JuliaConsolePane(this);
+  Console* console = console_pane->outputWidget();
+
+  connect( evaluator, SIGNAL( ready() ), console, SLOT( BeginCommand() ) );
+  connect( console, SIGNAL( NewCommand(QString) ), evaluator, SLOT( eval(const QString&) ) );
+  connect( evaluator, SIGNAL( output(const QString&) ), console, SLOT( DisplayResult(const QString&) ) );
+  //connect( console, SIGNAL( destroyed() ), evaluator, SLOT( kill() ) );
+  connect( console, SIGNAL( Reseting(bool) ), evaluator, SLOT( reset() ) );
+  connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&)), console, SLOT(Reset()) );
+
+  addAutoReleasedObject(evaluator);
+  addAutoReleasedObject(console_pane);
+  // -------
 
   Q_UNUSED(arguments)
   Q_UNUSED(errorString)

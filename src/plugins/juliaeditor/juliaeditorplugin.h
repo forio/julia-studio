@@ -17,7 +17,8 @@ namespace TextEditor {
 
 namespace JuliaPlugin {
 
-class JuliaConsoleManager;
+class LocalEvaluator;
+class JuliaConsolePane;
 
 namespace Internal {
     
@@ -40,7 +41,8 @@ private slots:
 private:
   TextEditor::TextEditorActionHandler* action_handler;
 
-  JuliaConsoleManager* console_manager;
+  LocalEvaluator* evaluator;
+  JuliaConsolePane* console_pane;
 };
 
 

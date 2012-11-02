@@ -30,6 +30,8 @@ public slots:
 
   void SetPrompt( const QString& new_prompt );
 
+  bool IsBusy()  { return busy; }
+
   // colors -----
   QColor GetCurrCommandColor()              { return curr_command_color; }
   void SetCurrCommandColor( QColor color )  {  curr_command_color = color; }

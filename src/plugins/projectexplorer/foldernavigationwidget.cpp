@@ -62,6 +62,10 @@
 #include <QFileDialog>
 #include <QContextMenuEvent>
 
+// JULIA STUDIO -------
+#include "ievaluator.h"
+// -------
+
 enum { debug = 0 };
 
 namespace ProjectExplorer {
@@ -241,8 +245,21 @@ bool FolderNavigationWidget::setCurrentDirectory(const QString &directory)
 
 QString FolderNavigationWidget::currentDirectory() const
 {
-    return m_fileSystemModel->rootPath();
+  return m_fileSystemModel->rootPath();
 }
+
+// JULIA STUDIO HACKS -------
+IEvaluator *FolderNavigationWidget::findEvaluatorFor(const QString &extension)
+{
+  QList<IEvaluator*> evaluators = ExtensionSystem::PluginManager::getObjects<IEvaluator>();
+  foreach( IEvaluator* evaluator, evaluators ) {
+    if ( evaluator->canRun(extension) )
+      return evaluator;
+  }
+
+  return NULL;
+}
+// -------
 
 void FolderNavigationWidget::slotOpenItem(const QModelIndex &viewIndex)
 {
@@ -309,7 +326,10 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
     QAction *actionOpen = menu.addAction(actionOpenText(m_fileSystemModel, current));
     actionOpen->setEnabled(hasCurrentItem);
 
+    // JULIA STUDIO -------
     QAction* actionJuliaRun = menu.addAction(tr("Run"));
+    actionJuliaRun->setEnabled( hasCurrentItem && !m_fileSystemModel->isDir(current) );
+    // -------
 
     // Explorer & teminal
     QAction *actionExplorer = menu.addAction(Core::FileUtils::msgGraphicalShellAction());
@@ -360,10 +380,17 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
             findOnFileSystem(info.absolutePath());
         return;
     }
+    // JULIA STUDIO -------
     if (action == actionJuliaRun) {
-        //bleeeeep bloooooop
-        return;
+      QFileInfo file_info = m_fileSystemModel->fileInfo(current);
+      IEvaluator* evaluator = findEvaluatorFor( file_info.suffix() );
+
+      evaluator->eval( &file_info );
+
+      return;
     }
+    // -------
+
     Core::DocumentManager::executeOpenWithMenuAction(action);
 }
 

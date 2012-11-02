@@ -12,10 +12,11 @@ class JuliaConsolePane : public Core::IOutputPane
   Q_OBJECT
 
 public:
-  explicit JuliaConsolePane( Console* console_, QObject *parent = 0);
+  explicit JuliaConsolePane(QObject *parent = 0);
   ~JuliaConsolePane();
-  
-  virtual QWidget *outputWidget(QWidget *parent);
+
+public slots:
+  virtual Console *outputWidget(QWidget *parent = NULL);
   virtual QList<QWidget *> toolBarWidgets() const;
   virtual QString displayName() const;
 
@@ -40,14 +41,7 @@ public:
   virtual void goToNext();
   virtual void goToPrev();
 
-public slots:
-  void SetConsole( Console* console_ )  { console = console_; }
-  Console* GetConsole() const  { return console; }
-
-signals:
-
 private:
-
   Console* console;
 };
 

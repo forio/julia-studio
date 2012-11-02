@@ -1,17 +1,22 @@
 #include "juliaconsolepane.h"
+#include "juliaeditor_constants.h"
+#include <texteditor/texteditorsettings.h>
 
 using namespace JuliaPlugin;
 
-JuliaConsolePane::JuliaConsolePane(Console* console_, QObject *parent) :
+JuliaConsolePane::JuliaConsolePane(QObject *parent) :
   Core::IOutputPane(parent)
 {
-  SetConsole( console_ );
+  console = new Console();
+
+  console->setLanguageSettingsId( QLatin1String( Constants::JULIA_SETTINGS_ID ) );
+  TextEditor::TextEditorSettings::instance()->initializeEditor( console );
 }
 
 JuliaConsolePane::~JuliaConsolePane()
 {}
 
-QWidget *JuliaConsolePane::outputWidget(QWidget *parent)
+Console *JuliaConsolePane::outputWidget(QWidget *parent)
 {
   return console;
 }
@@ -28,7 +33,7 @@ QString JuliaConsolePane::displayName() const
 
 int JuliaConsolePane::priorityInStatusBar() const
 {
-  return 19;
+  return 21;
 }
 
 void JuliaConsolePane::clearContents()
