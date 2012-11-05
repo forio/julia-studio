@@ -36,14 +36,12 @@ SUBDIRS   = plugin_coreplugin \
             plugin_bazaar \
             plugin_classview \
             plugin_tasklist \
-            plugin_analyzerbase \
             plugin_qmljstools \
             plugin_macros \
             debugger/dumper.pro \
             plugin_remotelinux \
             plugin_android \
             plugin_madde \
-            plugin_valgrind \
             plugin_todo \
             plugin_qnx \
             juliaeditor/juliaeditor.pro
@@ -63,8 +61,7 @@ include(../../qtcreator.pri)
 
 contains(QT_CONFIG, declarative) {
     SUBDIRS += \
-            plugin_qmlprojectmanager \
-            plugin_qmlprofiler
+            plugin_qmlprojectmanager
 
     greaterThan(QT_MAJOR_VERSION, 4) {
         SUBDIRS += plugin_qmldesigner
@@ -285,25 +282,6 @@ plugin_classview.depends += plugin_texteditor
 plugin_tasklist.subdir = tasklist
 plugin_tasklist.depends = plugin_coreplugin
 plugin_tasklist.depends += plugin_projectexplorer
-
-plugin_analyzerbase.subdir = analyzerbase
-plugin_analyzerbase.depends = plugin_coreplugin
-plugin_analyzerbase.depends += plugin_projectexplorer
-plugin_analyzerbase.depends += plugin_remotelinux
-plugin_analyzerbase.depends += plugin_cpptools
-
-plugin_valgrind.subdir = valgrind
-plugin_valgrind.depends = plugin_coreplugin
-plugin_valgrind.depends += plugin_analyzerbase
-plugin_valgrind.depends += plugin_remotelinux
-plugin_valgrind.depends += plugin_texteditor
-
-plugin_qmlprofiler.subdir = qmlprofiler
-plugin_qmlprofiler.depends = plugin_coreplugin
-plugin_qmlprofiler.depends += plugin_analyzerbase
-plugin_qmlprofiler.depends += plugin_qmlprojectmanager
-plugin_qmlprofiler.depends += plugin_qt4projectmanager
-plugin_qmlprofiler.depends += plugin_remotelinux
 
 plugin_qmljstools.subdir = qmljstools
 plugin_qmljstools.depends = plugin_projectexplorer
