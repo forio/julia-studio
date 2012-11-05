@@ -38,7 +38,6 @@
 #include <coreplugin/editormanager/editormanager.h>
 #include <coreplugin/helpmanager.h>
 #include <coreplugin/id.h>
-#include <debugger/debuggerconstants.h>
 
 #include <QPoint>
 

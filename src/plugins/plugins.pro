@@ -19,9 +19,7 @@ SUBDIRS   = plugin_coreplugin \
             plugin_cvs \
             plugin_cpptools \
             plugin_qtsupport \
-            plugin_qt4projectmanager \
             plugin_locator \
-            plugin_debugger \
             plugin_help \
             plugin_cpaster \
             plugin_autotoolsprojectmanager \
@@ -36,11 +34,7 @@ SUBDIRS   = plugin_coreplugin \
             plugin_tasklist \
             plugin_qmljstools \
             plugin_macros \
-            debugger/dumper.pro \
-            plugin_remotelinux \
-            plugin_madde \
             plugin_todo \
-            plugin_qnx \
             juliaeditor/juliaeditor.pro
 
 isEmpty(IDE_PACKAGE_MODE) {
@@ -49,17 +43,11 @@ isEmpty(IDE_PACKAGE_MODE) {
 } else:!isEmpty(UPDATEINFO_ENABLE) {
     SUBDIRS += plugin_updateinfo
 }
-linux-* {
-     SUBDIRS += debugger/ptracepreload.pro
-}
 !macx:SUBDIRS += plugin_clearcase
 
 include(../../qtcreator.pri)
 
 contains(QT_CONFIG, declarative) {
-    SUBDIRS += \
-            plugin_qmlprojectmanager
-
     greaterThan(QT_MAJOR_VERSION, 4) {
         SUBDIRS += plugin_qmldesigner
     } else {
@@ -75,8 +63,6 @@ contains(QT_CONFIG, declarative) {
 } else {
     warning("QmlProjectManager, QmlProfiler and QmlDesigner plugins have been disabled: The plugins require QtDeclarative");
 }
-
-include (debugger/lldb/guest/qtcreator-lldb.pri)
 
 plugin_coreplugin.subdir = coreplugin
 
@@ -146,24 +132,6 @@ plugin_projectexplorer.depends += plugin_texteditor
 plugin_qtsupport.subdir = qtsupport
 plugin_qtsupport.depends = plugin_projectexplorer
 
-plugin_qt4projectmanager.subdir = qt4projectmanager
-plugin_qt4projectmanager.depends = plugin_texteditor
-plugin_qt4projectmanager.depends += plugin_projectexplorer
-plugin_qt4projectmanager.depends += plugin_qtsupport
-plugin_qt4projectmanager.depends += plugin_cpptools
-plugin_qt4projectmanager.depends += plugin_debugger
-plugin_qt4projectmanager.depends += plugin_qmljseditor
-
-plugin_remotelinux.subdir = remotelinux
-plugin_remotelinux.depends += plugin_coreplugin
-plugin_remotelinux.depends += plugin_debugger
-plugin_remotelinux.depends += plugin_projectexplorer
-plugin_remotelinux.depends += plugin_qtsupport
-
-plugin_madde.subdir = madde
-plugin_madde.depends += plugin_remotelinux
-plugin_madde.depends += plugin_qt4projectmanager
-
 plugin_locator.subdir = locator
 plugin_locator.depends = plugin_coreplugin
 
@@ -177,12 +145,6 @@ plugin_bookmarks.subdir = bookmarks
 plugin_bookmarks.depends = plugin_projectexplorer
 plugin_bookmarks.depends += plugin_coreplugin
 plugin_bookmarks.depends += plugin_texteditor
-
-plugin_debugger.subdir = debugger
-plugin_debugger.depends = plugin_projectexplorer
-plugin_debugger.depends += plugin_coreplugin
-plugin_debugger.depends += plugin_cpptools
-plugin_debugger.depends += plugin_qmljstools
 
 plugin_fakevim.subdir = fakevim
 plugin_fakevim.depends = plugin_coreplugin
@@ -232,13 +194,6 @@ plugin_glsleditor.depends += plugin_coreplugin
 plugin_glsleditor.depends += plugin_projectexplorer
 plugin_glsleditor.depends += plugin_cpptools
 
-plugin_qmlprojectmanager.subdir = qmlprojectmanager
-plugin_qmlprojectmanager.depends = plugin_texteditor
-plugin_qmlprojectmanager.depends += plugin_projectexplorer
-plugin_qmlprojectmanager.depends += plugin_qmljseditor
-plugin_qmlprojectmanager.depends += plugin_debugger
-plugin_qmlprojectmanager.depends += plugin_qtsupport
-
 plugin_qmldesigner.subdir = qmldesigner
 plugin_qmldesigner.depends = plugin_coreplugin
 plugin_qmldesigner.depends += plugin_texteditor
@@ -280,11 +235,6 @@ plugin_todo.depends = plugin_coreplugin
 plugin_todo.depends += plugin_projectexplorer
 plugin_todo.depends += plugin_texteditor
 plugin_todo.depends += plugin_cpptools
-
-plugin_qnx.subdir = qnx
-plugin_qnx.depends = plugin_remotelinux
-plugin_qnx.depends += plugin_qt4projectmanager
-plugin_qnx.depends += plugin_coreplugin
 
 plugin_clearcase.subdir = clearcase
 plugin_clearcase.depends = plugin_vcsbase
