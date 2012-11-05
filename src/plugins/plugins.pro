@@ -40,7 +40,6 @@ SUBDIRS   = plugin_coreplugin \
             plugin_macros \
             debugger/dumper.pro \
             plugin_remotelinux \
-            plugin_android \
             plugin_madde \
             plugin_todo \
             plugin_qnx \
@@ -162,12 +161,6 @@ plugin_remotelinux.depends += plugin_coreplugin
 plugin_remotelinux.depends += plugin_debugger
 plugin_remotelinux.depends += plugin_projectexplorer
 plugin_remotelinux.depends += plugin_qtsupport
-
-plugin_android.subdir = android
-plugin_android.depends = plugin_coreplugin
-plugin_android.depends += plugin_debugger
-plugin_android.depends += plugin_projectexplorer
-plugin_android.depends += plugin_qt4projectmanager
 
 plugin_madde.subdir = madde
 plugin_madde.depends += plugin_remotelinux

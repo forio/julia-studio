@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/android">
-        <file>images/QtAndroid.png</file>
-    </qresource>
-</RCC>
