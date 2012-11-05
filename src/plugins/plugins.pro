@@ -24,7 +24,6 @@ SUBDIRS   = plugin_coreplugin \
             plugin_debugger \
             plugin_help \
             plugin_cpaster \
-            plugin_cmakeprojectmanager \
             plugin_autotoolsprojectmanager \
             plugin_fakevim \
             plugin_designer \
@@ -208,12 +207,6 @@ plugin_regexp.depends = plugin_coreplugin
 plugin_cpaster.subdir = cpaster
 plugin_cpaster.depends = plugin_texteditor
 plugin_cpaster.depends += plugin_coreplugin
-
-plugin_cmakeprojectmanager.subdir = cmakeprojectmanager
-plugin_cmakeprojectmanager.depends = plugin_texteditor
-plugin_cmakeprojectmanager.depends += plugin_projectexplorer
-plugin_cmakeprojectmanager.depends += plugin_cpptools
-plugin_cmakeprojectmanager.depends += plugin_qtsupport
 
 plugin_autotoolsprojectmanager.subdir = autotoolsprojectmanager
 plugin_autotoolsprojectmanager.depends = plugin_projectexplorer
