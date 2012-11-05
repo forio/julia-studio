@@ -31,7 +31,7 @@ import QtQuick 1.0
 
 Image {
     id: logo
-    source: "images/qtcreator.png"
+    source: "images/juliastudio.png"
     Text {
         y: 21
         color: "#424242"

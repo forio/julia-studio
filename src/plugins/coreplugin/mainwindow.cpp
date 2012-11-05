@@ -135,7 +135,7 @@ MainWindow::MainWindow() :
     m_settings(ExtensionSystem::PluginManager::settings()),
     m_globalSettings(ExtensionSystem::PluginManager::globalSettings()),
     m_settingsDatabase(new SettingsDatabase(QFileInfo(m_settings->fileName()).path(),
-                                            QLatin1String("QtCreator"),
+                                            QLatin1String("JuliaStudio"),
                                             this)),
     m_printer(0),
     m_actionManager(new ActionManager(this)),
@@ -178,11 +178,11 @@ MainWindow::MainWindow() :
 
     Utils::HistoryCompleter::setSettings(m_settings);
 
-    setWindowTitle(tr("Julia Studio"));
+    setWindowTitle(tr("{ Julia Studio }"));
 #ifndef Q_OS_MAC
     QApplication::setWindowIcon(QIcon(QLatin1String(Constants::ICON_QTLOGO_128)));
 #endif
-    QCoreApplication::setApplicationName(QLatin1String("QtCreator"));
+    QCoreApplication::setApplicationName(QLatin1String("JuliaStudio"));
     QCoreApplication::setApplicationVersion(QLatin1String(Core::Constants::IDE_VERSION_LONG));
     QCoreApplication::setOrganizationName(QLatin1String(Constants::IDE_SETTINGSVARIANT_STR));
     QString baseName = QApplication::style()->objectName();
@@ -773,9 +773,9 @@ void MainWindow::registerDefaultActions()
     // About IDE Action
     icon = QIcon::fromTheme(QLatin1String("help-about"));
 #ifdef Q_OS_MAC
-    tmpaction = new QAction(icon, tr("About &Qt Creator"), this); // it's convention not to add dots to the about menu
+    tmpaction = new QAction(icon, tr("About &Julia Studio"), this); // it's convention not to add dots to the about menu
 #else
-    tmpaction = new QAction(icon, tr("About &Qt Creator..."), this);
+    tmpaction = new QAction(icon, tr("About &Julia Studio..."), this);
 #endif
     cmd = ActionManager::registerAction(tmpaction, Constants::ABOUT_QTCREATOR, globalContext);
     mhelp->addAction(cmd, Constants::G_HELP_ABOUT);

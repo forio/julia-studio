@@ -218,9 +218,9 @@ static inline QStringList getPluginPaths()
             + QLatin1String(Core::Constants::IDE_SETTINGSVARIANT_STR)
             + QLatin1Char('/');
 #if !defined(Q_OS_MAC)
-    pluginPath += QLatin1String("qtcreator");
+    pluginPath += QLatin1String("juliastudio");
 #else
-    pluginPath += QLatin1String("Qt Creator");
+    pluginPath += QLatin1String("Julia Studio");
 #endif
     pluginPath += QLatin1String("/plugins/");
     pluginPath += QLatin1String(Core::Constants::IDE_VERSION_LONG);
@@ -232,7 +232,7 @@ static QSettings *createUserSettings()
 {
     return new QSettings(QSettings::IniFormat, QSettings::UserScope,
                          QLatin1String(Core::Constants::IDE_SETTINGSVARIANT_STR),
-                         QLatin1String("QtCreator"));
+                         QLatin1String("JuliaStudio"));
 }
 
 static inline QSettings *userSettings()
@@ -268,7 +268,7 @@ static inline QSettings *userSettings()
                 || lowerFile.startsWith(QLatin1String("devices.xml"))
                 || lowerFile.startsWith(QLatin1String("qtcreator.")))
             QFile::copy(srcDir.absoluteFilePath(file), destDir.absoluteFilePath(file));
-        if (file == QLatin1String("qtcreator"))
+        if (file == QLatin1String("juliastudio"))
             copyRecursively(srcDir.absoluteFilePath(file), destDir.absoluteFilePath(file));
     }
 
@@ -338,7 +338,7 @@ int main(int argc, char **argv)
 
     QSettings *globalSettings = new QSettings(QSettings::IniFormat, QSettings::SystemScope,
                                               QLatin1String(Core::Constants::IDE_SETTINGSVARIANT_STR),
-                                              QLatin1String("QtCreator"));
+                                              QLatin1String("JuliaStudio"));
     PluginManager pluginManager;
     PluginManager::setFileExtension(QLatin1String("pluginspec"));
     PluginManager::setGlobalSettings(globalSettings);

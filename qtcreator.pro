@@ -27,8 +27,8 @@ else: PLATFORM = "unknown"
 PATTERN = $${PLATFORM}$(INSTALL_EDITION)-$${QTCREATOR_VERSION}$(INSTALL_POSTFIX)
 
 macx {
-    APPBUNDLE = "$$OUT_PWD/bin/Qt Creator.app"
-    BINDIST_SOURCE = "$$OUT_PWD/bin/Qt Creator.app"
+    APPBUNDLE = "$$OUT_PWD/bin/Julia Studio.app"
+    BINDIST_SOURCE = "$$OUT_PWD/bin/Julia Studio.app"
     BINDIST_INSTALLER_SOURCE = $$BINDIST_SOURCE
     deployqt.commands = $$PWD/scripts/deployqtHelper_mac.sh \"$${APPBUNDLE}\"
     codesign.commands = codesign -s \"$(SIGNING_IDENTITY)\" \"$${APPBUNDLE}\"
