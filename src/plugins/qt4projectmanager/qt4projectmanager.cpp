@@ -232,7 +232,7 @@ static void updateBoilerPlateCodeFiles(const AbstractMobileApp *app, const QStri
             fileNames.append(QDir::toNativeSeparators(info.fileInfo.fileName()));
         const QString message =
                 Qt4Manager::tr("The following files are either outdated or have been modified:<br><br>%1"
-                               "<br><br>Do you want Qt Creator to update the files? Any changes will be lost.")
+                               "<br><br>Do you want Julia Studio to update the files? Any changes will be lost.")
                 .arg(fileNames.join(QLatin1String(", ")));
         if (QMessageBox::question(0, title, message, QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
             QString error;

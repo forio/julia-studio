@@ -261,7 +261,7 @@ void GeneralSettings::setLanguage(const QString &locale)
     if (settings->value(QLatin1String("General/OverrideLanguage")).toString() != locale)
     {
         QMessageBox::information(Core::ICore::mainWindow(), tr("Restart required"),
-                                 tr("The language change will take effect after a restart of Qt Creator."));
+                                 tr("The language change will take effect after a restart of Julia Studio."));
     }
     if (locale.isEmpty())
         settings->remove(QLatin1String("General/OverrideLanguage"));
