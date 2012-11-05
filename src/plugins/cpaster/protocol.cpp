@@ -33,7 +33,6 @@
 #include <cpptools/cpptoolsconstants.h>
 #include <glsleditor/glsleditorconstants.h>
 #include <qmljstools/qmljstoolsconstants.h>
-#include <resourceeditor/resourceeditorconstants.h>
 #include <coreplugin/icore.h>
 #include <coreplugin/dialogs/ioptionspage.h>
 
@@ -101,8 +100,7 @@ Protocol::ContentType Protocol::contentType(const QString &mt)
     if (mt == QLatin1String("text/x-patch"))
         return Diff;
     if (mt == QLatin1String("text/xml")
-        || mt == QLatin1String("application/xml")
-        || mt == QLatin1String(ResourceEditor::Constants::C_RESOURCE_MIMETYPE))
+        || mt == QLatin1String("application/xml"))
         return Xml;
     return Text;
 }
