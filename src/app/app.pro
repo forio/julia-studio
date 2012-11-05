@@ -22,7 +22,7 @@ win32 {
     INSTALLS += target
 } else:macx {
     LIBS += -framework CoreFoundation
-    ICON = qtcreator.icns
+    ICON = juliastudio.icns
     FILETYPES.files = profile.icns prifile.icns
     FILETYPES.path = Contents/Resources
     QMAKE_BUNDLE_DATA += FILETYPES

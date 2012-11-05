@@ -210,7 +210,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-	<string>Qt Creator</string>
+  <string>Julia Studio</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.qt-project.qtcreator</string>
 	<key>CFBundleVersion</key>
