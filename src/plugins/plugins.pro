@@ -24,7 +24,6 @@ SUBDIRS   = plugin_coreplugin \
             plugin_cpaster \
             plugin_autotoolsprojectmanager \
             plugin_fakevim \
-            plugin_designer \
             plugin_resourceeditor \
             plugin_genericprojectmanager \
             plugin_qmljseditor \
@@ -46,23 +45,6 @@ isEmpty(IDE_PACKAGE_MODE) {
 !macx:SUBDIRS += plugin_clearcase
 
 include(../../qtcreator.pri)
-
-contains(QT_CONFIG, declarative) {
-    greaterThan(QT_MAJOR_VERSION, 4) {
-        SUBDIRS += plugin_qmldesigner
-    } else {
-        include(../private_headers.pri)
-        exists($${QT_PRIVATE_HEADERS}/QtDeclarative/private/qdeclarativecontext_p.h) {
-                SUBDIRS += plugin_qmldesigner
-        } else {
-            warning("QmlDesigner plugin has been disabled.")
-            warning("The plugin depends on private headers from QtDeclarative module.")
-            warning("To enable it, pass 'QT_PRIVATE_HEADERS=$QTDIR/include' to qmake, where $QTDIR is the source directory of qt.")
-        }
-    }
-} else {
-    warning("QmlProjectManager, QmlProfiler and QmlDesigner plugins have been disabled: The plugins require QtDeclarative");
-}
 
 plugin_coreplugin.subdir = coreplugin
 
@@ -92,9 +74,6 @@ plugin_bineditor.depends += plugin_coreplugin
 
 plugin_imageviewer.subdir = imageviewer
 plugin_imageviewer.depends = plugin_coreplugin
-
-plugin_designer.subdir = designer
-plugin_designer.depends = plugin_coreplugin plugin_cpptools plugin_projectexplorer plugin_texteditor
 
 plugin_vcsbase.subdir = vcsbase
 plugin_vcsbase.depends = plugin_find

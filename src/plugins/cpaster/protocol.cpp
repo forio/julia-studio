@@ -31,7 +31,6 @@
 #include <utils/networkaccessmanager.h>
 
 #include <cpptools/cpptoolsconstants.h>
-#include <designer/designerconstants.h>
 #include <glsleditor/glsleditorconstants.h>
 #include <qmljstools/qmljstoolsconstants.h>
 #include <resourceeditor/resourceeditorconstants.h>
@@ -103,8 +102,7 @@ Protocol::ContentType Protocol::contentType(const QString &mt)
         return Diff;
     if (mt == QLatin1String("text/xml")
         || mt == QLatin1String("application/xml")
-        || mt == QLatin1String(ResourceEditor::Constants::C_RESOURCE_MIMETYPE)
-        || mt == QLatin1String(Designer::Constants::FORM_MIMETYPE))
+        || mt == QLatin1String(ResourceEditor::Constants::C_RESOURCE_MIMETYPE))
         return Xml;
     return Text;
 }
