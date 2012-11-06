@@ -76,7 +76,6 @@ public slots:
     // Shows without focus
     void showTaskWindow();
     void toggleTaskWindow();
-    void toggleOutputWindow();
     void aboutToRemoveProject(ProjectExplorer::Project *p);
 
 signals:

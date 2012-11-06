@@ -69,7 +69,6 @@ namespace ProjectExplorer {
 struct BuildManagerPrivate {
     BuildManagerPrivate();
 
-    Internal::CompileOutputWindow *m_outputWindow;
     TaskHub *m_taskHub;
     Internal::TaskWindow *m_taskWindow;
 
@@ -131,9 +130,6 @@ BuildManager::BuildManager(ProjectExplorerPlugin *parent, QAction *cancelBuildAc
     connect(parent->session(), SIGNAL(aboutToRemoveProject(ProjectExplorer::Project*)),
             this, SLOT(aboutToRemoveProject(ProjectExplorer::Project*)));
 
-    d->m_outputWindow = new Internal::CompileOutputWindow(this, cancelBuildAction);
-    ExtensionSystem::PluginManager::addObject(d->m_outputWindow);
-
     d->m_taskHub = ProjectExplorerPlugin::instance()->taskHub();
     d->m_taskWindow = new Internal::TaskWindow(d->m_taskHub);
     ExtensionSystem::PluginManager::addObject(d->m_taskWindow);
@@ -166,9 +162,6 @@ BuildManager::~BuildManager()
     cancel();
     ExtensionSystem::PluginManager::removeObject(d->m_taskWindow);
     delete d->m_taskWindow;
-
-    ExtensionSystem::PluginManager::removeObject(d->m_outputWindow);
-    delete d->m_outputWindow;
 
     delete d;
 }
@@ -281,12 +274,6 @@ void BuildManager::clearBuildQueue()
     emit buildQueueFinished(false);
 }
 
-
-void BuildManager::toggleOutputWindow()
-{
-    d->m_outputWindow->toggle(Core::IOutputPane::ModeSwitch);
-}
-
 void BuildManager::showTaskWindow()
 {
     d->m_taskWindow->popup(Core::IOutputPane::NoModeSwitch);
@@ -316,7 +303,6 @@ void BuildManager::startBuildQueue(const QStringList &preambleMessage)
         Core::ProgressManager *progressManager = Core::ICore::progressManager();
         d->m_progressFutureInterface = new QFutureInterface<void>;
         d->m_progressWatcher.setFuture(d->m_progressFutureInterface->future());
-        d->m_outputWindow->clearContents();
         foreach (const QString &str, preambleMessage)
             addToOutputWindow(str, BuildStep::MessageOutput, BuildStep::DontAppendNewline);
         d->m_taskHub->clearTasks(Core::Id(Constants::TASK_CATEGORY_COMPILE));
@@ -346,14 +332,10 @@ void BuildManager::showBuildResults()
 {
     if (tasksAvailable())
         toggleTaskWindow();
-    else
-        toggleOutputWindow();
-    //toggleTaskWindow();
 }
 
 void BuildManager::addToTaskWindow(const ProjectExplorer::Task &task)
 {
-    d->m_outputWindow->registerPositionOf(task);
     // Distribute to all others
     d->m_taskHub->addTask(task);
 }
@@ -361,15 +343,6 @@ void BuildManager::addToTaskWindow(const ProjectExplorer::Task &task)
 void BuildManager::addToOutputWindow(const QString &string, BuildStep::OutputFormat format,
     BuildStep::OutputNewlineSetting newLineSetting)
 {
-    QString stringToWrite;
-    if (format == BuildStep::MessageOutput || format == BuildStep::ErrorMessageOutput) {
-        stringToWrite = QTime::currentTime().toString();
-        stringToWrite += QLatin1String(": ");
-    }
-    stringToWrite += string;
-    if (newLineSetting == BuildStep::DoAppendNewline)
-        stringToWrite += QLatin1Char('\n');
-    d->m_outputWindow->appendText(stringToWrite, format);
 }
 
 void BuildManager::buildStepFinishedAsync()
@@ -546,12 +519,9 @@ bool BuildManager::buildLists(QList<BuildStepList *> bsls, const QStringList &st
 
     bool success = buildQueueAppend(steps, names);
     if (!success) {
-        d->m_outputWindow->popup(Core::IOutputPane::NoModeSwitch);
         return false;
     }
 
-    if (ProjectExplorerPlugin::instance()->projectExplorerSettings().showCompilerOutput)
-        d->m_outputWindow->popup(Core::IOutputPane::NoModeSwitch);
     startBuildQueue(preambelMessage);
     return true;
 }
@@ -560,11 +530,8 @@ void BuildManager::appendStep(BuildStep *step, const QString &name)
 {
     bool success = buildQueueAppend(QList<BuildStep *>() << step, QStringList() << name);
     if (!success) {
-        d->m_outputWindow->popup(Core::IOutputPane::NoModeSwitch);
         return;
     }
-    if (ProjectExplorerPlugin::instance()->projectExplorerSettings().showCompilerOutput)
-        d->m_outputWindow->popup(Core::IOutputPane::NoModeSwitch);
     startBuildQueue();
 }
 
