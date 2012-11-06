@@ -137,7 +137,7 @@ void JuliaEditorPlugin::triggerAction()
                            tr("This is an action from JuliaEditor."));
 }
 
-void JuliaEditorPlugin::initEditor( TextEditor::BaseTextEditorWidget* editor )
+void JuliaEditorPlugin::initEditor( JuliaEditorWidget* editor )
 {
   action_handler->setupActions( editor );  // this should be a slot!
   //editor->setLanguageSettingsId( QLatin1String( Constants::JULIA_SETTINGS_ID ) );
