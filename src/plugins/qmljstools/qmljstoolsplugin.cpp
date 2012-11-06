@@ -91,7 +91,6 @@ bool QmlJSToolsPlugin::initialize(const QStringList &arguments, QString *error)
     LocatorData *locatorData = new LocatorData;
     addAutoReleasedObject(locatorData);
     addAutoReleasedObject(new FunctionFilter(locatorData));
-    addAutoReleasedObject(new QmlJSCodeStyleSettingsPage);
 
     // Menus
     Core::ActionContainer *mtools = Core::ActionManager::actionContainer(Core::Constants::M_TOOLS);
