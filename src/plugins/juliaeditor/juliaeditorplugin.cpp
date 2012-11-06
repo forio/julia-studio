@@ -48,10 +48,9 @@ JuliaEditorPlugin::~JuliaEditorPlugin()
 
 bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorString)
 {
-  // Register objects in the plugin manager's object pool
-  // Load settings
-  // Add actions to menus
-  // connect to other plugins' signals
+  Q_UNUSED(arguments)
+  Q_UNUSED(errorString)
+
   // "In the initialize method, a plugin can be sure that the plugins it
   //  depends on have initialized their members."
 
@@ -68,7 +67,6 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
 
   JuliaEditorFactory* editor_factory = new JuliaEditorFactory(this);
   connect( editor_factory, SIGNAL(newEditor(JuliaEditorWidget*)), SLOT(initEditor(JuliaEditorWidget*)) );
-
   addAutoReleasedObject( editor_factory );
 
   action_handler = new TextEditor::TextEditorActionHandler( Constants::JULIAEDITOR,
@@ -93,20 +91,19 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
 
   addAutoReleasedObject(evaluator);
   addAutoReleasedObject(console_pane);
-  // -------
+  // ------- */
 
-  Q_UNUSED(arguments)
-  Q_UNUSED(errorString)
+
   Core::ActionManager *am = Core::ICore::instance()->actionManager();
-  
-  QAction *action = new QAction(tr("JuliaEditor action"), this);
-  Core::Command *cmd = am->registerAction(action, Constants::ACTION_ID,
+
+  QAction *action = new QAction(tr("Reset Console"), this);
+  Core::Command *cmd = am->registerAction(action, Constants::ACTION_ID_RESET_CONSOLE,
                                           Core::Context(Core::Constants::C_GLOBAL));
   cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Alt+Meta+A")));
-  connect(action, SIGNAL(triggered()), this, SLOT(triggerAction()));
-  
+  connect(action, SIGNAL(triggered()), console, SLOT(Reset()));
+
   Core::ActionContainer *menu = am->createMenu(Constants::MENU_ID);
-  menu->menu()->setTitle(tr("JuliaEditor"));
+  menu->menu()->setTitle(tr("Julia"));
   menu->addAction(cmd);
   am->actionContainer(Core::Constants::M_TOOLS)->addMenu(menu);
   
