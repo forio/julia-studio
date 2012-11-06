@@ -1671,9 +1671,6 @@ void ProjectExplorerPlugin::buildQueueFinished(bool success)
 
     if (success && ignoreErrors && d->m_delayedRunConfiguration) {
         executeRunConfiguration(d->m_delayedRunConfiguration, d->m_runMode);
-    } else {
-        if (d->m_buildManager->tasksAvailable())
-            d->m_buildManager->showTaskWindow();
     }
     d->m_delayedRunConfiguration = 0;
     d->m_runMode = NoRunMode;

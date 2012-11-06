@@ -74,8 +74,6 @@ public:
 public slots:
     void cancel();
     // Shows without focus
-    void showTaskWindow();
-    void toggleTaskWindow();
     void aboutToRemoveProject(ProjectExplorer::Project *p);
 
 signals:
@@ -95,7 +93,6 @@ private slots:
     void progressChanged();
     void progressTextChanged();
     void emitCancelMessage();
-    void showBuildResults();
     void updateTaskCount();
     void finish();
 

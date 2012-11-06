@@ -70,7 +70,6 @@ struct BuildManagerPrivate {
     BuildManagerPrivate();
 
     TaskHub *m_taskHub;
-    Internal::TaskWindow *m_taskWindow;
 
     QList<BuildStep *> m_buildQueue;
     QList<bool> m_enabledState;
@@ -131,17 +130,9 @@ BuildManager::BuildManager(ProjectExplorerPlugin *parent, QAction *cancelBuildAc
             this, SLOT(aboutToRemoveProject(ProjectExplorer::Project*)));
 
     d->m_taskHub = ProjectExplorerPlugin::instance()->taskHub();
-    d->m_taskWindow = new Internal::TaskWindow(d->m_taskHub);
-    ExtensionSystem::PluginManager::addObject(d->m_taskWindow);
 
     qRegisterMetaType<ProjectExplorer::BuildStep::OutputFormat>();
     qRegisterMetaType<ProjectExplorer::BuildStep::OutputNewlineSetting>();
-
-    connect(d->m_taskWindow, SIGNAL(tasksChanged()),
-            this, SLOT(updateTaskCount()));
-
-    connect(d->m_taskWindow, SIGNAL(tasksCleared()),
-            this,SIGNAL(tasksCleared()));
 
     connect(&d->m_progressWatcher, SIGNAL(canceled()),
             this, SLOT(cancel()));
@@ -160,8 +151,6 @@ void BuildManager::extensionsInitialized()
 BuildManager::~BuildManager()
 {
     cancel();
-    ExtensionSystem::PluginManager::removeObject(d->m_taskWindow);
-    delete d->m_taskWindow;
 
     delete d;
 }
@@ -186,10 +175,7 @@ bool BuildManager::isBuilding() const
 
 int BuildManager::getErrorTaskCount() const
 {
-    const int errors =
-            d->m_taskWindow->errorTaskCount(Core::Id(Constants::TASK_CATEGORY_BUILDSYSTEM))
-            + d->m_taskWindow->errorTaskCount(Core::Id(Constants::TASK_CATEGORY_COMPILE));
-    return errors;
+    return 0;
 }
 
 void BuildManager::cancel()
@@ -274,22 +260,9 @@ void BuildManager::clearBuildQueue()
     emit buildQueueFinished(false);
 }
 
-void BuildManager::showTaskWindow()
-{
-    d->m_taskWindow->popup(Core::IOutputPane::NoModeSwitch);
-}
-
-void BuildManager::toggleTaskWindow()
-{
-    d->m_taskWindow->toggle(Core::IOutputPane::ModeSwitch);
-}
-
 bool BuildManager::tasksAvailable() const
 {
-    const int count =
-            d->m_taskWindow->taskCount(Core::Id(Constants::TASK_CATEGORY_BUILDSYSTEM))
-            + d->m_taskWindow->taskCount(Core::Id(Constants::TASK_CATEGORY_COMPILE));
-    return count > 0;
+    return false;
 }
 
 void BuildManager::startBuildQueue(const QStringList &preambleMessage)
@@ -312,8 +285,6 @@ void BuildManager::startBuildQueue(const QStringList &preambleMessage)
               QString(),
               QLatin1String(Constants::TASK_BUILD),
               Core::ProgressManager::KeepOnFinish | Core::ProgressManager::ShowInApplicationIcon);
-        connect(d->m_futureProgress.data(), SIGNAL(clicked()), this, SLOT(showBuildResults()));
-        d->m_futureProgress.data()->setWidget(new Internal::BuildProgress(d->m_taskWindow));
         d->m_progress = 0;
         d->m_progressFutureInterface->setProgressRange(0, d->m_maxProgress * 100);
 
@@ -326,12 +297,6 @@ void BuildManager::startBuildQueue(const QStringList &preambleMessage)
         d->m_progressFutureInterface->setProgressRange(0, d->m_maxProgress * 100);
         d->m_progressFutureInterface->setProgressValueAndText(d->m_progress*100, msgProgress(d->m_progress, d->m_maxProgress));
     }
-}
-
-void BuildManager::showBuildResults()
-{
-    if (tasksAvailable())
-        toggleTaskWindow();
 }
 
 void BuildManager::addToTaskWindow(const ProjectExplorer::Task &task)
