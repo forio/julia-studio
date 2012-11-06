@@ -7,11 +7,4 @@
         <glob pattern="*.julia"/>
         <glob pattern="*.jul"/>
     </mime-type>
-
-    <mime-type type="text/julia-project">
-         <comment>Julia project file</comment>
-         <sub-class-of type="text/plain"/>
-         <glob pattern="*.jlp"/>
-    </mime-type>
-
 </mime-info>
