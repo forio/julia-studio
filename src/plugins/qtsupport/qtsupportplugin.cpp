@@ -61,8 +61,6 @@ bool QtSupportPlugin::initialize(const QStringList &arguments, QString *errorMes
     QtFeatureProvider *featureMgr = new QtFeatureProvider;
     addAutoReleasedObject(featureMgr);
 
-    addAutoReleasedObject(new QtOptionsPage);
-
     ExamplesWelcomePage *welcomePage;
     welcomePage = new ExamplesWelcomePage;
     addAutoReleasedObject(welcomePage);

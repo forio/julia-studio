@@ -338,11 +338,6 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     d->m_kitManager = new KitManager; // register before ToolChainManager
     d->m_toolChainManager = new ToolChainManager;
 
-    // JULIA STUDIO -------
-    //addAutoReleasedObject(new Internal::ToolChainOptionsPage);
-    //addAutoReleasedObject(new KitOptionsPage);
-    // -------
-
     d->m_taskHub = new TaskHub;
     addAutoReleasedObject(d->m_taskHub);
 
