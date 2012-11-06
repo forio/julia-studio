@@ -64,3 +64,5 @@ win32 {
 }
 
 QMAKE_EXTRA_TARGETS += deployqt bindist bindist_installer installer
+
+QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.3

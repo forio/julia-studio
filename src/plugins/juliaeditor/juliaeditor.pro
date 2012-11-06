@@ -11,7 +11,13 @@ isEmpty(QTCREATOR_SOURCES):QTCREATOR_SOURCES=../../../../qt-creator
 
 ## set the QTC_BUILD environment variable to override the setting here
 IDE_BUILD_TREE = $$(QTC_BUILD)
-isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../qtcreator-build-desktop-Desktop_Qt_4_8_1_for_GCC__Qt_SDK__Debug
+
+CONFIG( debug ) {
+  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../qtcreator-build-desktop-Desktop_Qt_4_8_1_for_GCC__Qt_SDK__Debug
+}
+else {
+  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../qtcreator-build-Qt_4_8_1_gcc-Release
+}
 
 ## uncomment to build plugin into user config directory
 ## <localappdata>/plugins/<ideversion>
