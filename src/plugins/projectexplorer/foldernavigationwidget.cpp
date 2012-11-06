@@ -327,7 +327,7 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
     actionOpen->setEnabled(hasCurrentItem);
 
     // JULIA STUDIO -------
-    QAction* actionJuliaRun = menu.addAction(tr("Run"));
+    QAction* actionJuliaRun = menu.addAction(tr("Load"));
     actionJuliaRun->setEnabled( hasCurrentItem && !m_fileSystemModel->isDir(current) );
     // -------
 
