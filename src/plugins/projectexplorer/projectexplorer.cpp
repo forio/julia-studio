@@ -438,19 +438,6 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     Core::ActionContainer *menubar =
         Core::ActionManager::actionContainer(Core::Constants::MENU_BAR);
 
-
-
-    // debug menu
-    Core::ActionContainer *mdebug =
-        Core::ActionManager::createMenu(Constants::M_DEBUG);
-    mdebug->menu()->setTitle(tr("&Debug"));
-    menubar->addMenu(mdebug, Core::Constants::G_VIEW);
-
-    Core::ActionContainer *mstartdebugging =
-        Core::ActionManager::createMenu(Constants::M_DEBUG_STARTDEBUGGING);
-    mstartdebugging->menu()->setTitle(tr("&Start Debugging"));
-    mdebug->addMenu(mstartdebugging, Core::Constants::G_DEFAULT_ONE);
-
     //
     // Groups
     //
