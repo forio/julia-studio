@@ -239,8 +239,6 @@ struct ProjectExplorerPluginPrivate {
     Internal::ProjectExplorerSettings m_projectExplorerSettings;
     Internal::ProjectWelcomePage *m_welcomePage;
 
-    Core::IMode *m_projectsMode;
-
     TaskHub *m_taskHub;
     KitManager *m_kitManager;
     ToolChainManager *m_toolChainManager;
@@ -252,7 +250,6 @@ ProjectExplorerPluginPrivate::ProjectExplorerPluginPrivate() :
     m_currentNode(0),
     m_delayedRunConfiguration(0),
     m_runMode(NoRunMode),
-    m_projectsMode(0),
     m_kitManager(0),
     m_toolChainManager(0),
     m_shuttingDown(false)
@@ -386,13 +383,6 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
 
     Core::Context globalcontext(Core::Constants::C_GLOBAL);
     Core::Context projecTreeContext(Constants::C_PROJECT_TREE);
-
-    // JULIA STUDIO -------
-    //d->m_projectsMode = new ProjectsMode(d->m_proWindow);
-    //d->m_projectsMode->setEnabled(false);
-    //addAutoReleasedObject(d->m_projectsMode);
-    //d->m_proWindow->layout()->addWidget(new Core::FindToolBarPlaceHolder(d->m_proWindow));
-    // -------
 
     addAutoReleasedObject(new CopyTaskHandler);
     addAutoReleasedObject(new ShowInEditorTaskHandler);
@@ -1127,7 +1117,6 @@ ExtensionSystem::IPlugin::ShutdownFlag ProjectExplorerPlugin::aboutToShutdown()
 {
     d->m_proWindow->aboutToShutdown(); // disconnect from session
     d->m_session->closeAllProjects();
-    d->m_projectsMode = 0;
     d->m_shuttingDown = true;
 
     // Attempt to synchronously shutdown all run controls.
@@ -2163,8 +2152,6 @@ void ProjectExplorerPlugin::runControlFinished()
 
 void ProjectExplorerPlugin::projectAdded(ProjectExplorer::Project *pro)
 {
-    if (d->m_projectsMode)
-        d->m_projectsMode->setEnabled(true);
     // more specific action en and disabling ?
     connect(pro, SIGNAL(buildConfigurationEnabledChanged()),
             this, SLOT(updateActions()));
@@ -2172,8 +2159,6 @@ void ProjectExplorerPlugin::projectAdded(ProjectExplorer::Project *pro)
 
 void ProjectExplorerPlugin::projectRemoved(ProjectExplorer::Project * pro)
 {
-    if (d->m_projectsMode)
-        d->m_projectsMode->setEnabled(!session()->projects().isEmpty());
     // more specific action en and disabling ?
     disconnect(pro, SIGNAL(buildConfigurationEnabledChanged()),
                this, SLOT(updateActions()));
