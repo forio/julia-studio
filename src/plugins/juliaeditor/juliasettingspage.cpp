@@ -87,6 +87,7 @@ JuliaSettingsPage::JuliaSettingsPage(QObject *parent)
   setDisplayName(QCoreApplication::translate("Julia", Constants::JULIA_SETTINGS_NAME));
   setCategory(QLatin1String(Constants::JULIA_SETTINGS_CATEGORY));
   setDisplayCategory(QCoreApplication::translate("Julia", Constants::JULIA_SETTINGS_TR_CATEGORY));
+  setCategoryIcon(QLatin1String(Constants::SETTINGS_CATEGORY_JULIA_ICON));
 }
 
 QWidget *JuliaSettingsPage::createPage(QWidget *parent)

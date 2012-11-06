@@ -66,8 +66,6 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   addAutoReleasedObject(new JuliaRunConfigurationFactory());
   addAutoReleasedObject(new JuliaRunControlFactory());
 
-  //project_manager->openProject( "DA PROJECT" );
-
   JuliaEditorFactory* editor_factory = new JuliaEditorFactory(this);
   connect( editor_factory, SIGNAL(newEditor(JuliaEditorWidget*)), SLOT(initEditor(JuliaEditorWidget*)) );
 

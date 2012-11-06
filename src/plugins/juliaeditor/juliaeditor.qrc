@@ -2,5 +2,6 @@
     <qresource prefix="/juliaeditor">
         <file>juliaeditor.mimetypes.xml</file>
         <file>julia.xml</file>
+        <file>images/icon_512x512.png</file>
     </qresource>
 </RCC>

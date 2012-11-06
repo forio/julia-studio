@@ -19,6 +19,8 @@ namespace JuliaPlugin {
     char const * const JULIA_SETTINGS_CATEGORY = "Julia";
     char const * const JULIA_SETTINGS_TR_CATEGORY = QT_TRANSLATE_NOOP("JuliaPlugin", "Julia");
     char const * const JULIA_SETTINGS_GROUP = "Julia";
+    char const * const SETTINGS_CATEGORY_JULIA_ICON = ":juliaeditor/images/icon_512x512.png";
+
   } // namespace Constants
 } // namespace JuliaEditor
 
