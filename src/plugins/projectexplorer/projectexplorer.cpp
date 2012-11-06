@@ -227,7 +227,6 @@ struct ProjectExplorerPluginPrivate {
 
     QList<Internal::ProjectFileFactory*> m_fileFactories;
     QStringList m_profileMimeTypes;
-    Internal::AppOutputPane *m_outputPane;
 
     QList<QPair<QString, QString> > m_recentProjects; // pair of filename, displayname
     static const int m_maxRecentProjects = 7;
@@ -399,16 +398,6 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     addAutoReleasedObject(new ShowInEditorTaskHandler);
     addAutoReleasedObject(new VcsAnnotateTaskHandler);
     addAutoReleasedObject(new CoreListener);
-
-    d->m_outputPane = new AppOutputPane;
-    addAutoReleasedObject(d->m_outputPane);
-    connect(d->m_session, SIGNAL(projectRemoved(ProjectExplorer::Project*)),
-            d->m_outputPane, SLOT(projectRemoved()));
-
-    connect(d->m_outputPane, SIGNAL(runControlStarted(ProjectExplorer::RunControl*)),
-            this, SIGNAL(runControlStarted(ProjectExplorer::RunControl*)));
-    connect(d->m_outputPane, SIGNAL(runControlFinished(ProjectExplorer::RunControl*)),
-            this, SIGNAL(runControlFinished(ProjectExplorer::RunControl*)));
 
     AllProjectsFilter *allProjectsFilter = new AllProjectsFilter(this);
     addAutoReleasedObject(allProjectsFilter);
@@ -1167,14 +1156,13 @@ ExtensionSystem::IPlugin::ShutdownFlag ProjectExplorerPlugin::aboutToShutdown()
     d->m_session->closeAllProjects();
     d->m_projectsMode = 0;
     d->m_shuttingDown = true;
+
     // Attempt to synchronously shutdown all run controls.
     // If that fails, fall back to asynchronous shutdown (Debugger run controls
     // might shutdown asynchronously).
-    if (d->m_outputPane->closeTabs(AppOutputPane::CloseTabNoPrompt /* No prompt any more */))
-        return SynchronousShutdown;
-    connect(d->m_outputPane, SIGNAL(allRunControlsFinished()),
-            this, SIGNAL(asynchronousShutdownFinished()));
-    return AsynchronousShutdown;
+
+    // JULIA EDITOR - We don't need to close the output windows
+    return SynchronousShutdown;
 }
 
 void ProjectExplorerPlugin::newProject()
@@ -1659,21 +1647,9 @@ void ProjectExplorerPlugin::showRunErrorMessage(const QString &errorMessage)
 
 void ProjectExplorerPlugin::startRunControl(RunControl *runControl, RunMode runMode)
 {
-    d->m_outputPane->createNewOutputWindow(runControl);
-    if (runMode == NormalRunMode && d->m_projectExplorerSettings.showRunOutput)
-        d->m_outputPane->popup(Core::IOutputPane::NoModeSwitch);
-    if ((runMode == DebugRunMode || runMode == DebugRunModeWithBreakOnMain)
-            && d->m_projectExplorerSettings.showDebugOutput)
-        d->m_outputPane->popup(Core::IOutputPane::NoModeSwitch);
-    d->m_outputPane->showTabFor(runControl);
     connect(runControl, SIGNAL(finished()), this, SLOT(runControlFinished()));
     runControl->start();
     emit updateRunActions();
-}
-
-QList<RunControl *> ProjectExplorerPlugin::runControls() const
-{
-    return d->m_outputPane->runControls();
 }
 
 void ProjectExplorerPlugin::buildQueueFinished(bool success)
@@ -2155,8 +2131,6 @@ bool ProjectExplorerPlugin::coreAboutToClose()
         if (box.clickedButton() != closeAnyway)
             return false;
     }
-    if (!d->m_outputPane->aboutToClose())
-        return false;
     return true;
 }
 
