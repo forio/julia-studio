@@ -35,7 +35,7 @@ public:
   ShutdownFlag aboutToShutdown();
 
 private slots:
-  void initEditor( JuliaEditorWidget* editor );
+  void initEditor( TextEditor::BaseTextEditorWidget* editor );
   void triggerAction();
 
 private:

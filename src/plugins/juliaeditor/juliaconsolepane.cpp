@@ -14,7 +14,9 @@ JuliaConsolePane::JuliaConsolePane(QObject *parent) :
 }
 
 JuliaConsolePane::~JuliaConsolePane()
-{}
+{
+  delete console;
+}
 
 Console *JuliaConsolePane::outputWidget(QWidget *parent)
 {

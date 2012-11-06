@@ -20,6 +20,7 @@
 #include <texteditor/texteditorplugin.h>
 #include <texteditor/texteditorsettings.h>
 #include <texteditor/texteditoractionhandler.h>
+#include <extensionsystem/pluginmanager.h>
 
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
@@ -42,6 +43,9 @@ JuliaEditorPlugin::~JuliaEditorPlugin()
 {
   // Unregister objects from the plugin manager's object pool
   // Delete members
+
+  if (console_pane)
+    ExtensionSystem::PluginManager::removeObject(console_pane);
 
   delete action_handler;
 }
@@ -90,7 +94,8 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&)), console, SLOT(Reset()) );
 
   addAutoReleasedObject(evaluator);
-  addAutoReleasedObject(console_pane);
+  ExtensionSystem::PluginManager::addObject(console_pane);
+  //addAutoReleasedObject(console_pane);
   // ------- */
 
 
@@ -132,7 +137,7 @@ void JuliaEditorPlugin::triggerAction()
                            tr("This is an action from JuliaEditor."));
 }
 
-void JuliaEditorPlugin::initEditor( JuliaEditorWidget* editor )
+void JuliaEditorPlugin::initEditor( TextEditor::BaseTextEditorWidget* editor )
 {
   action_handler->setupActions( editor );  // this should be a slot!
   //editor->setLanguageSettingsId( QLatin1String( Constants::JULIA_SETTINGS_ID ) );
