@@ -101,9 +101,7 @@ BookmarkManager& LocalHelpManager::bookmarkManager()
         if (!m_bookmarkManager) {
             m_bookmarkManager = new BookmarkManager;
             m_bookmarkManager->setupBookmarkModels();
-            const QString &url = QString::fromLatin1("qthelp://com.nokia.qtcreator."
-                "%1%2%3/doc/index.html").arg(IDE_VERSION_MAJOR).arg(IDE_VERSION_MINOR)
-                .arg(IDE_VERSION_RELEASE);
+            const QString &url = QString::fromLatin1("http://forio.com/julia/getting-started");
             helpEngine().setCustomValue(QLatin1String("DefaultHomePage"), url);
         }
     }

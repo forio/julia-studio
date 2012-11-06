@@ -1244,12 +1244,12 @@ void HelpPlugin::slotOpenActionUrl(QAction *action)
 
 void HelpPlugin::slotOpenSupportPage()
 {
-    switchToHelpMode(QUrl("qthelp://com.nokia.qtcreator/doc/technical-support.html"));
+    switchToHelpMode(QUrl("http://forio.com/julia/support"));
 }
 
 void HelpPlugin::slotReportBug()
 {
-    QDesktopServices::openUrl(QUrl("https://bugreports.qt-project.org"));
+    QDesktopServices::openUrl(QUrl("http://forio.com/julia/feedback"));
 }
 
 void HelpPlugin::openFindToolBar()
