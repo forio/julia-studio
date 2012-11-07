@@ -127,8 +127,14 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   // Actions -------
   QAction *action = new QAction(tr("Reset Console"), this);
   Core::Command *cmd = am->registerAction(action, Constants::ACTION_ID_RESET_CONSOLE, Core::Context(Core::Constants::C_GLOBAL));
-  cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Alt+Meta+A")));
+  cmd->setDefaultKeySequence(Qt::Key_F3);
   connect(action, SIGNAL(triggered()), console, SLOT(Reset()));
+  menu->addAction(cmd);
+
+  action = new QAction( tr("Clear Console"), this );
+  cmd = am->registerAction( action, Constants::ACTION_ID_CLEAR_CONSOLE, Core::Context(Core::Constants::C_GLOBAL));
+  cmd->setDefaultKeySequence(Qt::Key_F4);
+  connect(action, SIGNAL(triggered()), console_pane, SLOT(clearContents()));
   menu->addAction(cmd);
 
   cmd = am->command( ProjectExplorer::Constants::RUN );
@@ -137,6 +143,7 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   connect( Core::EditorManager::instance(), SIGNAL(editorOpened(Core::IEditor*)), SLOT(updateLoadAction()) );
   connect( Core::EditorManager::instance(), SIGNAL(editorsClosed(QList<Core::IEditor*>)), SLOT(updateLoadAction()) );
   updateLoadAction();
+  menu->addAction(cmd);
   // ------- */
   
   return true;
