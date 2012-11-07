@@ -36,13 +36,15 @@ public:
 
 private slots:
   void initEditor( JuliaEditorWidget* editor );
-  void triggerAction();
+  void evalCurrFile();
+  void updateLoadAction();
 
 private:
   TextEditor::TextEditorActionHandler* action_handler;
 
   LocalEvaluator* evaluator;
   JuliaConsolePane* console_pane;
+  QAction* load_action;
 };
 
 

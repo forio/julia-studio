@@ -21,6 +21,7 @@
 #include <texteditor/texteditorsettings.h>
 #include <texteditor/texteditoractionhandler.h>
 #include <extensionsystem/pluginmanager.h>
+#include <coreplugin/editormanager/editormanager.h>
 
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
@@ -36,7 +37,7 @@ using namespace JuliaPlugin::Internal;
 // JuliaEditorPlugin *******
 
 JuliaEditorPlugin::JuliaEditorPlugin()
-  : action_handler(NULL), evaluator(NULL), console_pane(NULL)
+  : action_handler(NULL), evaluator(NULL), console_pane(NULL), load_action(NULL)
 {}
 
 JuliaEditorPlugin::~JuliaEditorPlugin()
@@ -58,12 +59,15 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   // "In the initialize method, a plugin can be sure that the plugins it
   //  depends on have initialized their members."
 
+  // Types and settings -------
   if (!Core::ICore::mimeDatabase()->addMimeTypes(QLatin1String(":/juliaeditor/juliaeditor.mimetypes.xml"), errorString))
       return false;
 
   addAutoReleasedObject( new JuliaSettingsPage() );
   Singleton<JuliaSettings>::GetInstance()->FromSettings(Core::ICore::settings());
+  // ------- */
 
+  // Editors -------
   JuliaProjectManager* project_manager = new JuliaProjectManager();
   addAutoReleasedObject( project_manager );
   addAutoReleasedObject(new JuliaRunConfigurationFactory());
@@ -80,6 +84,7 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
     | TextEditor::TextEditorActionHandler::FollowSymbolUnderCursor );
 
   action_handler->initializeActions();
+  // ------- */
 
   // Julia console -------
   evaluator = new LocalEvaluator(this);
@@ -95,22 +100,30 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
 
   addAutoReleasedObject(evaluator);
   ExtensionSystem::PluginManager::addObject(console_pane);
-  //addAutoReleasedObject(console_pane);
   // ------- */
-
 
   Core::ActionManager *am = Core::ICore::instance()->actionManager();
 
-  QAction *action = new QAction(tr("Reset Console"), this);
-  Core::Command *cmd = am->registerAction(action, Constants::ACTION_ID_RESET_CONSOLE,
-                                          Core::Context(Core::Constants::C_GLOBAL));
-  cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Alt+Meta+A")));
-  connect(action, SIGNAL(triggered()), console, SLOT(Reset()));
-
+  // Menu -------
   Core::ActionContainer *menu = am->createMenu(Constants::MENU_ID);
   menu->menu()->setTitle(tr("Julia"));
-  menu->addAction(cmd);
   am->actionContainer(Core::Constants::M_TOOLS)->addMenu(menu);
+  // ------- */
+
+  // Actions -------
+  QAction *action = new QAction(tr("Reset Console"), this);
+  Core::Command *cmd = am->registerAction(action, Constants::ACTION_ID_RESET_CONSOLE, Core::Context(Core::Constants::C_GLOBAL));
+  cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Alt+Meta+A")));
+  connect(action, SIGNAL(triggered()), console, SLOT(Reset()));
+  menu->addAction(cmd);
+
+  cmd = am->command( ProjectExplorer::Constants::RUN );
+  load_action = cmd->action();
+  connect( load_action, SIGNAL(triggered()), SLOT(evalCurrFile()) );
+  connect( Core::EditorManager::instance(), SIGNAL(editorOpened(Core::IEditor*)), SLOT(updateLoadAction()) );
+  connect( Core::EditorManager::instance(), SIGNAL(editorsClosed(QList<Core::IEditor*>)), SLOT(updateLoadAction()) );
+  updateLoadAction();
+  // ------- */
   
   return true;
 }
@@ -130,18 +143,28 @@ ExtensionSystem::IPlugin::ShutdownFlag JuliaEditorPlugin::aboutToShutdown()
   return SynchronousShutdown;
 }
 
-void JuliaEditorPlugin::triggerAction()
-{
-  QMessageBox::information(Core::ICore::instance()->mainWindow(),
-                           tr("Action triggered"),
-                           tr("This is an action from JuliaEditor."));
-}
-
 void JuliaEditorPlugin::initEditor( JuliaEditorWidget* editor )
 {
   action_handler->setupActions( editor );  // this should be a slot!
   //editor->setLanguageSettingsId( QLatin1String( Constants::JULIA_SETTINGS_ID ) );
   TextEditor::TextEditorSettings::instance()->initializeEditor( editor );
+}
+
+void JuliaEditorPlugin::evalCurrFile()
+{
+  Core::IEditor* editor = Core::EditorManager::currentEditor();
+  if ( editor )
+  {
+    Core::IDocument* document = editor->document();
+    QFileInfo file_info(document->fileName());
+    evaluator->eval(&file_info);
+  }
+}
+
+void JuliaEditorPlugin::updateLoadAction()
+{
+  Core::EditorManager* manager = Core::EditorManager::instance();
+  load_action->setEnabled( manager->openedEditors().size() );
 }
 
 

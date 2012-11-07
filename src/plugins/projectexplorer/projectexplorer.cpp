@@ -653,12 +653,10 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     cmd = Core::ActionManager::registerAction(d->m_cancelBuildAction, Constants::CANCELBUILD, globalcontext);
 
     // run action ~~~
-    d->m_runAction = new QAction(runIcon, tr("Run"), this);
+    d->m_runAction = new QAction(runIcon, tr("Load"), this);
     cmd = Core::ActionManager::registerAction(d->m_runAction, Constants::RUN, globalcontext);
     cmd->setAttribute(Core::Command::CA_UpdateText);
-
-    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+R")));
-
+    cmd->setDefaultKeySequence(Qt::Key_F5);
     Core::ModeManager::addAction(cmd->action(), Constants::P_ACTION_RUN);
 
     // Run without deployment action
@@ -799,9 +797,7 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     connect(Core::ICore::instance(), SIGNAL(saveSettingsRequested()),
         this, SLOT(savePersistentSettings()));
 
-    //addAutoReleasedObject(new ProjectTreeWidgetFactory);
     addAutoReleasedObject(new FolderNavigationWidgetFactory);
-    addAutoReleasedObject(new DeployConfigurationFactory);
 
     QSettings *s = Core::ICore::settings();
     const QStringList fileNames =
@@ -866,7 +862,6 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     connect(d->m_cleanAction, SIGNAL(triggered()), this, SLOT(cleanProject()));
     connect(d->m_cleanActionContextMenu, SIGNAL(triggered()), this, SLOT(cleanProjectContextMenu()));
     connect(d->m_cleanSessionAction, SIGNAL(triggered()), this, SLOT(cleanSession()));
-    connect(d->m_runAction, SIGNAL(triggered()), this, SLOT(runProject()));
     connect(d->m_runActionContextMenu, SIGNAL(triggered()), this, SLOT(runProjectContextMenu()));
     connect(d->m_runWithoutDeployAction, SIGNAL(triggered()), this, SLOT(runProjectWithoutDeploy()));
     connect(d->m_cancelBuildAction, SIGNAL(triggered()), this, SLOT(cancelBuild()));
@@ -2314,13 +2309,7 @@ QString ProjectExplorerPlugin::cannotRunReason(Project *project, RunMode runMode
 }
 
 void ProjectExplorerPlugin::slotUpdateRunActions()
-{
-    Project *project = startupProject();
-    const bool state = canRun(project, NormalRunMode);
-    d->m_runAction->setEnabled(state);
-    d->m_runAction->setToolTip(cannotRunReason(project, NormalRunMode));
-    d->m_runWithoutDeployAction->setEnabled(state);
-}
+{}
 
 void ProjectExplorerPlugin::cancelBuild()
 {
