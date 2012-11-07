@@ -159,7 +159,10 @@ void JuliaEditorPlugin::evalCurrFile()
   {
     Core::EditorManager* manager = Core::EditorManager::instance();
     foreach( Core::IEditor* editor, manager->openedEditors() )
-      manager->saveEditor( editor );
+    {
+      if ( editor->document()->isModified() )
+        manager->saveEditor( editor );
+    }
 
     Core::IDocument* document = editor->document();
     QFileInfo file_info(document->fileName());
