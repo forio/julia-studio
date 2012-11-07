@@ -97,3 +97,9 @@ HEADERS += \
 
 SOURCES += \
     juliaprojectmanager.cpp
+
+HEADERS += \
+    juliafilewizard.h
+
+SOURCES += \
+    juliafilewizard.cpp

@@ -9,6 +9,7 @@
 #include "juliaprojectmanager.h"
 #include "juliaconsolepane.h"
 #include "localevaluator.h"
+#include "juliafilewizard.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -17,6 +18,7 @@
 #include <coreplugin/actionmanager/actioncontainer.h>
 #include <coreplugin/coreconstants.h>
 #include <coreplugin/mimedatabase.h>
+#include <coreplugin/basefilewizard.h>
 #include <texteditor/texteditorplugin.h>
 #include <texteditor/texteditorsettings.h>
 #include <texteditor/texteditoractionhandler.h>
@@ -84,6 +86,18 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
     | TextEditor::TextEditorActionHandler::FollowSymbolUnderCursor );
 
   action_handler->initializeActions();
+  // ------- */
+
+  // File wizard -------
+  QObject *core = Core::ICore::instance();
+  Core::BaseFileWizardParameters JuliaWizardParameters(Core::IWizard::FileWizard);
+  JuliaWizardParameters.setCategory(QLatin1String("Julia"));
+  JuliaWizardParameters.setDisplayCategory(QLatin1String("Julia"));
+  JuliaWizardParameters.setDescription(tr("Creates a Julia file."));
+  JuliaWizardParameters.setDisplayName(tr("Julia File"));
+  JuliaWizardParameters.setId(QLatin1String("Julia.Julia"));
+  addAutoReleasedObject(new JuliaFileWizard(JuliaWizardParameters, core));
+
   // ------- */
 
   // Julia console -------
