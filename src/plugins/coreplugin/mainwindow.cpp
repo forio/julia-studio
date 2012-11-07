@@ -574,7 +574,7 @@ void MainWindow::registerDefaultActions()
 
     // New File Action
     QIcon icon = QIcon::fromTheme(QLatin1String("document-new"), QIcon(QLatin1String(Constants::ICON_NEWFILE)));
-    m_newAction = new QAction(icon, tr("&New File or Project..."), this);
+    m_newAction = new QAction(icon, tr("&New File..."), this);
     cmd = ActionManager::registerAction(m_newAction, Constants::NEW, globalContext);
     cmd->setDefaultKeySequence(QKeySequence::New);
     mfile->addAction(cmd, Constants::G_FILE_NEW);
@@ -582,7 +582,7 @@ void MainWindow::registerDefaultActions()
 
     // Open Action
     icon = QIcon::fromTheme(QLatin1String("document-open"), QIcon(QLatin1String(Constants::ICON_OPENFILE)));
-    m_openAction = new QAction(icon, tr("&Open File or Project..."), this);
+    m_openAction = new QAction(icon, tr("&Open File..."), this);
     cmd = ActionManager::registerAction(m_openAction, Constants::OPEN, globalContext);
     cmd->setDefaultKeySequence(QKeySequence::Open);
     mfile->addAction(cmd, Constants::G_FILE_OPEN);

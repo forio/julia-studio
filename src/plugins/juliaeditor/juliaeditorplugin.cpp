@@ -145,13 +145,15 @@ ExtensionSystem::IPlugin::ShutdownFlag JuliaEditorPlugin::aboutToShutdown()
 
 void JuliaEditorPlugin::initEditor( JuliaEditorWidget* editor )
 {
-  action_handler->setupActions( editor );  // this should be a slot!
-  //editor->setLanguageSettingsId( QLatin1String( Constants::JULIA_SETTINGS_ID ) );
+  action_handler->setupActions( editor );  // setupActions should be a slot!
   TextEditor::TextEditorSettings::instance()->initializeEditor( editor );
 }
 
 void JuliaEditorPlugin::evalCurrFile()
 {
+  // popup regardless, the user obviously wants to execute some code
+  console_pane->popup( Core::IOutputPane::ModeSwitch | Core::IOutputPane::WithFocus );
+
   Core::IEditor* editor = Core::EditorManager::currentEditor();
   if ( editor )
   {
