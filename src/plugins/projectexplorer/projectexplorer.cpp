@@ -396,21 +396,9 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     ProcessStepFactory *processStepFactory = new ProcessStepFactory;
     addAutoReleasedObject(processStepFactory);
 
-    AllProjectsFind *allProjectsFind = new AllProjectsFind(this);
-    addAutoReleasedObject(allProjectsFind);
-
-    CurrentProjectFind *currentProjectFind = new CurrentProjectFind(this);
-    addAutoReleasedObject(currentProjectFind);
-
     addAutoReleasedObject(new LocalApplicationRunControlFactory);
 
     addAutoReleasedObject(new ProjectFileWizardExtension);
-
-    // Settings pages
-    // JULIA STUDIO -------
-    //addAutoReleasedObject(new ProjectExplorerSettingsPage);
-    //addAutoReleasedObject(new DeviceSettingsPage);
-    // -------
 
     // context menus
     Core::ActionContainer *msessionContextMenu =

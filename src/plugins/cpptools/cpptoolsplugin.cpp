@@ -116,7 +116,6 @@ bool CppToolsPlugin::initialize(const QStringList &arguments, QString *error)
     addAutoReleasedObject(new CppClassesFilter(modelManager));
     addAutoReleasedObject(new CppFunctionsFilter(modelManager));
     addAutoReleasedObject(new CppCurrentDocumentFilter(modelManager, Core::ICore::editorManager()));
-    addAutoReleasedObject(new SymbolsFindFilter(modelManager));
 
     // Menus
     Core::ActionContainer *mtools = Core::ActionManager::actionContainer(Core::Constants::M_TOOLS);
