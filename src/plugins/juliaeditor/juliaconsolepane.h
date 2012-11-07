@@ -5,6 +5,10 @@
 
 #include <coreplugin/ioutputpane.h>
 
+QT_BEGIN_NAMESPACE
+  class QToolButton;
+QT_END_NAMESPACE
+
 namespace JuliaPlugin {
 
 class JuliaConsolePane : public Core::IOutputPane
@@ -43,6 +47,8 @@ public slots:
 
 private:
   Console* console;
+
+  QToolButton* reset_button;
 };
 
 }

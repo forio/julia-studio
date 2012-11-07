@@ -1,6 +1,10 @@
 #include "juliaconsolepane.h"
 #include "juliaeditor_constants.h"
+
 #include <texteditor/texteditorsettings.h>
+
+#include <QAction>
+#include <QToolButton>
 
 using namespace JuliaPlugin;
 
@@ -8,9 +12,21 @@ JuliaConsolePane::JuliaConsolePane(QObject *parent) :
   Core::IOutputPane(parent)
 {
   console = new Console();
-
   console->setLanguageSettingsId( QLatin1String( Constants::JULIA_SETTINGS_ID ) );
   TextEditor::TextEditorSettings::instance()->initializeEditor( console );
+
+  reset_button = new QToolButton(console);
+  reset_button->setAutoRaise(true);
+
+  QAction* reset_action = new QAction(reset_button);
+  //reset_action->setDefaultValue(true);
+  //reset_action->setSettingsKey(QLatin1String(CONSOLE), QLatin1String(SHOW_LOG));
+  reset_action->setToolTip(tr("Reset Julia environment"));
+  //reset_action->setCheckable(true);
+  //reset_action->setIcon(QIcon(QLatin1String(":/qmljstools/images/log.png")));
+  reset_action->setText("Reset");
+  connect(reset_action, SIGNAL(triggered()), console, SLOT(Reset()));
+  reset_button->setDefaultAction(reset_action);
 }
 
 JuliaConsolePane::~JuliaConsolePane()
@@ -25,7 +41,7 @@ Console *JuliaConsolePane::outputWidget(QWidget *parent)
 
 QList<QWidget *> JuliaConsolePane::toolBarWidgets() const
 {
-  return QList<QWidget*>();
+  return QList<QWidget*>() << reset_button;
 }
 
 QString JuliaConsolePane::displayName() const
