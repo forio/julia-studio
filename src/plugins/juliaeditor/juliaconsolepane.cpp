@@ -41,6 +41,8 @@ int JuliaConsolePane::priorityInStatusBar() const
 void JuliaConsolePane::clearContents()
 {
   console->clear();
+  console->insertPlainText( "julia> " );  // TODO: this is a horrible hack
+  console->BeginCommand();
 }
 
 void JuliaConsolePane::visibilityChanged(bool visible)
