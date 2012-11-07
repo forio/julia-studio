@@ -195,11 +195,6 @@ bool CppPlugin::initialize(const QStringList & /*arguments*/, QString *errorMess
     wizardParameters.setCategory(QLatin1String(Constants::WIZARD_CATEGORY));
     wizardParameters.setDisplayCategory(QCoreApplication::translate(Constants::WIZARD_CATEGORY,
                                                                     Constants::WIZARD_TR_CATEGORY));
-    wizardParameters.setDisplayName(tr("C++ Class"));
-    wizardParameters.setId(QLatin1String("A.Class"));
-    wizardParameters.setKind(Core::IWizard::ClassWizard);
-    wizardParameters.setDescription(tr("Creates a C++ header and a source file for a new class that you can add to a C++ project."));
-    addAutoReleasedObject(new CppClassWizard(wizardParameters, core));
 
     wizardParameters.setKind(Core::IWizard::FileWizard);
     wizardParameters.setDescription(tr("Creates a C++ source file that you can add to a C++ project."));

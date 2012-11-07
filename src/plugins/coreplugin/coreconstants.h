@@ -208,8 +208,8 @@ const char ICON_LINK[]               = ":/core/images/linkicon.png";
 const char ICON_QTLOGO_32[]          = ":/core/images/logo/32/icon_32x32.png";
 const char ICON_QTLOGO_128[]         = ":/core/images/logo/128/icon_128x128.png";
 
-const char WIZARD_CATEGORY_QT[] = "R.Qt";
-const char WIZARD_TR_CATEGORY_QT[] = QT_TRANSLATE_NOOP("Core", "Qt");
+const char WIZARD_CATEGORY_QT[] = "R.JS";
+const char WIZARD_TR_CATEGORY_QT[] = QT_TRANSLATE_NOOP("Core", "Java Script");
 
 const char SETTINGS_CATEGORY_CORE[] = "A.Core";
 const char SETTINGS_CATEGORY_CORE_ICON[] = ":/core/images/category_core.png";
