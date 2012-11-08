@@ -25,7 +25,23 @@ void JuliaSettings::ToSettings(QSettings *settings) const
 void JuliaSettings::FromSettings(QSettings *settings)
 {
   settings->beginGroup(QLatin1String(Constants::JULIA_SETTINGS_GROUP));
-  path_to_binaries = settings->value(QLatin1String("path_to_binaries"), QLatin1String("./julia")).toString();
+
+  QString default_path = QApplication::applicationDirPath();
+
+#if defined(Q_OS_WIN)
+  QDir dir( default_path );
+  dir.cdUp();
+  dir.cd( "julia" );
+  default_path = dir.absolutePath();
+#else
+  QDir dir( default_path );
+  dir.cdUp();
+  dir.cdUp();
+  dir.cd( "julia" );
+  default_path = dir.absolutePath();
+#endif
+
+  path_to_binaries = settings->value(QLatin1String("path_to_binaries"), default_path.toLatin1()).toString();
   settings->endGroup();
 }
 
