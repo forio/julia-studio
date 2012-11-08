@@ -70,10 +70,10 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   // ------- */
 
   // Editors -------
-  JuliaProjectManager* project_manager = new JuliaProjectManager();
-  addAutoReleasedObject( project_manager );
-  addAutoReleasedObject(new JuliaRunConfigurationFactory());
-  addAutoReleasedObject(new JuliaRunControlFactory());
+  //JuliaProjectManager* project_manager = new JuliaProjectManager();
+  //addAutoReleasedObject( project_manager );
+  //addAutoReleasedObject(new JuliaRunConfigurationFactory());
+  //addAutoReleasedObject(new JuliaRunControlFactory());
 
   JuliaEditorFactory* editor_factory = new JuliaEditorFactory(this);
   connect( editor_factory, SIGNAL(newEditor(JuliaEditorWidget*)), SLOT(initEditor(JuliaEditorWidget*)) );
