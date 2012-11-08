@@ -92,9 +92,6 @@ bool QmlJSToolsPlugin::initialize(const QStringList &arguments, QString *error)
     addAutoReleasedObject(locatorData);
     addAutoReleasedObject(new FunctionFilter(locatorData));
 
-    // Menus
-    Core::ActionContainer *mtools = Core::ActionManager::actionContainer(Core::Constants::M_TOOLS);
-
     // Update context in global context
     m_resetCodeModelAction = new QAction(tr("Reset Code Model"), this);
     Core::Context globalContext(Core::Constants::C_GLOBAL);
