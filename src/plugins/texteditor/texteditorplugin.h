@@ -83,7 +83,6 @@ private:
     PlainTextEditorFactory *m_editorFactory;
     LineNumberFilter *m_lineNumberFilter;
     Find::SearchResultWindow *m_searchResultWindow;
-    OutlineFactory *m_outlineFactory;
     BaseTextMarkRegistry *m_baseTextMarkRegistry;
 };
 

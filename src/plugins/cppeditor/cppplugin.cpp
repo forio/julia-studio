@@ -180,10 +180,6 @@ bool CppPlugin::initialize(const QStringList & /*arguments*/, QString *errorMess
         return false;
 
     addAutoReleasedObject(new CppEditorFactory(this));
-    addAutoReleasedObject(new CppHoverHandler);
-    addAutoReleasedObject(new CppOutlineWidgetFactory);
-    addAutoReleasedObject(new CppTypeHierarchyFactory);
-    addAutoReleasedObject(new CppSnippetProvider);
 
     m_quickFixProvider = new CppQuickFixAssistProvider;
     addAutoReleasedObject(m_quickFixProvider);

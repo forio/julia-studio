@@ -203,9 +203,6 @@ bool TextEditorPlugin::initialize(const QStringList &arguments, QString *errorMe
     // Add text snippet provider.
     addAutoReleasedObject(new PlainTextSnippetProvider);
 
-    m_outlineFactory = new OutlineFactory;
-    addAutoReleasedObject(m_outlineFactory);
-
     // We have to initialize the actions because other plugins that
     // depend upon the texteditorplugin expect that actions will be
     // registered in the action manager at plugin initialization time.
@@ -219,8 +216,6 @@ bool TextEditorPlugin::initialize(const QStringList &arguments, QString *errorMe
 void TextEditorPlugin::extensionsInitialized()
 {
     m_searchResultWindow = Find::SearchResultWindow::instance();
-
-    m_outlineFactory->setWidgetFactories(ExtensionSystem::PluginManager::getObjects<TextEditor::IOutlineWidgetFactory>());
 
     connect(m_settings, SIGNAL(fontSettingsChanged(TextEditor::FontSettings)),
             this, SLOT(updateSearchResultsFont(TextEditor::FontSettings)));
