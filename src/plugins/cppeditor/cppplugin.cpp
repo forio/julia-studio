@@ -187,25 +187,7 @@ bool CppPlugin::initialize(const QStringList & /*arguments*/, QString *errorMess
 
     m_quickFixProvider = new CppQuickFixAssistProvider;
     addAutoReleasedObject(m_quickFixProvider);
-    registerQuickFixes(this);
-
-    QObject *core = Core::ICore::instance();
-    CppFileWizard::BaseFileWizardParameters wizardParameters(Core::IWizard::FileWizard);
-
-    wizardParameters.setCategory(QLatin1String(Constants::WIZARD_CATEGORY));
-    wizardParameters.setDisplayCategory(QCoreApplication::translate(Constants::WIZARD_CATEGORY,
-                                                                    Constants::WIZARD_TR_CATEGORY));
-
-    wizardParameters.setKind(Core::IWizard::FileWizard);
-    wizardParameters.setDescription(tr("Creates a C++ source file that you can add to a C++ project."));
-    wizardParameters.setDisplayName(tr("C++ Source File"));
-    wizardParameters.setId(QLatin1String("B.Source"));
-    addAutoReleasedObject(new CppFileWizard(wizardParameters, Source, core));
-
-    wizardParameters.setDescription(tr("Creates a C++ header file that you can add to a C++ project."));
-    wizardParameters.setDisplayName(tr("C++ Header File"));
-    wizardParameters.setId(QLatin1String("C.Header"));
-    addAutoReleasedObject(new CppFileWizard(wizardParameters, Header, core));
+    registerQuickFixes(this);   
 
     Core::Context context(CppEditor::Constants::C_CPPEDITOR);
 

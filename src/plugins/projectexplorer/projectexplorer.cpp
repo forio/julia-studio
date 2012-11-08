@@ -641,7 +641,7 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     cmd = Core::ActionManager::registerAction(d->m_cancelBuildAction, Constants::CANCELBUILD, globalcontext);
 
     // run action ~~~
-    d->m_runAction = new QAction(runIcon, tr("Load"), this);
+    d->m_runAction = new QAction(runIcon, tr("Load Current File"), this);
     cmd = Core::ActionManager::registerAction(d->m_runAction, Constants::RUN, globalcontext);
     cmd->setAttribute(Core::Command::CA_UpdateText);
     cmd->setDefaultKeySequence(Qt::Key_F5);

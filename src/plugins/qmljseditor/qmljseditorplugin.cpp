@@ -139,15 +139,6 @@ bool QmlJSEditorPlugin::initialize(const QStringList & /*arguments*/, QString *e
     m_editor = new QmlJSEditorFactory(this);
     addObject(m_editor);
 
-    QObject *core = Core::ICore::instance();
-    Core::BaseFileWizardParameters jsWizardParameters(Core::IWizard::FileWizard);
-    jsWizardParameters.setCategory(QLatin1String(Core::Constants::WIZARD_CATEGORY_QT));
-    jsWizardParameters.setDisplayCategory(QCoreApplication::translate("QmlJsEditor", Core::Constants::WIZARD_TR_CATEGORY_QT));
-    jsWizardParameters.setDescription(tr("Creates a JavaScript file."));
-    jsWizardParameters.setDisplayName(tr("JS File"));
-    jsWizardParameters.setId(QLatin1String("Z.Js"));
-    addAutoReleasedObject(new JsFileWizard(jsWizardParameters, core));
-
     m_actionHandler = new TextEditor::TextEditorActionHandler(QmlJSEditor::Constants::C_QMLJSEDITOR_ID,
           TextEditor::TextEditorActionHandler::Format
         | TextEditor::TextEditorActionHandler::UnCommentSelection
