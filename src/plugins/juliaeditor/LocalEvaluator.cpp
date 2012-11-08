@@ -93,11 +93,11 @@ void LocalEvaluator::onProcessError(QProcess::ProcessError error_)
     switch( error_ )
     {
     case QProcess::FailedToStart:
-        output( "Error: Failed to start Julia. Expected location: " + process_string );
+        output( "Error: Failed to start Julia.\nExpected location: " + process_string );
         break;
 
     case QProcess::Crashed:
-        output( "Error: Julia crashed unexpectedly. Are you using a stable build of Julia?" );
+        output( "Error: Julia crashed unexpectedly.\nIt's still a young language, this can happen from time to time.\nPlease reset the console and try again..." );
         break;
 
     case QProcess::Timedout:
