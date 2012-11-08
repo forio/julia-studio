@@ -305,8 +305,8 @@ void WelcomeMode::welcomePluginAdded(QObject *obj)
 
 void WelcomeMode::newProject()
 {
-    Core::ICore::showNewItemDialog(tr("New Project"),
-                                               Core::IWizard::wizardsOfKind(Core::IWizard::ProjectWizard));
+    Core::ICore::showNewItemDialog(tr("New File"),
+                                               Core::IWizard::wizardsOfKind(Core::IWizard::FileWizard));
 }
 
 void WelcomeMode::openProject()

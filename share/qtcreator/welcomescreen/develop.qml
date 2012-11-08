@@ -121,7 +121,7 @@ Rectangle {
 
             y: 105
             color: "#535353"
-            text: qsTr("Recent Projects")
+            text: qsTr("Recent Files")
             anchors.left: sessionsTitle.right
             anchors.leftMargin: 280
             font.bold: true
@@ -144,7 +144,7 @@ Rectangle {
                 id: openProject
                 x: 51
                 y: 45
-                text: qsTr("Open Project")
+                text: qsTr("Open File")
                 onClicked: welcomeMode.openProject();
             }
 
@@ -152,7 +152,7 @@ Rectangle {
                 id: createProject
                 x: 51
                 y: 13
-                text: qsTr("Create Project")
+                text: qsTr("Create File")
                 onClicked: welcomeMode.newProject();
             }
 

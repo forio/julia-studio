@@ -2793,7 +2793,7 @@ QStringList ProjectExplorerPlugin::projectFilePatterns()
 void ProjectExplorerPlugin::openOpenProjectDialog()
 {
     const QString path = Core::DocumentManager::useProjectsDirectory() ? Core::DocumentManager::projectsDirectory() : QString();
-    const QStringList files = Core::DocumentManager::getOpenFileNames(d->m_projectFilterString, path);
+    const QStringList files = Core::DocumentManager::getOpenFileNames(QString(), path);
     if (!files.isEmpty())
         Core::ICore::openFiles(files, Core::ICore::SwitchMode);
 }
