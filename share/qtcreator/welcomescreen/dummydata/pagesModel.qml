@@ -31,19 +31,7 @@ import QtQuick 1.0
 
 ListModel {
     ListElement {
-        title: "Getting Started"
-        pageLocation: "../gettingstarted.qml"
-    }
-    ListElement {
         title: "Develop"
         pageLocation: "../develop.qml"
-    }
-    ListElement {
-        title: "Examples"
-        pageLocation: "../examples.qml"
-    }
-    ListElement {
-        title: "Tutorials"
-        pageLocation: "../tutorials.qml"
     }
 }
