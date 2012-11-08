@@ -212,14 +212,12 @@ bool CppPlugin::initialize(const QStringList & /*arguments*/, QString *errorMess
     Core::ActionContainer *contextMenu= Core::ActionManager::createMenu(CppEditor::Constants::M_CONTEXT);
 
     Core::Command *cmd;
-    Core::ActionContainer *cppToolsMenu = Core::ActionManager::actionContainer(Core::Id(CppTools::Constants::M_TOOLS_CPP));
 
     cmd = Core::ActionManager::command(Core::Id(CppTools::Constants::SWITCH_HEADER_SOURCE));
     contextMenu->addAction(cmd);
 
     cmd = Core::ActionManager::command(TextEditor::Constants::FOLLOW_SYMBOL_UNDER_CURSOR);
     contextMenu->addAction(cmd);
-    cppToolsMenu->addAction(cmd);
 
     QAction *switchDeclarationDefinition = new QAction(tr("Switch Between Method Declaration/Definition"), this);
     cmd = Core::ActionManager::registerAction(switchDeclarationDefinition,
@@ -228,21 +226,12 @@ bool CppPlugin::initialize(const QStringList & /*arguments*/, QString *errorMess
     connect(switchDeclarationDefinition, SIGNAL(triggered()),
             this, SLOT(switchDeclarationDefinition()));
     contextMenu->addAction(cmd);
-    cppToolsMenu->addAction(cmd);
 
     m_findUsagesAction = new QAction(tr("Find Usages"), this);
     cmd = Core::ActionManager::registerAction(m_findUsagesAction, Constants::FIND_USAGES, context);
     cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+U")));
     connect(m_findUsagesAction, SIGNAL(triggered()), this, SLOT(findUsages()));
     contextMenu->addAction(cmd);
-    cppToolsMenu->addAction(cmd);
-
-    m_openTypeHierarchyAction = new QAction(tr("Open Type Hierarchy"), this);
-    cmd = Core::ActionManager::registerAction(m_openTypeHierarchyAction, Constants::OPEN_TYPE_HIERARCHY, context);
-    cmd->setDefaultKeySequence(QKeySequence(Core::UseMacShortcuts ? tr("Meta+Shift+T") : tr("Ctrl+Shift+T")));
-    connect(m_openTypeHierarchyAction, SIGNAL(triggered()), this, SLOT(openTypeHierarchy()));
-    contextMenu->addAction(cmd);
-    cppToolsMenu->addAction(cmd);
 
     // Refactoring sub-menu
     Core::Context globalContext(Core::Constants::C_GLOBAL);
@@ -258,15 +247,6 @@ bool CppPlugin::initialize(const QStringList & /*arguments*/, QString *errorMess
     cmd->setDefaultKeySequence(QKeySequence(tr("CTRL+SHIFT+R")));
     connect(m_renameSymbolUnderCursorAction, SIGNAL(triggered()),
             this, SLOT(renameSymbolUnderCursor()));
-    cppToolsMenu->addAction(cmd);
-
-    // Update context in global context
-    cppToolsMenu->addSeparator(globalContext);
-    m_updateCodeModelAction = new QAction(tr("Update Code Model"), this);
-    cmd = Core::ActionManager::registerAction(m_updateCodeModelAction, Core::Id(Constants::UPDATE_CODEMODEL), globalContext);
-    CPlusPlus::CppModelManagerInterface *cppModelManager = CPlusPlus::CppModelManagerInterface::instance();
-    connect(m_updateCodeModelAction, SIGNAL(triggered()), cppModelManager, SLOT(updateModifiedSourceFiles()));
-    cppToolsMenu->addAction(cmd);
 
     m_actionHandler = new TextEditor::TextEditorActionHandler(CppEditor::Constants::C_CPPEDITOR,
         TextEditor::TextEditorActionHandler::Format
