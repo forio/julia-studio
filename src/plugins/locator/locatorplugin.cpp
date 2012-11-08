@@ -113,17 +113,6 @@ bool LocatorPlugin::initialize(const QStringList &, QString *)
     view->setPosition(Core::StatusBarWidget::First);
     addAutoReleasedObject(view);
 
-    QAction *action = new QAction(m_locatorWidget->windowIcon(), m_locatorWidget->windowTitle(), this);
-    Core::Command *cmd = Core::ActionManager::registerAction(action, "QtCreator.Locate",
-                                                             Core::Context(Core::Constants::C_GLOBAL));
-    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+K")));
-    connect(action, SIGNAL(triggered()), this, SLOT(openLocator()));
-    connect(cmd, SIGNAL(keySequenceChanged()), this, SLOT(updatePlaceholderText()));
-    updatePlaceholderText(cmd);
-
-    Core::ActionContainer *mtools = Core::ActionManager::actionContainer(Core::Constants::M_TOOLS);
-    mtools->addAction(cmd);
-
     addObject(new LocatorManager(m_locatorWidget));
 
     m_openDocumentsFilter = new OpenDocumentsFilter(Core::ICore::editorManager());

@@ -94,11 +94,6 @@ bool QmlJSToolsPlugin::initialize(const QStringList &arguments, QString *error)
 
     // Menus
     Core::ActionContainer *mtools = Core::ActionManager::actionContainer(Core::Constants::M_TOOLS);
-    Core::ActionContainer *mqmljstools = Core::ActionManager::createMenu(Constants::M_TOOLS_QMLJS);
-    QMenu *menu = mqmljstools->menu();
-    menu->setTitle(tr("&QML/JS"));
-    menu->setEnabled(true);
-    mtools->addMenu(mqmljstools);
 
     // Update context in global context
     m_resetCodeModelAction = new QAction(tr("Reset Code Model"), this);
@@ -106,7 +101,6 @@ bool QmlJSToolsPlugin::initialize(const QStringList &arguments, QString *error)
     Core::Command *cmd = Core::ActionManager::registerAction(
                 m_resetCodeModelAction, Core::Id(Constants::RESET_CODEMODEL), globalContext);
     connect(m_resetCodeModelAction, SIGNAL(triggered()), m_modelManager, SLOT(resetCodeModel()));
-    mqmljstools->addAction(cmd);
 
     // watch task progress
     connect(Core::ICore::progressManager(), SIGNAL(taskStarted(QString)),
