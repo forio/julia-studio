@@ -102,6 +102,21 @@ QTCREATOR_UTILS_EXPORT QString commonPath(const QStringList &files)
     return common;
 }
 
+QTCREATOR_UTILS_EXPORT QString fileName(const QString &path)
+{
+    QString base = withTildeHomePath(path);
+    // Find common directory part: "C:\foo\bar" -> "C:\foo"
+    int lastSeparatorPos = base.lastIndexOf(QLatin1Char('/'));
+    if (lastSeparatorPos == -1)
+        lastSeparatorPos = base.lastIndexOf(QLatin1Char('\\'));
+    if (lastSeparatorPos == -1)
+        return path;
+    if (HostOsInfo::isAnyUnixHost() && lastSeparatorPos == 0) // Unix: "/a", "/b" -> '/'
+        lastSeparatorPos = 1;
+    return base.right(base.length() - lastSeparatorPos - 1);
+//    return base;
+}
+
 QTCREATOR_UTILS_EXPORT QString withTildeHomePath(const QString &path)
 {
     if (HostOsInfo::isWindowsHost())

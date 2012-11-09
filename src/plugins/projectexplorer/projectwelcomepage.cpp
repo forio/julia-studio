@@ -174,15 +174,17 @@ ProjectModel::ProjectModel(ProjectExplorerPlugin *plugin, QObject *parent)
 
 int ProjectModel::rowCount(const QModelIndex &) const
 {
-    return m_plugin->recentProjects().count();
+    return Core::DocumentManager::instance()->recentFiles().count();
+//    return m_plugin->recentProjects().count();
 }
 
 QVariant ProjectModel::data(const QModelIndex &index, int role) const
 {
-    QPair<QString,QString> data = m_plugin->recentProjects().at(index.row());
+//    QPair<QString,QString> data = m_plugin->recentProjects().at(index.row());
+    QPair<QString,Core::Id> data = Core::DocumentManager::instance()->recentFiles().at(index.row());
     switch (role) {
     case Qt::DisplayRole:
-        return data.second;
+        return data.first;
         break;
     case FilePathRole:
         return data.first;
@@ -201,6 +203,48 @@ void ProjectModel::resetProjects()
     endResetModel();
 }
 
+
+FileModel::FileModel(Core::DocumentManager *plugin, QObject *parent)
+    : QAbstractListModel(parent), m_documentManager(plugin)
+{
+    QHash<int, QByteArray> roleNames;
+    roleNames[Qt::DisplayRole] = "displayName";
+    roleNames[FilePathRole] = "filePath";
+    roleNames[PrettyFilePathRole] = "prettyFilePath";
+    setRoleNames(roleNames);
+    connect(plugin, SIGNAL(recentFilesChanged()), SLOT(resetFiles()));
+}
+
+int FileModel::rowCount(const QModelIndex &parent) const
+{
+    return m_documentManager->recentFiles().count();
+}
+
+QVariant FileModel::data(const QModelIndex &index, int role) const
+{
+    QPair<QString,Core::Id> data = m_documentManager->recentFiles().at(index.row());
+    switch (role) {
+    case Qt::DisplayRole:
+        return Utils::fileName(data.first);
+        break;
+    case FilePathRole:
+        return data.first;
+    case PrettyFilePathRole:
+        return Utils::withTildeHomePath(data.first);
+    default:
+        return QVariant();
+    }
+
+    return QVariant();
+}
+
+void FileModel::resetFiles()
+{
+    beginResetModel();
+    endResetModel();
+}
+
+
 ///////////////////
 
 ProjectWelcomePage::ProjectWelcomePage() :
@@ -213,10 +257,12 @@ void ProjectWelcomePage::facilitateQml(QDeclarativeEngine *engine)
     ProjectExplorerPlugin *pePlugin = ProjectExplorer::ProjectExplorerPlugin::instance();
     m_sessionModel = new SessionModel(pePlugin->session(), this);
     m_projectModel = new ProjectModel(pePlugin, this);
+    m_fileModel = new FileModel(Core::DocumentManager::instance(), this);
 
     QDeclarativeContext *ctx = engine->rootContext();
     ctx->setContextProperty(QLatin1String("sessionList"), m_sessionModel);
     ctx->setContextProperty(QLatin1String("projectList"), m_projectModel);
+    ctx->setContextProperty(QLatin1String("fileList"), m_fileModel);
     ctx->setContextProperty(QLatin1String("projectWelcomePage"), this);
 }
 

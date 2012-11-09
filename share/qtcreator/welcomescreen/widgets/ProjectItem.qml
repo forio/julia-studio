@@ -59,7 +59,7 @@ Item {
         anchors.leftMargin: 8
         anchors.right: parent.right
         anchors.rightMargin: 4
-        onClicked: projectWelcomePage.requestProject(filePath)
+        onClicked: projectWelcomePage.requestFile(filePath)
     }
 
     Text {

@@ -46,6 +46,7 @@ QT_END_NAMESPACE
 
 namespace Core {
 class IMode;
+class IEditor;
 }
 
 namespace ProjectExplorer {
@@ -81,6 +82,7 @@ public:
     Project *openProject(const QString &fileName, QString *error);
     QList<Project *> openProjects(const QStringList &fileNames, QString *error);
     Q_SLOT void openProjectWelcomePage(const QString &fileName);
+    Q_SLOT void openFileWelcomePage(const QString &fileName);
 
     SessionManager *session() const;
 
@@ -233,6 +235,8 @@ private slots:
 
     void publishProject();
     void updateWelcomePage();
+
+    void onEditorOpened(Core::IEditor *editor);
 
 #ifdef WITH_TESTS
     void testGccOutputParsers_data();

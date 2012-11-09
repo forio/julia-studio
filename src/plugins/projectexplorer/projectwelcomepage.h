@@ -35,10 +35,15 @@
 
 #include <utils/iwelcomepage.h>
 #include <coreplugin/icore.h>
+#include <coreplugin/documentmanager.h>
 
 QT_BEGIN_NAMESPACE
 class QDeclarativeEngine;
 QT_END_NAMESPACE
+
+namespace Core {
+    class DocumentManager;
+}
 
 namespace ProjectExplorer {
 
@@ -87,6 +92,23 @@ private:
     ProjectExplorerPlugin *m_plugin;
 };
 
+class FileModel : public QAbstractListModel
+{
+    Q_OBJECT
+public:
+    enum { FilePathRole = Qt::UserRole+1, PrettyFilePathRole };
+
+    FileModel(Core::DocumentManager* plugin, QObject* parent = 0);
+    int rowCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+
+public slots:
+    void resetFiles();
+
+private:
+    Core::DocumentManager* m_documentManager;
+};
+
 class ProjectWelcomePage : public Utils::IWelcomePage
 {
     Q_OBJECT
@@ -104,11 +126,13 @@ public:
 
 signals:
     void requestProject(const QString &project);
+    void requestFile(const QString &project);
     void requestSession(const QString &session);
     void manageSessions();
 private:
-    SessionModel *m_sessionModel;
-    ProjectModel *m_projectModel;
+    SessionModel*   m_sessionModel;
+    ProjectModel*   m_projectModel;
+    FileModel*      m_fileModel;
 };
 
 } // namespace Internal

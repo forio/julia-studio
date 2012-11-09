@@ -55,6 +55,9 @@ QTCREATOR_UTILS_EXPORT QString commonPath(const QStringList &files);
 // If path is not sub of home path, or when running on Windows, returns the input
 QTCREATOR_UTILS_EXPORT QString withTildeHomePath(const QString &path);
 
+// return just the file name part of the path
+QTCREATOR_UTILS_EXPORT QString fileName(const QString &path);
+
 class QTCREATOR_UTILS_EXPORT AbstractMacroExpander {
 public:
     virtual ~AbstractMacroExpander() {}

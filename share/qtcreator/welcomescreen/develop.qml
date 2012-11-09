@@ -88,7 +88,7 @@ Rectangle {
             anchors.right: parent.right
             anchors.rightMargin: 80
 
-            model: projectList
+            model: fileList
         }
 
         Rectangle {

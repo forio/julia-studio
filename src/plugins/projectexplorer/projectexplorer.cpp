@@ -895,6 +895,8 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     connect(vm, SIGNAL(variableUpdateRequested(QByteArray)),
             this, SLOT(updateVariable(QByteArray)));
 
+
+
     return true;
 }
 
@@ -1179,6 +1181,11 @@ void ProjectExplorerPlugin::openProjectWelcomePage(const QString &fileName)
         QMessageBox::critical(Core::ICore::mainWindow(), tr("Failed to Open Project"), errorMessage);
 }
 
+void ProjectExplorerPlugin::openFileWelcomePage(const QString &fileName)
+{
+    Core::EditorManager::openEditor(fileName, Core::Id(), Core::EditorManager::ModeSwitch);
+}
+
 Project *ProjectExplorerPlugin::openProject(const QString &fileName, QString *errorString)
 {
     if (debug)
@@ -1311,6 +1318,11 @@ void ProjectExplorerPlugin::updateWelcomePage()
     d->m_welcomePage->reloadWelcomeScreenData();
 }
 
+void ProjectExplorerPlugin::onEditorOpened(Core::IEditor *editor)
+{
+    qDebug() << 'some file was added';
+}
+
 void ProjectExplorerPlugin::currentModeChanged(Core::IMode *mode, Core::IMode *oldMode)
 {
     Q_UNUSED(oldMode);
@@ -1434,6 +1446,7 @@ void ProjectExplorerPlugin::restoreSession()
             SLOT(currentModeChanged(Core::IMode*,Core::IMode*)));
     connect(d->m_welcomePage, SIGNAL(requestSession(QString)), this, SLOT(loadSession(QString)));
     connect(d->m_welcomePage, SIGNAL(requestProject(QString)), this, SLOT(openProjectWelcomePage(QString)));
+    connect(d->m_welcomePage, SIGNAL(requestFile(QString)), this, SLOT(openFileWelcomePage(QString)));
 
     Core::ICore::openFiles(arguments, Core::ICore::OpenFilesFlags(Core::ICore::CanContainLineNumbers | Core::ICore::SwitchMode));
     updateActions();
@@ -2800,6 +2813,7 @@ void ProjectExplorerPlugin::openOpenProjectDialog()
 
 QList<QPair<QString, QString> > ProjectExplorerPlugin::recentProjects()
 {
+//    return DocumentManager::instance()->recentFiles();
     return d->m_recentProjects;
 }
 
