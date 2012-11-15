@@ -1320,7 +1320,7 @@ void ProjectExplorerPlugin::updateWelcomePage()
 
 void ProjectExplorerPlugin::onEditorOpened(Core::IEditor *editor)
 {
-    qDebug() << 'some file was added';
+    //qDebug() << 'some file was added';
 }
 
 void ProjectExplorerPlugin::currentModeChanged(Core::IMode *mode, Core::IMode *oldMode)

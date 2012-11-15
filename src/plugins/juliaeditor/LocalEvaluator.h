@@ -1,7 +1,7 @@
 #ifndef LOCALRUN_HPP
 #define LOCALRUN_HPP
 
-#include <projectexplorer/ievaluator.h>
+#include "../projectexplorer/ievaluator.h"
 
 #include <QProcess>
 
