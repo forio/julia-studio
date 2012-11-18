@@ -811,7 +811,7 @@ void MainWindow::registerDefaultActions()
 
 void MainWindow::newFile()
 {
-    showNewItemDialog(tr("New", "Title of dialog"), IWizard::allWizards(), QString());
+    showNewItemDialog(tr("New", "Title of dialog"), IWizard::wizardsOfKind(IWizard::FileWizard), QString());
 }
 
 void MainWindow::openFile()
