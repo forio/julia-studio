@@ -6,6 +6,8 @@
     <url>http://www.forio.com/julia</url>
     <dependencyList>
         <dependency name=\"Core\" version=\"$$QTCREATOR_VERSION\"/>
+        <dependency name=\"TextEditor\" version=\"$$QTCREATOR_VERSION\"/>
+        <dependency name=\"ProjectExplorer\" version=\"$$QTCREATOR_VERSION\"/>
     </dependencyList>
 </plugin>
 
