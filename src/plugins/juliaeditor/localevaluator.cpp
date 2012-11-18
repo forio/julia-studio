@@ -1,4 +1,4 @@
-#include "LocalEvaluator.h"
+#include "localevaluator.h"
 #include "juliasettingspage.h"
 #include "singleton.h"
 
@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QRegExp>
+#include <QStringBuilder>
 
 namespace JuliaPlugin {
 
@@ -30,7 +31,7 @@ void LocalEvaluator::eval( const QFileInfo *file_info )
     return;
 
   output( file_info->baseName() + "\n" );
-  process->write( ("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); load(\"" + file_info->absoluteFilePath() + "\")\n").toAscii() );
+  process->write( QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); load(\"" + file_info->absoluteFilePath() + "\")\n").toAscii() );
 }
 
 // ----------------------------------------------------------------------------
