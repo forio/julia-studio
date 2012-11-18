@@ -72,11 +72,11 @@ namespace ProjectExplorer {
 namespace Internal {
 
 // Hide the '.' entry.
-class DotRemovalFilter : public QSortFilterProxyModel
+class FolderNavigationRemovalFilter : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
-    explicit DotRemovalFilter(QObject *parent = 0);
+    explicit FolderNavigationRemovalFilter(QObject *parent = 0);
 protected:
     virtual bool filterAcceptsRow(int source_row, const QModelIndex &parent) const;
 private:
@@ -87,7 +87,7 @@ private:
     const QVariant m_dot;
 };
 
-DotRemovalFilter::DotRemovalFilter(QObject *parent) :
+FolderNavigationRemovalFilter::FolderNavigationRemovalFilter(QObject *parent) :
     QSortFilterProxyModel(parent),
 #if defined(Q_OS_UNIX)
     m_root(QString(QLatin1Char('/'))),
@@ -97,14 +97,21 @@ DotRemovalFilter::DotRemovalFilter(QObject *parent) :
 {
 }
 
-bool DotRemovalFilter::filterAcceptsRow(int source_row, const QModelIndex &parent) const
+bool FolderNavigationRemovalFilter::filterAcceptsRow(int source_row, const QModelIndex &parent) const
 {
     const QVariant fileName = sourceModel()->data(parent.child(source_row, 0));
 #if defined(Q_OS_UNIX)
     if (sourceModel()->data(parent) == m_root && fileName == m_dotdot)
         return false;
 #endif
-    return fileName != m_dot;
+    if (fileName == m_dot)
+      return false;
+
+    QString fileNameStr = fileName.toString();
+    if ( fileNameStr.contains(".autosave") )
+      return false;
+
+    return true;
 }
 
 // FolderNavigationModel: Shows path as tooltip.
@@ -137,7 +144,7 @@ FolderNavigationWidget::FolderNavigationWidget(QWidget *parent)
     : QWidget(parent),
       m_listView(new QListView(this)),
       m_fileSystemModel(new FolderNavigationModel(this)),
-      m_filterModel(new DotRemovalFilter(this)),
+      m_filterModel(new FolderNavigationRemovalFilter(this)),
       m_title(new QLabel(this)),
       m_autoSync(false)
 {
