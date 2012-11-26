@@ -105,7 +105,27 @@ void Console::keyPressEvent( QKeyEvent* e )
       if ( InCommandArea() )
         paste();
     }
+    else if ( e->matches(QKeySequence::MoveToStartOfLine) ||
+              e->matches(QKeySequence::MoveToStartOfBlock) ||
+              e->matches(QKeySequence::MoveToStartOfDocument) )
+    {
+      QTextCursor cursor = textCursor();
+      cursor.setPosition( begin_command_pos );
+      setTextCursor( cursor );
+    }
     return;
+  }
+  else if ( e->modifiers() & Qt::MetaModifier )
+  {
+    // on windows / linux this should never get triggered, but on mac we can
+    // use this to detect when someone pressed CTRL + A (which should work)
+    if ( e->key() == Qt::Key_A )
+    {
+      QTextCursor cursor = textCursor();
+      cursor.setPosition( begin_command_pos );
+      setTextCursor( cursor );
+      return;
+    }
   }
   // -----
 
