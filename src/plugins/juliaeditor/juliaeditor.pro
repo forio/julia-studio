@@ -13,10 +13,10 @@ isEmpty(QTCREATOR_SOURCES):QTCREATOR_SOURCES=../../../../qt-creator
 IDE_BUILD_TREE = $$(QTC_BUILD)
 
 #CONFIG( debug ) {
-#  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../qtcreator-build-desktop-Desktop_Qt_4_8_1_for_GCC__Qt_SDK__Debug
+  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../qtcreator-build-desktop-Desktop_Qt_4_8_1_for_GCC__Qt_SDK__Debug
 #}
 #else {
-  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../qtcreator-build-Desktop-Release
+#  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../qtcreator-build-Desktop-Release
 #}
 
 ## uncomment to build plugin into user config directory
