@@ -9,13 +9,12 @@
 using namespace JuliaPlugin;
 
 JuliaConsolePane::JuliaConsolePane(QObject *parent) :
-  Core::IOutputPane(parent)
+  Core::IOutputPane(parent), console(new Console())
 {
-  console = new Console();
   console->setLanguageSettingsId( QLatin1String( Constants::JULIA_SETTINGS_ID ) );
-  TextEditor::TextEditorSettings::instance()->initializeEditor( console );
+  TextEditor::TextEditorSettings::instance()->initializeEditor( console.data() );
 
-  reset_button = new QToolButton(console);
+  reset_button = new QToolButton(console.data());
   reset_button->setAutoRaise(true);
 
   QAction* reset_action = new QAction(reset_button);
@@ -25,18 +24,23 @@ JuliaConsolePane::JuliaConsolePane(QObject *parent) :
   //reset_action->setCheckable(true);
   //reset_action->setIcon(QIcon(QLatin1String(":/qmljstools/images/log.png")));
   reset_action->setText("Reset");
-  connect(reset_action, SIGNAL(triggered()), console, SLOT(Reset()));
+  connect(reset_action, SIGNAL(triggered()), console.data(), SLOT(Reset()));
   reset_button->setDefaultAction(reset_action);
 }
 
 JuliaConsolePane::~JuliaConsolePane()
 {
-  delete console;
+  //delete console;
+}
+
+QWeakPointer<Console> JuliaConsolePane::getConsoleHandle()
+{
+  return console.toWeakRef();
 }
 
 Console *JuliaConsolePane::outputWidget(QWidget *parent)
 {
-  return console;
+  return console.data();
 }
 
 QList<QWidget *> JuliaConsolePane::toolBarWidgets() const

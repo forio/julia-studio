@@ -10,6 +10,7 @@
 #include "juliaconsolepane.h"
 #include "localevaluator.h"
 #include "juliafilewizard.h"
+#include "commandhistoryview.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -114,6 +115,10 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
 
   addAutoReleasedObject(evaluator);
   ExtensionSystem::PluginManager::addObject(console_pane);
+  // ------- */
+
+  // Navigation Menu -------
+  addAutoReleasedObject( new CommandHistoryViewFactory( console_pane->getConsoleHandle() ) );
   // ------- */
 
   Core::ActionManager *am = Core::ICore::instance()->actionManager();

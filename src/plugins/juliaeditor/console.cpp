@@ -5,9 +5,53 @@
 
 using namespace JuliaPlugin;
 
+
+int HistoryModel::rowCount(const QModelIndex &parent) const
+{
+  return parent.isValid() ? 0 : command_history.count();
+}
+
+QVariant HistoryModel::data(const QModelIndex &index, int role) const
+{
+  if ( index.row() >= command_history.count() || index.column() != 0 )
+      return QVariant();
+
+  if ( role == Qt::DisplayRole )
+      return command_history.at( index.row() );
+
+  return QVariant();
+}
+
+bool HistoryModel::insertRows(const QStringList& data, int row, const QModelIndex &parent)
+{
+  beginInsertRows( parent, row, row + data.size() );
+  for ( int i = 0; i < data.size(); ++i )
+    command_history.insert(row + i, data[i]);
+  endInsertRows();
+}
+
+bool HistoryModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+  QStringList::iterator begin = command_history.begin() + row;
+  QStringList::iterator end = begin + count;
+
+  beginRemoveRows( parent, row, row + count);
+  command_history.erase(begin, end);
+  endRemoveRows();
+}
+
+void HistoryModel::clear()
+{
+  beginRemoveRows( QModelIndex(), 0, rowCount() );
+  command_history.clear();
+  endRemoveRows();
+}
+
+
+
 // ----------------------------------------------------------------------------
 Console::Console( QWidget* parent ) :
-  TextEditor::BaseTextEditorWidget(parent), begin_command_pos(0), busy(true), history_index(0), remaining_bytes(0)
+  TextEditor::BaseTextEditorWidget(parent), begin_command_pos(0), busy(true), remaining_bytes(0)
 {}
 
 // ----------------------------------------------------------------------------
@@ -70,7 +114,7 @@ void Console::Reset( bool preserve_history )
 {
   if ( !preserve_history )
   {
-    history_index = 0;
+    history_index = QModelIndex();
     command_history.clear();
   }
 
@@ -172,8 +216,8 @@ void Console::keyPressEvent( QKeyEvent* e )
 // ----------------------------------------------------------------------------
 bool Console::Handle_KeyReturn()
 {
-  command_history.push_back( GetCurrCommand() );
-  history_index = command_history.size();
+  command_history.insertRows( QStringList(GetCurrCommand()), command_history.rowCount() );
+  history_index = QModelIndex();
 
   moveCursor( QTextCursor::End );
   insertPlainText( "\n" );
@@ -188,7 +232,7 @@ bool Console::Handle_KeyReturn()
   // -----
 
   busy = true;
-  emit( NewCommand( command_history.back() ) );
+  emit( NewCommand( command_history.data( history_index ).toString() ) );
 
   return true;
 }
@@ -205,12 +249,14 @@ bool Console::Handle_KeyBackspace()
 // ----------------------------------------------------------------------------
 bool Console::Handle_KeyUp()
 {
-  if ( !command_history.empty() )
+  if ( command_history.rowCount() )
   {
-    if ( history_index > 0 )
-      --history_index;
+    if ( !history_index.isValid() )
+      history_index = command_history.index( command_history.rowCount() - 1 );
+    else if ( history_index.row() > 0 )
+      history_index = history_index.sibling( history_index.row() - 1, 0 );
 
-    SetCurrCommand( command_history.at( history_index ) );
+    SetCurrCommand( command_history.data(history_index).toString() );
   }
 
   return true;
@@ -219,16 +265,13 @@ bool Console::Handle_KeyUp()
 // ----------------------------------------------------------------------------
 bool Console::Handle_KeyDown()
 {
-  int history_size = command_history.size();
+  int history_size = command_history.rowCount();
   if ( history_size )
   {
-    if ( history_index < history_size )
-      ++history_index;
+    if ( history_index.row() < history_size )
+      history_index = history_index.sibling( history_index.row() + 1, 0 );
 
-    if ( history_index == history_size )
-      SetCurrCommand( "" );
-    else
-      SetCurrCommand( command_history.at( history_index ) );
+    SetCurrCommand( command_history.data(history_index).toString() );
   }
 
   return true;

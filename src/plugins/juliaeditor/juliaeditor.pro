@@ -103,3 +103,9 @@ HEADERS += \
 
 SOURCES += \
     juliafilewizard.cpp
+
+HEADERS += \
+    commandhistoryview.h
+
+SOURCES += \
+    commandhistoryview.cpp
