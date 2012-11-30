@@ -13,6 +13,7 @@ JuliaConsolePane::JuliaConsolePane(QObject *parent) :
 {
   console->setLanguageSettingsId( QLatin1String( Constants::JULIA_SETTINGS_ID ) );
   TextEditor::TextEditorSettings::instance()->initializeEditor( console.data() );
+  console->setLineNumbersVisible( false );
 
   reset_button = new QToolButton(console.data());
   reset_button->setAutoRaise(true);
