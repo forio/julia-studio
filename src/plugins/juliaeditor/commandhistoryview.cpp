@@ -14,7 +14,7 @@ CommandHistoryDelegate::CommandHistoryDelegate(QObject *parent)
 
 
 CommandHistoryView::CommandHistoryView(QWeakPointer<Console> console_handle, QWidget *parent)
-  : QWidget(parent)
+  : QWidget(parent), console(console_handle)
 {
   setWindowTitle( "Command History" );
 
@@ -29,7 +29,7 @@ CommandHistoryView::CommandHistoryView(QWeakPointer<Console> console_handle, QWi
   // list customization -----
   list_view = new QTreeView(this);
   list_view->setObjectName( QString::fromUtf8("list_view") );
-  list_view->setModel( console_handle.data()->GetHistoryModel() );
+  list_view->setModel( console.data()->GetHistoryModel() );
 
   list_view->setItemDelegate( delegate = new CommandHistoryDelegate(this) );
   list_view->setIndentation(0);
@@ -51,6 +51,10 @@ CommandHistoryView::CommandHistoryView(QWeakPointer<Console> console_handle, QWi
   list_view->viewport()->setAttribute(Qt::WA_Hover);
   list_view->viewport()->installEventFilter(this);
   // -----
+
+  connect( console.data(), SIGNAL(SetCommandFromHistory(QModelIndex)), list_view, SLOT(setCurrentIndex(QModelIndex)) );
+  connect( console.data(), SIGNAL(NewCommand(QString)), list_view, SLOT(clearSelection()) );
+  connect( list_view, SIGNAL(clicked(QModelIndex)), console.data(), SLOT(SetCurrCommand(QModelIndex)) );
 
   grid_layout->addWidget(list_view, 0, 0, 1, 1);
 

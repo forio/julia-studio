@@ -31,17 +31,14 @@ class CommandHistoryView : public QWidget
 public:
   explicit CommandHistoryView(QWeakPointer<Console> console_handle, QWidget *parent = 0);
   virtual ~CommandHistoryView();
-  
-signals:
-  
-public slots:
 
 private:
   QGridLayout *grid_layout;
   QTreeView *list_view;
-
   CommandHistoryDelegate* delegate;
-  
+
+  QWeakPointer<Console> console;
+
 };
 
 

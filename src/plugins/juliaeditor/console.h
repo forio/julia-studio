@@ -42,6 +42,7 @@ signals:
   void NewCommand( const QString& command );
   void Reseting( bool preserve_history = true );
   void Ready( Console* console );
+  void SetCommandFromHistory( const QModelIndex& index );
 
 public slots:
   void BeginCommand();
@@ -52,6 +53,10 @@ public slots:
   void SetPrompt( const QString& new_prompt );
 
   bool IsBusy()  { return busy; }
+
+  QString GetCurrCommand();
+  void SetCurrCommand( const QString& command );
+  void SetCurrCommand( const QModelIndex& index );
 
   HistoryModel* GetHistoryModel()  { return &command_history; }
 
@@ -77,9 +82,6 @@ protected:
   // -----
 
   // utility -----
-  QString GetCurrCommand();
-  void SetCurrCommand( const QString& command );
-
   bool InCommandArea();
   // -----
 

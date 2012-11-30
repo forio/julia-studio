@@ -256,7 +256,7 @@ bool Console::Handle_KeyUp()
     else if ( history_index.row() > 0 )
       history_index = history_index.sibling( history_index.row() - 1, 0 );
 
-    SetCurrCommand( command_history.data(history_index).toString() );
+    SetCurrCommand(history_index);
   }
 
   return true;
@@ -271,7 +271,7 @@ bool Console::Handle_KeyDown()
     if ( history_index.row() < history_size )
       history_index = history_index.sibling( history_index.row() + 1, 0 );
 
-    SetCurrCommand( command_history.data(history_index).toString() );
+    SetCurrCommand(history_index);
   }
 
   return true;
@@ -304,6 +304,14 @@ void Console::SetCurrCommand( const QString& command )
   cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
   cursor.insertText( command );
   setTextCursor( cursor );
+}
+
+void Console::SetCurrCommand(const QModelIndex &index)
+{
+  history_index = index;
+  SetCurrCommand( command_history.data(index).toString() );
+  SetCommandFromHistory( index );
+  setFocus();
 }
 
 // ----------------------------------------------------------------------------
