@@ -216,7 +216,8 @@ void Console::keyPressEvent( QKeyEvent* e )
 // ----------------------------------------------------------------------------
 bool Console::Handle_KeyReturn()
 {
-  command_history.insertRows( QStringList(GetCurrCommand()), command_history.rowCount() );
+  const QString command = GetCurrCommand();
+  command_history.insertRows( QStringList(command), command_history.rowCount() );
   history_index = QModelIndex();
 
   moveCursor( QTextCursor::End );
@@ -232,7 +233,7 @@ bool Console::Handle_KeyReturn()
   // -----
 
   busy = true;
-  emit( NewCommand( command_history.data( history_index ).toString() ) );
+  emit( NewCommand(command) );
 
   return true;
 }

@@ -112,6 +112,7 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   //connect( console, SIGNAL( destroyed() ), evaluator, SLOT( kill() ) );
   connect( console, SIGNAL( Reseting(bool) ), evaluator, SLOT( reset() ) );
   connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&)), console, SLOT(Reset()) );
+  connect( Core::EditorManager::instance(), SIGNAL(currentEditorChanged(Core::IEditor*)), SLOT(currEditorChanged(Core::IEditor*)) );
 
   addAutoReleasedObject(evaluator);
   ExtensionSystem::PluginManager::addObject(console_pane);
@@ -200,6 +201,14 @@ void JuliaEditorPlugin::updateLoadAction()
 {
   Core::EditorManager* manager = Core::EditorManager::instance();
   load_action->setEnabled( manager->openedEditors().size() );
+}
+
+void JuliaEditorPlugin::currEditorChanged(Core::IEditor *editor)
+{
+  if ( !editor || !evaluator )
+    return;
+
+  evaluator->setWorkingDir( QFileInfo( editor->document()->fileName() ).absoluteDir().absolutePath() );
 }
 
 

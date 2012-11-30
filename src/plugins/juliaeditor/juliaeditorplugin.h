@@ -38,6 +38,7 @@ private slots:
   void initEditor( JuliaEditorWidget* editor );
   void evalCurrFile();
   void updateLoadAction();
+  void currEditorChanged(Core::IEditor* editor);
 
 private:
   TextEditor::TextEditorActionHandler* action_handler;

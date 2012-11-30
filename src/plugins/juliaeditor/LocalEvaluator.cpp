@@ -71,9 +71,15 @@ bool LocalEvaluator::isRunning()
 }
 
 // ----------------------------------------------------------------------------
-void LocalEvaluator::setWorkingDir(const QString &working_directory)
+void LocalEvaluator::setWorkingDir(const QString& working_directory)
 {
-  working_dir = working_directory;
+  if ( working_directory == curr_working_dir )
+    return;
+
+  curr_working_dir = working_directory;
+
+  output( "working dir: " + curr_working_dir + "\n" );
+  process->write( QString( "cd(\"" + curr_working_dir + "\")\n" ).toAscii() );
 }
 
 // ----------------------------------------------------------------------------
@@ -153,10 +159,6 @@ void LocalEvaluator::startJulia( QStringList args )
   process->setProcessEnvironment( environment );
 #endif
 
-  if ( working_dir.length() )
-    process->setWorkingDirectory( QDir::toNativeSeparators( working_dir ) );
-
-  qDebug() << process_string;
   process->start( process_string, args, QProcess::ReadWrite );
 }
 
