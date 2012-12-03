@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss
+	version="2.0"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
+	xmlns:fervor="https://github.com/pypt/fervor"
+	xmlns:dc="http://purl.org/dc/elements/1.1/">
+
+	<channel>
+		<title>Your Great App's Changelog</title>
+		<link>http://pypt.github.com/fervor/Appcast.xml</link>
+		<description>Most recent changes with links to updates.</description>
+		<language>en</language>
+		<atom:link href="http://pypt.github.com/fervor/Appcast.xml" rel="self" type="application/rss+xml" />
+
+		<item>
+			<title>Version 2.0 (2 bugs fixed; 3 new features)</title>
+			<pubDate>Mon, 09 Jan 2006 19:20:11 +0000</pubDate>
+			<guid isPermaLink="true">http://pypt.github.com/fervor/RelNotes.html#v2.0</guid>
+
+			<!-- One of those (<link> is preferred by Fervor, <sparkle:releaseNotesLink> is used by Sparkle) -->
+			<link>http://pypt.github.com/fervor/RelNotes.html#v2.0</link> <!-- or -->
+			<sparkle:releaseNotesLink>http://pypt.github.com/fervor/RelNotes.html#v2.0</sparkle:releaseNotesLink>
+
+			<!--
+				See QtGlobal's QT_OS_* constants for valid platform versions.
+			-->
+
+			<!-- Windows version. -->
+			<enclosure
+				url="http://you.com/app/Your%20Great%20App%202.0%20Windows.zip"
+				fervor:version="2.0"
+				fervor:platform="Q_OS_WIN32"
+				length="1656492"
+				type="application/octet-stream" />
+
+			<!-- Linux version. -->
+			<enclosure
+				url="http://you.com/app/Your%20Great%20App%202.0%20Linux.zip"
+				fervor:version="2.0"
+				fervor:platform="Q_OS_LINUX"
+				length="1618935"
+				type="application/octet-stream" />
+
+			<!-- OS X version (compatible with Sparkle, just that the DSA signature is not checked).
+				 On OS X, you can use 'fervor' namespace instead of 'sparkle'; usage of 'sparkle'
+				 namespace just tells the updater that this is a download for OS X.
+			 -->
+			<enclosure
+				url="http://you.com/app/Your%20Great%20App%202.0%20OS%20X.zip"
+				sparkle:version="2.0"
+				fervor:platform="Q_OS_MAC"
+				length="1623481"
+				type="application/octet-stream"
+				sparkle:dsaSignature="BAFJW4B6B1K1JyW30nbkBwainOzrN6EQuAh" />
+
+		</item>
+
+	</channel>
+</rss>

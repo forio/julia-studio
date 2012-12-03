@@ -29,6 +29,7 @@
 
 #include "qtsingleapplication.h"
 #include "../tools/qtcreatorcrashhandler/crashhandlersetup.h"
+#include "../../fervor/fvupdater.h"
 
 #include <app/app_version.h>
 #include <extensionsystem/iplugin.h>
@@ -508,6 +509,12 @@ int main(int argc, char **argv)
     if (PluginManager::runningTests())
         QTimer::singleShot(100, &pluginManager, SLOT(startTests()));
 #endif
+
+    // Fervor updater -------
+    QApplication::setOrganizationDomain("forio.com/julia");
+    FvUpdater::sharedUpdater()->SetFeedURL("http://127.0.0.1:3000/Appcast.xml");
+    FvUpdater::sharedUpdater()->CheckForUpdates( true );
+    // -------
 
     const int r = app.exec();
     cleanupCrashHandler();

@@ -41,3 +41,8 @@ OTHER_FILES += qtcreator.rc \
 QMAKE_SUBSTITUTES += $$PWD/app_version.h.in
 
 CONFIG += no_batch
+
+# Fervor autoupdater
+!include("../../fervor/Fervor.pri") {
+    error("Unable to include Fervor autoupdater.")
+}

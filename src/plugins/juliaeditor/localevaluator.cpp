@@ -1,4 +1,4 @@
-#include "LocalEvaluator.h"
+#include "localevaluator.h"
 #include "juliasettingspage.h"
 #include "singleton.h"
 
@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QRegExp>
+#include <QStringBuilder>
 
 namespace JuliaPlugin {
 
@@ -29,17 +30,18 @@ void LocalEvaluator::eval( const QFileInfo *file_info )
   if ( process->state() != QProcess::Running )
     return;
 
-  QString command = QString("cd(\"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\r\n");
+  QString command;
 #if defined(Q_OS_WIN)
+  command = QString("cd(\"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\r\n");
   output("\n");
   executing( command + "\n" );  // windows hack!
 
 #elif
-  output( file_info->baseName() );
+  command = QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii()
+  output( file_info->baseName() + "\n" );
 #endif
 
-  process->write( command.toAscii() );
-}
+  process->write( command.toAscii() );}
 
 // ----------------------------------------------------------------------------
 void LocalEvaluator::eval( const QString& code )
@@ -79,9 +81,15 @@ bool LocalEvaluator::isRunning()
 }
 
 // ----------------------------------------------------------------------------
-void LocalEvaluator::setWorkingDir(const QString &working_directory)
+void LocalEvaluator::setWorkingDir(const QString& working_directory)
 {
-  working_dir = working_directory;
+  if ( working_directory == curr_working_dir )
+    return;
+
+  curr_working_dir = working_directory;
+
+  output( "working dir: " + curr_working_dir + "\n" );
+  process->write( QString( "cd(\"" + curr_working_dir + "\")\n" ).toAscii() );
 }
 
 // ----------------------------------------------------------------------------
@@ -162,10 +170,6 @@ void LocalEvaluator::startJulia( QStringList args )
   process->setProcessEnvironment( environment );
 #endif
 
-  if ( working_dir.length() )
-    process->setWorkingDirectory( QDir::toNativeSeparators( working_dir ) );
-
-  qDebug() << process_string;
   process->start( process_string, args, QProcess::ReadWrite );
 }
 

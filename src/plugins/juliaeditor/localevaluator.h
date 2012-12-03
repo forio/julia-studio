@@ -46,7 +46,7 @@ private:
 
   QString process_string;
   QProcess* process;
-  QString working_dir;
+  QString curr_working_dir;
 };
 
 }

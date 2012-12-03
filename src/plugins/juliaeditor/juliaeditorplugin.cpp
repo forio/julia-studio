@@ -10,6 +10,7 @@
 #include "juliaconsolepane.h"
 #include "localevaluator.h"
 #include "juliafilewizard.h"
+#include "commandhistoryview.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -114,9 +115,14 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   connect( evaluator, SIGNAL(executing(QString)), console, SLOT(WindowsHack(QString)) );
 #endif
   connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&)), console, SLOT(Reset()) );
+  connect( Core::EditorManager::instance(), SIGNAL(currentEditorChanged(Core::IEditor*)), SLOT(currEditorChanged(Core::IEditor*)) );
 
   addAutoReleasedObject(evaluator);
   ExtensionSystem::PluginManager::addObject(console_pane);
+  // ------- */
+
+  // Navigation Menu -------
+  addAutoReleasedObject( new CommandHistoryViewFactory( console_pane->getConsoleHandle() ) );
   // ------- */
 
   Core::ActionManager *am = Core::ICore::instance()->actionManager();
@@ -198,6 +204,14 @@ void JuliaEditorPlugin::updateLoadAction()
 {
   Core::EditorManager* manager = Core::EditorManager::instance();
   load_action->setEnabled( manager->openedEditors().size() );
+}
+
+void JuliaEditorPlugin::currEditorChanged(Core::IEditor *editor)
+{
+  if ( !editor || !evaluator )
+    return;
+
+  evaluator->setWorkingDir( QFileInfo( editor->document()->fileName() ).absoluteDir().absolutePath() );
 }
 
 

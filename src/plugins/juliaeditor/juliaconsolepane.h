@@ -5,6 +5,8 @@
 
 #include <coreplugin/ioutputpane.h>
 
+#include <QSharedPointer>
+
 QT_BEGIN_NAMESPACE
   class QToolButton;
 QT_END_NAMESPACE
@@ -20,6 +22,8 @@ public:
   ~JuliaConsolePane();
 
 public slots:
+  QWeakPointer<Console> getConsoleHandle();
+
   virtual Console *outputWidget(QWidget *parent = NULL);
   virtual QList<QWidget *> toolBarWidgets() const;
   virtual QString displayName() const;
@@ -46,7 +50,7 @@ public slots:
   virtual void goToPrev();
 
 private:
-  Console* console;
+  QSharedPointer<Console> console;
 
   QToolButton* reset_button;
 };

@@ -437,7 +437,7 @@ QString FolderNavigationWidgetFactory::displayName() const
 
 int FolderNavigationWidgetFactory::priority() const
 {
-    return 400;
+    return 100;
 }
 
 Core::Id FolderNavigationWidgetFactory::id() const
