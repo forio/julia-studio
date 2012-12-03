@@ -31,7 +31,7 @@ void LocalEvaluator::eval( const QFileInfo *file_info )
     return;
 
   output( file_info->baseName() + "\n" );
-  process->write( QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); load(\"" + file_info->absoluteFilePath() + "\")\n").toAscii() );
+  process->write( QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii() );
 }
 
 // ----------------------------------------------------------------------------
@@ -142,14 +142,16 @@ void LocalEvaluator::startJulia( QStringList args )
 {
   QDir julia_dir(Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
 
-  process_string = julia_dir.absoluteFilePath("bin/julia-release-basic");
+  process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("bin/julia-release-basic"));
 
 #if defined(Q_OS_WIN)
-  //args.insert( args.begin(), QString("-q") );
-    // set up context for julia only for windows
-    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
-    environment.insert("PATH", environment.value("Path") + ";" + QDir::toNativeSeparators( Settings->GetJuliaSourcePath() ) );
-    process->setProcessEnvironment( environment );
+  // set up context for julia (only for windows)
+  QDir lib_dir(julia_dir);
+  lib_dir.cd("lib");
+
+  QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+  environment.insert("PATH", environment.value("Path") + ";" + QDir::toNativeSeparators( lib_dir.absolutePath() ) );
+  process->setProcessEnvironment( environment );
 #endif
 
   if ( working_dir.length() )
