@@ -5,8 +5,29 @@
 
 #include <QColor>
 #include <QDebug>
+#include <QAbstractItemModel>
 
 namespace JuliaPlugin {
+
+class HistoryModel : public QAbstractListModel
+{
+  Q_OBJECT
+
+public:
+  HistoryModel( QObject* parent = 0 ) : QAbstractListModel(parent)  {}
+
+  virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+  virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+
+  virtual bool insertRows(const QStringList& data, int row, const QModelIndex &parent = QModelIndex());
+  virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+
+  virtual void clear();
+
+private:
+  QStringList command_history;
+};
+
 
 class Console : public TextEditor::BaseTextEditorWidget
 {
@@ -21,6 +42,7 @@ signals:
   void NewCommand( const QString& command );
   void Reseting( bool preserve_history = true );
   void Ready( Console* console );
+  void SetCommandFromHistory( const QModelIndex& index );
 
 public slots:
   void BeginCommand();
@@ -31,6 +53,12 @@ public slots:
   void SetPrompt( const QString& new_prompt );
 
   bool IsBusy()  { return busy; }
+
+  QString GetCurrCommand();
+  void SetCurrCommand( const QString& command );
+  void SetCurrCommand( const QModelIndex& index );
+
+  HistoryModel* GetHistoryModel()  { return &command_history; }
 
   // colors -----
   QColor GetCurrCommandColor()              { return curr_command_color; }
@@ -54,9 +82,6 @@ protected:
   // -----
 
   // utility -----
-  QString GetCurrCommand();
-  void SetCurrCommand( const QString& command );
-
   bool InCommandArea();
   // -----
 
@@ -69,8 +94,8 @@ protected:
   int begin_command_pos;
   bool busy;
 
-  QStringList command_history;
-  int history_index;
+  HistoryModel command_history;
+  QModelIndex history_index;
 
   // windows hack -----
   int remaining_bytes;

@@ -37,7 +37,7 @@ include(juliaeditor_dependencies.pri)
 
 DEFINES += JULIAEDITOR_LIBRARY
 
-OTHER_FILES += JuliaEditor.pluginspec\
+OTHER_FILES += juliaeditor.pluginspec\
             juliaeditor.mimetypes.xml
 
 RESOURCES += juliaeditor.qrc
