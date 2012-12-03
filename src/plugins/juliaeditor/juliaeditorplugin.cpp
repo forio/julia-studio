@@ -110,6 +110,9 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   connect( evaluator, SIGNAL( output(const QString&) ), console, SLOT( DisplayResult(const QString&) ) );
   //connect( console, SIGNAL( destroyed() ), evaluator, SLOT( kill() ) );
   connect( console, SIGNAL( Reseting(bool) ), evaluator, SLOT( reset() ) );
+#if defined(Q_OS_WIN)
+  connect( evaluator, SIGNAL(executing(QString)), console, SLOT(WindowsHack(QString)) );
+#endif
   connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&)), console, SLOT(Reset()) );
 
   addAutoReleasedObject(evaluator);

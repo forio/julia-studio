@@ -29,8 +29,16 @@ void LocalEvaluator::eval( const QFileInfo *file_info )
   if ( process->state() != QProcess::Running )
     return;
 
-  output( file_info->baseName() + "\n" );
-  process->write( QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); load(\"" + file_info->absoluteFilePath() + "\")\n").toAscii() );
+  QString command = QString("cd(\"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\r\n");
+#if defined(Q_OS_WIN)
+  output("\n");
+  executing( command + "\n" );  // windows hack!
+
+#elif
+  output( file_info->baseName() );
+#endif
+
+  process->write( command.toAscii() );
 }
 
 // ----------------------------------------------------------------------------
@@ -144,6 +152,7 @@ void LocalEvaluator::startJulia( QStringList args )
   process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("bin/julia-release-basic"));
 
 #if defined(Q_OS_WIN)
+  process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("julia.bat"));
   // set up context for julia (only for windows)
   QDir lib_dir(julia_dir);
   lib_dir.cd("lib");

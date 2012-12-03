@@ -76,7 +76,19 @@ void Console::Reset( bool preserve_history )
 
   clear();
 
+#if defined(Q_OS_WIN)
+  remaining_bytes = 0;
+#endif
+
   emit( Reseting( preserve_history ) );
+}
+
+// ----------------------------------------------------------------------------
+void Console::WindowsHack(const QString &command)
+{
+    remaining_bytes = command.size();  // for the newline
+    if ( command.contains( ' ' ) )
+        remaining_bytes += 2;
 }
 
 // ----------------------------------------------------------------------------
@@ -160,10 +172,7 @@ bool Console::Handle_KeyReturn()
 
   // windows hack -----
 #if defined(Q_OS_WIN)
-  QString str = command_history.back();
-  remaining_bytes = str.size();  // for the newline
-  if ( str.contains( ' ' ) )
-      remaining_bytes += 2;
+  WindowsHack(command_history.back());
 #endif
   // -----
 
@@ -230,6 +239,7 @@ QString Console::GetCurrCommand()
   command_cursor.setPosition( begin_command_pos );
   command_cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
   QString command = command_cursor.selectedText();
+  command.replace( "\u+2029", "\n" );
   return command;
 }
 
