@@ -7,16 +7,16 @@ QT += network
 
 ## set the QTC_SOURCE environment variable to override the setting here
 QTCREATOR_SOURCES = $$(QTC_SOURCE)
-isEmpty(QTCREATOR_SOURCES):QTCREATOR_SOURCES=../../../../qt-creator
+isEmpty(QTCREATOR_SOURCES):QTCREATOR_SOURCES=../../../
 
 ## set the QTC_BUILD environment variable to override the setting here
 IDE_BUILD_TREE = $$(QTC_BUILD)
 
 #CONFIG( debug ) {
-#  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../julia-studio-build-Desktop-Debug
+  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../julia-studio-build-Desktop-Debug
 #}
 #else {
-  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../julia-studio-build-Desktop-Debug
+  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../julia-studio-build-Desktop-Release
 #}
 
 ## uncomment to build plugin into user config directory
@@ -103,3 +103,9 @@ HEADERS += \
 
 SOURCES += \
     juliafilewizard.cpp
+
+HEADERS += \
+    commandhistoryview.h
+
+SOURCES += \
+    commandhistoryview.cpp
