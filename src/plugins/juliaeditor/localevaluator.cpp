@@ -35,10 +35,9 @@ void LocalEvaluator::eval( const QFileInfo *file_info )
   command = QString("cd(\"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\r\n");
   output("\n");
   executing( command + "\n" );  // windows hack!
-
-#elif
-  command = QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii()
-  output( file_info->baseName() + "\n" );
+#else
+  command = QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii();
+  output(file_info->baseName() + "\n");
 #endif
 
   process->write( command.toAscii() );}

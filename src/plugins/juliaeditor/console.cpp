@@ -307,7 +307,10 @@ QString Console::GetCurrCommand()
   command_cursor.setPosition( begin_command_pos );
   command_cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
   QString command = command_cursor.selectedText();
+
+#if defined(Q_OS_WIN)
   command.replace( "\u+2029", "\n" );
+#endif
   return command;
 }
 
