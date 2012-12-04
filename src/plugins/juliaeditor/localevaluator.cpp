@@ -32,7 +32,7 @@ void LocalEvaluator::eval( const QFileInfo *file_info )
 
   QString command;
 #if defined(Q_OS_WIN)
-  command = QString("cd(\"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\r\n");
+  command = QString("include(\"" + file_info->absoluteFilePath() + "\")\r\n");
   output("\n");
   executing( command + "\n" );  // windows hack!
 #else
@@ -56,6 +56,8 @@ void LocalEvaluator::eval( const QString& code )
 // ----------------------------------------------------------------------------
 void LocalEvaluator::reset()
 {
+  setWorkingDir( "" );
+
   disconnect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT( onProcessError(QProcess::ProcessError) ) );
   disconnect( process, SIGNAL( readyRead() ), this, SLOT( onProcessOutput() ) );
   disconnect( process, SIGNAL( finished(int) ), this, SLOT( exit(int) ) );
@@ -82,13 +84,31 @@ bool LocalEvaluator::isRunning()
 // ----------------------------------------------------------------------------
 void LocalEvaluator::setWorkingDir(const QString& working_directory)
 {
-  if ( working_directory == curr_working_dir )
+  if ( !working_directory.size() )  // on reset
+  {
+      curr_working_dir = working_directory;
+      return;
+  }
+
+  if ( working_directory == curr_working_dir ||
+       process->state() != QProcess::Running )
+  {
     return;
+  }
 
-  curr_working_dir = working_directory;
+  QString command;
 
+#if defined(Q_OS_WIN)
+  command = QString("cd(\"" + curr_working_dir + "\")\r\n");
+  output("\n");
+  executing( command + "\n" );  // windows hack!
+#else
+  command = QString( "cd(\"" + curr_working_dir + "\")\n" );
   output( "working dir: " + curr_working_dir + "\n" );
-  process->write( QString( "cd(\"" + curr_working_dir + "\")\n" ).toAscii() );
+#endif
+
+  process->write( command.toAscii() );
+  curr_working_dir = working_directory;
 }
 
 // ----------------------------------------------------------------------------
