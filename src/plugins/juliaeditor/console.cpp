@@ -28,6 +28,8 @@ bool HistoryModel::insertRows(const QStringList& data, int row, const QModelInde
   for ( int i = 0; i < data.size(); ++i )
     command_history.insert(row + i, data[i]);
   endInsertRows();
+
+  return true;
 }
 
 bool HistoryModel::removeRows(int row, int count, const QModelIndex &parent)
@@ -38,6 +40,8 @@ bool HistoryModel::removeRows(int row, int count, const QModelIndex &parent)
   beginRemoveRows( parent, row, row + count);
   command_history.erase(begin, end);
   endRemoveRows();
+
+  return true;
 }
 
 void HistoryModel::clear()
@@ -237,7 +241,7 @@ bool Console::Handle_KeyReturn()
 
   // windows hack -----
 #if defined(Q_OS_WIN)
-  WindowsHack(command_history.back());
+  WindowsHack(command);
 #endif
   // -----
 
