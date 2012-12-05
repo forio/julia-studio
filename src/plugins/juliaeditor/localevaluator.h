@@ -24,6 +24,7 @@ public slots:
   virtual bool canRun(const QString&);
   virtual bool isRunning();
 
+  virtual void kill();
 
   void setWorkingDir( const QString& working_directory );
 

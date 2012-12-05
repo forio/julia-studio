@@ -7,6 +7,8 @@
 #include <QFileInfo>
 #include <QRegExp>
 #include <QStringBuilder>
+#include <Windows.h>
+#include <sstream>
 
 namespace JuliaPlugin {
 
@@ -22,6 +24,9 @@ LocalEvaluator::LocalEvaluator( QObject* parent )
 LocalEvaluator::~LocalEvaluator()
 {
   // out process is a child, it will be cleaned up automatically
+
+  // well... not on windows.
+  kill();
 }
 
 // ----------------------------------------------------------------------------
@@ -62,7 +67,7 @@ void LocalEvaluator::reset()
   disconnect( process, SIGNAL( readyRead() ), this, SLOT( onProcessOutput() ) );
   disconnect( process, SIGNAL( finished(int) ), this, SLOT( exit(int) ) );
 
-  process->kill();
+  kill();
   process->deleteLater();
 
   createProcess();
@@ -78,7 +83,20 @@ bool JuliaPlugin::LocalEvaluator::canRun(const QString&)
 // ----------------------------------------------------------------------------
 bool LocalEvaluator::isRunning()
 {
-  return process->state() == QProcess::Running;
+    return process->state() == QProcess::Running;
+}
+
+// ----------------------------------------------------------------------------
+void LocalEvaluator::kill()
+{
+#if defined(Q_OS_WIN)
+  std::ostringstream stream;
+  stream << process->pid()->dwProcessId;
+  std::string pid = stream.str();
+  QProcess::execute( "taskkill /pid " + QString::fromUtf8(pid.data(), pid.size()) + " /f /t" );
+#else
+  process->kill();
+#endif
 }
 
 // ----------------------------------------------------------------------------
@@ -99,13 +117,15 @@ void LocalEvaluator::setWorkingDir(const QString& working_directory)
   QString command;
 
 #if defined(Q_OS_WIN)
-  command = QString("cd(\"" + curr_working_dir + "\")\r\n");
+  command = QString("cd(\"" + working_directory + "\")\r\n");
   output("\n");
   executing( command + "\n" );  // windows hack!
 #else
   command = QString( "cd(\"" + working_directory + "\")\n" );
   output( "working dir: " + working_directory + "\n" );
 #endif
+
+  qDebug() << command;
 
   process->write( command.toAscii() );
   curr_working_dir = working_directory;
