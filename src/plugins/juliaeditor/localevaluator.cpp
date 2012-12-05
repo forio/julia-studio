@@ -103,8 +103,8 @@ void LocalEvaluator::setWorkingDir(const QString& working_directory)
   output("\n");
   executing( command + "\n" );  // windows hack!
 #else
-  command = QString( "cd(\"" + curr_working_dir + "\")\n" );
-  output( "working dir: " + curr_working_dir + "\n" );
+  command = QString( "cd(\"" + working_directory + "\")\n" );
+  output( "working dir: " + working_directory + "\n" );
 #endif
 
   process->write( command.toAscii() );
