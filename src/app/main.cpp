@@ -512,7 +512,7 @@ int main(int argc, char **argv)
 
     // Fervor updater -------
     QApplication::setOrganizationDomain("forio.com/julia");
-    FvUpdater::sharedUpdater()->SetFeedURL("http://127.0.0.1:3000/Appcast.xml");
+    FvUpdater::sharedUpdater()->SetFeedURL("http://forio.com/julia/updates/appcast.xml");
     FvUpdater::sharedUpdater()->CheckForUpdates( true );
     // -------
 
