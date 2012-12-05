@@ -7,9 +7,11 @@
 #include <QFileInfo>
 #include <QRegExp>
 #include <QStringBuilder>
+
+#if defined(Q_OS_WIN)
 #include <Windows.h>
 #include <sstream>
-
+#endif
 namespace JuliaPlugin {
 
 // ----------------------------------------------------------------------------
