@@ -22,6 +22,7 @@ PackageView::PackageView(QWidget *parent) :
   list_view = new QTreeView(this);
   list_view->setObjectName( QString::fromUtf8("package_list_view") );
   list_view->setModel( package_model = new PackageModel );
+  connect( list_view, SIGNAL(doubleClicked(QModelIndex)), package_model, SLOT(AddPackage(const QModelIndex&)) );
 
   list_view->setItemDelegate( new PackageDelegate(this) );
   list_view->setIndentation(0);

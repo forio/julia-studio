@@ -60,7 +60,7 @@ void PackageModel::clear()
 
 void PackageModel::GetAvailable()
 {
-  disconnect(evaluator, SIGNAL(ready()), this, SLOT(GetAvailable()) );
+  disconnect( evaluator, SIGNAL(ready()), this, SLOT(GetAvailable()) );
 
   connect( evaluator, SIGNAL(output(QString)), SLOT(DisplayAvailable(QString)) );
   evaluator->eval( "load(\"/Users/westley/test-proj/available-packages.jl\")" );
@@ -68,9 +68,16 @@ void PackageModel::GetAvailable()
 
 void PackageModel::DisplayAvailable( QString output )
 {
-  QRegExp julia_prompt("julia>", Qt::CaseSensitive);
+  QRegExp julia_prompt("julia> ", Qt::CaseSensitive);
   QStringList package_list = output.remove(julia_prompt).split('\n');
   package_list.removeAll(QString(""));
-  package_list.removeAll(QString(" "));
   insertRows(package_list, rowCount());
+}
+
+void PackageModel::AddPackage( const QModelIndex& index )
+{
+  disconnect( evaluator, SIGNAL(ready()), this, SLOT(AddPackage()) );
+
+  QString command( "Pkg.add(\"" + data(index).toString() + "\")\n" );
+  evaluator->eval( command );
 }

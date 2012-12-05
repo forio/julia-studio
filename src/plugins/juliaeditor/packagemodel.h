@@ -32,6 +32,8 @@ private slots:
   void GetAvailable();
   void DisplayAvailable(QString output);
 
+  void AddPackage(const QModelIndex& index);
+
 private:
 
   QStringList packages;
