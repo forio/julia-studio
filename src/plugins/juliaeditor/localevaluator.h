@@ -32,6 +32,7 @@ signals:
   void finished( LocalEvaluator* );
 
   void output( const QString& output );
+  void executing( const QString& command );  // windows hack!
 
 private slots:
   void onProcessOutput();

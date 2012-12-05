@@ -7,18 +7,17 @@ QT += network
 
 ## set the QTC_SOURCE environment variable to override the setting here
 QTCREATOR_SOURCES = $$(QTC_SOURCE)
-isEmpty(QTCREATOR_SOURCES):QTCREATOR_SOURCES=../../../../qt-creator
+isEmpty(QTCREATOR_SOURCES):QTCREATOR_SOURCES=../../../
 
 ## set the QTC_BUILD environment variable to override the setting here
 IDE_BUILD_TREE = $$(QTC_BUILD)
 
-CONFIG( debug ) {
-  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../qtcreator-build-desktop-Desktop_Qt_4_8_1_for_GCC__Qt_SDK__Debug
-}
-
-CONFIG( release ) {
-  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../qtcreator-build-Desktop-Release
-}
+#CONFIG( release ) {
+#  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../julia-studio-build-Desktop-Release
+#}
+#else {
+  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../julia-studio-build-Desktop-Debug
+#}
 
 ## uncomment to build plugin into user config directory
 ## <localappdata>/plugins/<ideversion>
@@ -112,13 +111,9 @@ SOURCES += \
     commandhistoryview.cpp
 
 HEADERS += \
+    packageview.h \
     packagemodel.h
 
 SOURCES += \
+    packageview.cpp \
     packagemodel.cpp
-
-HEADERS += \
-    packageview.h
-
-SOURCES += \
-    packageview.cpp

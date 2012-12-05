@@ -1,4 +1,4 @@
-#include "LocalEvaluator.h"
+#include "localevaluator.h"
 #include "juliasettingspage.h"
 #include "singleton.h"
 
@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QRegExp>
+#include <QStringBuilder>
 
 namespace JuliaPlugin {
 
@@ -29,9 +30,17 @@ void LocalEvaluator::eval( const QFileInfo *file_info )
   if ( process->state() != QProcess::Running )
     return;
 
-  output( file_info->baseName() + "\n" );
-  process->write( QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\"); load(\"" + file_info->absoluteFilePath() + "\")\n").toAscii() );
-}
+  QString command;
+#if defined(Q_OS_WIN)
+  command = QString("include(\"" + file_info->absoluteFilePath() + "\")\r\n");
+  output("\n");
+  executing( command + "\n" );  // windows hack!
+#else
+  command = QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii();
+  output(file_info->baseName() + "\n");
+#endif
+
+  process->write( command.toAscii() );}
 
 // ----------------------------------------------------------------------------
 void LocalEvaluator::eval( const QString& code )
@@ -47,6 +56,8 @@ void LocalEvaluator::eval( const QString& code )
 // ----------------------------------------------------------------------------
 void LocalEvaluator::reset()
 {
+  setWorkingDir( "" );
+
   disconnect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT( onProcessError(QProcess::ProcessError) ) );
   disconnect( process, SIGNAL( readyRead() ), this, SLOT( onProcessOutput() ) );
   disconnect( process, SIGNAL( finished(int) ), this, SLOT( exit(int) ) );
@@ -73,13 +84,31 @@ bool LocalEvaluator::isRunning()
 // ----------------------------------------------------------------------------
 void LocalEvaluator::setWorkingDir(const QString& working_directory)
 {
-  if ( working_directory == curr_working_dir )
+  if ( !working_directory.size() )  // on reset
+  {
+      curr_working_dir = working_directory;
+      return;
+  }
+
+  if ( working_directory == curr_working_dir ||
+       process->state() != QProcess::Running )
+  {
     return;
+  }
 
+  QString command;
+
+#if defined(Q_OS_WIN)
+  command = QString("cd(\"" + curr_working_dir + "\")\r\n");
+  output("\n");
+  executing( command + "\n" );  // windows hack!
+#else
+  command = QString( "cd(\"" + working_directory + "\")\n" );
+  output( "working dir: " + working_directory + "\n" );
+#endif
+
+  process->write( command.toAscii() );
   curr_working_dir = working_directory;
-
-  output( "working dir: " + curr_working_dir + "\n" );
-  process->write( QString( "cd(\"" + curr_working_dir + "\")\n" ).toAscii() );
 }
 
 // ----------------------------------------------------------------------------
@@ -150,6 +179,7 @@ void LocalEvaluator::startJulia( QStringList args )
   process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("bin/julia-release-basic"));
 
 #if defined(Q_OS_WIN)
+  process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("julia.bat"));
   // set up context for julia (only for windows)
   QDir lib_dir(julia_dir);
   lib_dir.cd("lib");

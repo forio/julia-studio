@@ -50,6 +50,8 @@ public slots:
   void DisplayResult( const QString& result );
   void Reset( bool preserve_history = true );
 
+  void WindowsHack( const QString& command );
+
   void SetPrompt( const QString& new_prompt );
 
   bool IsBusy()  { return busy; }

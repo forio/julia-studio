@@ -28,7 +28,7 @@ void JuliaSettings::FromSettings(QSettings *settings)
 
   QString default_path = QApplication::applicationDirPath();
 
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   QDir dir( default_path );
   dir.cdUp();
   dir.cd( "julia" );

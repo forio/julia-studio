@@ -9,8 +9,8 @@
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
-#include "CreationPolicies.h"
-#include "LifetimePolicies.h"
+#include "creationpolicies.h"
+#include "lifetimepolicies.h"
 
 namespace JuliaPlugin {
 
