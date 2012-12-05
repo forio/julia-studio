@@ -43,6 +43,9 @@ QMAKE_SUBSTITUTES += $$PWD/app_version.h.in
 CONFIG += no_batch
 
 # Fervor autoupdater
+FV_APP_NAME = "JuliaStudio"
+FV_APP_VERSION = "0.2.0"
+
 !include("../../fervor/Fervor.pri") {
     error("Unable to include Fervor autoupdater.")
 }
