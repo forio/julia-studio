@@ -63,7 +63,7 @@ void LocalEvaluator::eval( const QString& code )
 // ----------------------------------------------------------------------------
 void LocalEvaluator::reset()
 {
-  setWorkingDir( "" );
+  //setWorkingDir( "" );
 
   disconnect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT( onProcessError(QProcess::ProcessError) ) );
   disconnect( process, SIGNAL( readyRead() ), this, SLOT( onProcessOutput() ) );
@@ -212,6 +212,21 @@ void LocalEvaluator::startJulia( QStringList args )
 #endif
 
   process->start( process_string, args, QProcess::ReadWrite );
+
+
+  if ( curr_working_dir.count() )
+  {
+    QString command;
+
+#if defined(Q_OS_WIN)
+    command = QString("cd(\"" + curr_working_dir + "\")\r\n");
+#else
+    command = QString( "cd(\"" + curr_working_dir + "\")\n" );
+#endif
+
+    process->write( command.toAscii() );
+  }
+
 }
 
 }
