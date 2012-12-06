@@ -41,7 +41,7 @@ void LocalEvaluator::eval( const QFileInfo *file_info )
 #if defined(Q_OS_WIN)
   command = QString("include(\"" + file_info->absoluteFilePath() + "\")\r\n");
   output("\n");
-  executing( command + "\n" );  // windows hack!
+  executing( command );  // windows hack!
 #else
   command = QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii();
   output(file_info->baseName() + "\n");
