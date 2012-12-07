@@ -8,7 +8,7 @@
 #include <texteditor/generichighlighter/manager.h>
 #include <texteditor/fontsettings.h>
 #include <texteditor/texteditorconstants.h>
-
+#include <utils/uncommentselection.h>
 #include <texteditor/generichighlighter/highlightdefinition.h>
 
 #include <QDebug>
@@ -89,6 +89,16 @@ void JuliaEditorWidget::setFontSettings(const TextEditor::FontSettings &fs)
 
       highlighter->rehighlight();
   }
+}
+
+void JuliaEditorWidget::unCommentSelection()
+{
+  Utils::CommentDefinition comment_def;
+  comment_def.setSingleLine( "#" );
+  comment_def.setMultiLineStart("");
+  comment_def.setMultiLineEnd("");
+
+  Utils::unCommentSelection(this, comment_def);
 }
 
 TextEditor::BaseTextEditor *JuliaEditorWidget::createEditor()

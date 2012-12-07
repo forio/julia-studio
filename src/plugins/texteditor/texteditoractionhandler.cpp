@@ -200,7 +200,7 @@ void TextEditorActionHandler::createActions()
     m_unCommentSelectionAction = new QAction(tr("Toggle Comment &Selection"), this);
     m_modifyingActions << m_unCommentSelectionAction;
     command = Core::ActionManager::registerAction(m_unCommentSelectionAction, Constants::UN_COMMENT_SELECTION, m_contextId, true);
-    command->setDefaultKeySequence(QKeySequence(tr("Ctrl+/")));
+    command->setDefaultKeySequence(QKeySequence(tr("Alt+3")));
     connect(m_unCommentSelectionAction, SIGNAL(triggered()), this, SLOT(unCommentSelection()));
     advancedMenu->addAction(command, Core::Constants::G_EDIT_FORMAT);
 

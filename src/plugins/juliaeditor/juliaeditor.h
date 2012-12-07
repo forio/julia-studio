@@ -40,7 +40,9 @@ public:
   JuliaEditorWidget(QWidget *parent);
   ~JuliaEditorWidget();
 
-  void setFontSettings(const TextEditor::FontSettings &);
+  virtual void setFontSettings(const TextEditor::FontSettings &);
+
+  virtual void unCommentSelection();
 
 protected:
   TextEditor::BaseTextEditor* createEditor();
