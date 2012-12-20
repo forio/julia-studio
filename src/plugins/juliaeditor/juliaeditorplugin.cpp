@@ -12,6 +12,7 @@
 #include "localtcpevaluator.h"
 #include "juliafilewizard.h"
 #include "commandhistoryview.h"
+#include "packageview.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -122,7 +123,8 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   ExtensionSystem::PluginManager::addObject(console_pane);
   // ------- */
 
-  // Navigation Menu -------
+  // Navigation Menus -------
+  addAutoReleasedObject( new PackageViewFactory );
   addAutoReleasedObject( new CommandHistoryViewFactory( console_pane->getConsoleHandle() ) );
   // ------- */
 

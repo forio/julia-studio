@@ -118,3 +118,11 @@ SOURCES += \
 
 HEADERS += \
     juliamsg.h
+
+HEADERS += \
+    packageview.h \
+    packagemodel.h
+
+SOURCES += \
+    packageview.cpp \
+    packagemodel.cpp
