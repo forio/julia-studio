@@ -109,3 +109,12 @@ HEADERS += \
 
 SOURCES += \
     commandhistoryview.cpp
+
+HEADERS += \
+    localtcpevaluator.h
+
+SOURCES += \
+    localtcpevaluator.cpp
+
+HEADERS += \
+    juliamsg.h

@@ -9,6 +9,7 @@
 #include "juliaprojectmanager.h"
 #include "juliaconsolepane.h"
 #include "localevaluator.h"
+#include "localtcpevaluator.h"
 #include "juliafilewizard.h"
 #include "commandhistoryview.h"
 
@@ -102,7 +103,7 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   // ------- */
 
   // Julia console -------
-  evaluator = new LocalEvaluator(this);
+  evaluator = new LocalTcpEvaluator(this);
   console_pane = new JuliaConsolePane(this);
   Console* console = console_pane->outputWidget();
 
