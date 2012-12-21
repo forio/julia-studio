@@ -7,8 +7,8 @@ using namespace JuliaPlugin;
 PackageModel::PackageModel(QObject *parent) :
   QAbstractListModel(parent)
 {
-  evaluator = new LocalEvaluator;
-  connect( evaluator, SIGNAL(ready()), SLOT(GetAvailable()) );
+  //evaluator = new LocalEvaluator;
+  //connect( evaluator, SIGNAL(ready()), SLOT(GetAvailable()) );
 }
 
 int PackageModel::rowCount(const QModelIndex &parent) const

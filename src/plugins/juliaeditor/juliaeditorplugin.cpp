@@ -12,7 +12,7 @@
 #include "localtcpevaluator.h"
 #include "juliafilewizard.h"
 #include "commandhistoryview.h"
-#include "packageview.h"
+#include "packagecontroller.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -109,8 +109,8 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   Console* console = console_pane->outputWidget();
 
   connect( evaluator, SIGNAL( ready() ), console, SLOT( BeginCommand() ) );
-  connect( console, SIGNAL( NewCommand(QString) ), evaluator, SLOT( eval(const QString&) ) );
-  connect( evaluator, SIGNAL( output(const QString&) ), console, SLOT( DisplayResult(const QString&) ) );
+  connect( console, SIGNAL( NewCommand(ProjectExplorer::EvaluatorMessage) ), evaluator, SLOT( eval(const ProjectExplorer::EvaluatorMessage&) ) );
+  connect( evaluator, SIGNAL( output(const ProjectExplorer::EvaluatorMessage*) ), console, SLOT( DisplayResult(const ProjectExplorer::EvaluatorMessage*) ) );
   //connect( console, SIGNAL( destroyed() ), evaluator, SLOT( kill() ) );
   connect( console, SIGNAL( Reseting(bool) ), evaluator, SLOT( reset() ) );
 #if defined(Q_OS_WIN)
@@ -124,8 +124,14 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   // ------- */
 
   // Navigation Menus -------
-  addAutoReleasedObject( new PackageViewFactory );
   addAutoReleasedObject( new CommandHistoryViewFactory( console_pane->getConsoleHandle() ) );
+
+  PackageController* package_controller = new PackageController(evaluator);
+  PackageViewFactory* package_view_factory = new PackageViewFactory;
+  connect(package_view_factory, SIGNAL(createdWidget(PackageView*)), package_controller, SLOT(OnNewPackageView(PackageView*)));
+
+  addAutoReleasedObject(package_controller);
+  addAutoReleasedObject(package_view_factory);
   // ------- */
 
   Core::ActionManager *am = Core::ICore::instance()->actionManager();

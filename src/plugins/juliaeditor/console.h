@@ -6,6 +6,7 @@
 #include <QColor>
 #include <QDebug>
 #include <QAbstractItemModel>
+#include <projectexplorer/ievaluator.h>
 
 namespace JuliaPlugin {
 
@@ -39,7 +40,7 @@ public:
   TextEditor::BaseTextEditor* createEditor();
 
 signals:
-  void NewCommand( const QString& command );
+  void NewCommand( const ProjectExplorer::EvaluatorMessage& msg );
   void Reseting( bool preserve_history = true );
   void Ready( Console* console );
   void SetCommandFromHistory( const QModelIndex& index );
@@ -47,7 +48,7 @@ signals:
 public slots:
   void BeginCommand();
   void TryCommand( const QString& command );
-  void DisplayResult( const QString& result );
+  void DisplayResult( const ProjectExplorer::EvaluatorMessage* msg );
   void Reset( bool preserve_history = true );
 
   void WindowsHack( const QString& command );

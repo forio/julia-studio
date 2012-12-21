@@ -126,3 +126,9 @@ HEADERS += \
 SOURCES += \
     packageview.cpp \
     packagemodel.cpp
+
+HEADERS += \
+    packagecontroller.h
+
+SOURCES += \
+    packagecontroller.cpp

@@ -22,7 +22,7 @@ LocalTcpEvaluator::~LocalTcpEvaluator()
   kill();
 }
 
-void LocalTcpEvaluator::eval(const QFileInfo *file_info)
+void LocalTcpEvaluator::eval( const QFileInfo* file_info )
 {
   if ( !socket || socket->state() != QTcpSocket::ConnectedState )
     return;
@@ -34,17 +34,20 @@ void LocalTcpEvaluator::eval(const QFileInfo *file_info)
   executing( command );  // windows hack!
 #else
   command = QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii();
-  output(file_info->baseName() + "\n");
+  //output(file_info->baseName() + "\n");
 #endif
 
-  eval(command);
+  ProjectExplorer::EvaluatorMessage msg;
+  msg.type = JM_EVAL;
+  msg.params.push_back(command);
+
+  eval(msg);
 }
 
-void LocalTcpEvaluator::eval(const QString &code)
+void LocalTcpEvaluator::eval( const ProjectExplorer::EvaluatorMessage& msg )
 {
-  JuliaMsg msg;
-  msg.type = JM_EVAL;
-  msg.params.push_back(code);
+  if ( !socket || socket->state() != QTcpSocket::ConnectedState )
+    return;
 
   QByteArray bytes;
   msg.toBytes(bytes);
@@ -77,7 +80,7 @@ bool LocalTcpEvaluator::canRun(const QString &)
 
 bool LocalTcpEvaluator::isRunning()
 {
-  return process->state() == QProcess::Running;
+  return (process->state() == QProcess::Running) && (socket->state() == QTcpSocket::ConnectedState);
 }
 
 void LocalTcpEvaluator::kill()
@@ -99,6 +102,7 @@ void LocalTcpEvaluator::setWorkingDir(const QString &working_directory)
 void LocalTcpEvaluator::onProcessOutput()
 {
   QByteArray output_bytes = process->readAll();
+  qDebug() << output_bytes;
 
   QRegExp connection_msg("PORT:");
   int index = connection_msg.indexIn(output_bytes);
@@ -117,7 +121,7 @@ void LocalTcpEvaluator::onProcessOutput()
 
 void LocalTcpEvaluator::onProcessError(QProcess::ProcessError error_)
 {
-  output("PROCESS ERROR!");
+  //output("PROCESS ERROR!");
   qDebug() << "PROCESS ERROR";
 }
 
@@ -126,9 +130,14 @@ void LocalTcpEvaluator::onProcessStarted()
 
 void LocalTcpEvaluator::onSocketOutput()
 {
-  JuliaMsg msg;
+  ProjectExplorer::EvaluatorMessage msg;
   QByteArray bytes = socket->readAll();
   msg.fromBytes(bytes);
+
+  emit output(&msg);
+  emit ready();
+
+#if 0
   if (msg.params.size())
   {
     output(msg.params[0] + "\n");
@@ -136,11 +145,12 @@ void LocalTcpEvaluator::onSocketOutput()
   }
   else
     output("DID NOT GET ANY MSG PARAMS");
+#endif
 }
 
 void LocalTcpEvaluator::onSocketError(QAbstractSocket::SocketError error)
 {
-  output("SOCKET ERROR");
+  //output("SOCKET ERROR");
   qDebug() << "SOCKET ERROR";
 }
 

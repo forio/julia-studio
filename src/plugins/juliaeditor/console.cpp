@@ -1,5 +1,6 @@
 #include "console.h"
 #include "juliaeditor.h"
+#include "juliamsg.h"
 
 #include <QDebug>
 
@@ -92,9 +93,15 @@ void Console::TryCommand(const QString &command)
 }
 
 // ----------------------------------------------------------------------------
-void Console::DisplayResult(const QString &result)
+void Console::DisplayResult(const ProjectExplorer::EvaluatorMessage* msg)
 {
-    QString output( result );
+  if ( msg->type != JM_OUTPUT_EVAL &&
+       msg->type != JM_OUTPUT_ERROR )
+  {
+    return;
+  }
+
+  QString output( msg->params[0] + "\n\n" );
 
 #if defined(Q_OS_WIN)
     output.remove( QRegExp("\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]") );
@@ -247,8 +254,12 @@ bool Console::Handle_KeyReturn()
 #endif
   // -----
 
+  ProjectExplorer::EvaluatorMessage msg;
+  msg.type = JM_EVAL;
+  msg.params.push_back(command);
+
   busy = true;
-  emit( NewCommand(command) );
+  emit NewCommand(msg);
 
   return true;
 }

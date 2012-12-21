@@ -6,18 +6,24 @@
 #include <QString>
 #include <QDataStream>
 
-
+// NOTE: These values must stay
+// -----------------------------------------
 const quint8 JM_NULL = 0;
 const quint8 JM_EVAL = 1;
+const quint8 JM_PACKAGE = 2;
 
-const quint8 JM_OUTPUT_ERROR = 129;
-const quint8 JM_OUTPUT_EVAL = 130;
+const quint8 JM_OUTPUT_ERROR = 128;
+const quint8 JM_OUTPUT_EVAL = 129;
+const quint8 JM_OUTPUT_PACKAGE = 130;
+// -----------------------------------------
 
-
-struct JuliaMsg
+#if 0
+class JuliaMsg
 {
+public:
   quint8 type;
   QVector<QString> params;
+
 
   void fromBytes( QByteArray& bytes )
   {
@@ -57,6 +63,7 @@ struct JuliaMsg
       stream << params[i].toStdString().c_str();
   }
 };
+#endif
 
 
 

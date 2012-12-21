@@ -21,8 +21,6 @@ PackageView::PackageView(QWidget *parent) :
   // list customization -----
   list_view = new QTreeView(this);
   list_view->setObjectName( QString::fromUtf8("package_list_view") );
-  list_view->setModel( package_model = new PackageModel );
-  connect( list_view, SIGNAL(doubleClicked(QModelIndex)), package_model, SLOT(AddPackage(const QModelIndex&)) );
 
   list_view->setItemDelegate( new PackageDelegate(this) );
   list_view->setIndentation(0);
@@ -48,10 +46,19 @@ PackageView::PackageView(QWidget *parent) :
   grid_layout->addWidget(list_view, 0, 0, 1, 1);
 }
 
+void PackageView::SetPackageModel(PackageModel *model)
+{
+  list_view->setModel( package_model = model );
+  connect( list_view, SIGNAL(doubleClicked(QModelIndex)), package_model, SLOT(AddPackage(const QModelIndex&)) );
+}
+
 
 Core::NavigationView PackageViewFactory::createWidget()
 {
   Core::NavigationView view;
-  view.widget = new PackageView;
+  PackageView* package_view = new PackageView;
+  view.widget = package_view;
+
+  emit createdWidget(package_view);
   return view;
 }

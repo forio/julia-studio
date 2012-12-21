@@ -30,13 +30,14 @@ class PackageView : public QWidget
 
 public:
   explicit PackageView(QWidget *parent = 0);
+
+  void SetPackageModel(PackageModel* model);
   
 private:
   QGridLayout* grid_layout;
   QTreeView* list_view;
 
   PackageModel* package_model;
-  
 };
 
 
@@ -46,7 +47,7 @@ class PackageViewFactory : public Core::INavigationWidgetFactory
   Q_OBJECT
 
 public:
-  PackageViewFactory() {};
+  PackageViewFactory() {}
 
   QString displayName() const  { return "Packages"; }
   Core::Id id() const  { return Core::Id( displayName() ); }
@@ -55,6 +56,8 @@ public:
 
   Core::NavigationView createWidget();
 
+signals:
+  void createdWidget(PackageView* widget);
 };
 
 }

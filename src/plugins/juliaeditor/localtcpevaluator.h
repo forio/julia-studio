@@ -18,8 +18,8 @@ public:
   virtual ~LocalTcpEvaluator();
 
 public slots:
-  virtual void eval( const QFileInfo* file_info );
-  virtual void eval( const QString& code );
+  virtual void eval(const QFileInfo* file);
+  virtual void eval( const ProjectExplorer::EvaluatorMessage& msg );
 
   virtual void reset();
 
@@ -34,7 +34,7 @@ signals:
   void ready();
   void finished( LocalTcpEvaluator* );
 
-  void output( const QString& output );
+  void output( const ProjectExplorer::EvaluatorMessage* msg );
   
 private slots:
   void onProcessOutput();
