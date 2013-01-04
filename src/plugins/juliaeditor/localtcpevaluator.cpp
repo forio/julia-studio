@@ -12,7 +12,7 @@
 using namespace JuliaPlugin;
 
 LocalTcpEvaluator::LocalTcpEvaluator(QObject *parent) :
-  ProjectExplorer::IEvaluator(parent), socket(NULL)
+  ProjectExplorer::IEvaluator(parent), socket(NULL), busy(false)
 {
   startJuliaProcess();
 }
@@ -24,9 +24,6 @@ LocalTcpEvaluator::~LocalTcpEvaluator()
 
 void LocalTcpEvaluator::eval( const QFileInfo* file_info )
 {
-  if ( !socket || socket->state() != QTcpSocket::ConnectedState )
-    return;
-
   QString command;
 #if defined(Q_OS_WIN)
   command = QString("include(\"" + file_info->absoluteFilePath() + "\")\r\n");
@@ -46,8 +43,11 @@ void LocalTcpEvaluator::eval( const QFileInfo* file_info )
 
 void LocalTcpEvaluator::eval( const ProjectExplorer::EvaluatorMessage& msg )
 {
-  if ( !socket || socket->state() != QTcpSocket::ConnectedState )
+  if ( busy || !socket || socket->state() != QTcpSocket::ConnectedState )
+  {
+    work_queue.push_back(msg);
     return;
+  }
 
   QByteArray bytes;
   msg.toBytes(bytes);
@@ -135,7 +135,9 @@ void LocalTcpEvaluator::onSocketOutput()
   msg.fromBytes(bytes);
 
   emit output(&msg);
-  emit ready();
+  busy = false;
+
+  continueOrReady();
 
 #if 0
   if (msg.params.size())
@@ -152,6 +154,19 @@ void LocalTcpEvaluator::onSocketError(QAbstractSocket::SocketError error)
 {
   //output("SOCKET ERROR");
   qDebug() << "SOCKET ERROR";
+}
+
+void LocalTcpEvaluator::continueOrReady()
+{
+  if ( work_queue.size() )
+  {
+    ProjectExplorer::EvaluatorMessage msg = work_queue.front();
+    work_queue.pop_front();
+
+    eval(msg);
+  }
+  else
+    emit ready();
 }
 
 void LocalTcpEvaluator::exit(int exit_code)
@@ -193,7 +208,7 @@ void LocalTcpEvaluator::connectToJulia(unsigned port)
   socket = new QTcpSocket(this);
   connect(socket, SIGNAL(readyRead()), SLOT(onSocketOutput()));
   connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
-  connect(socket, SIGNAL(connected()), SIGNAL(ready()));
+  connect(socket, SIGNAL(connected()), SLOT(continueOrReady()));
 
   socket->connectToHost("127.0.0.1", port);
 }

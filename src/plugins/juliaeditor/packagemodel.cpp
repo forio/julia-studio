@@ -4,12 +4,15 @@
 
 using namespace JuliaPlugin;
 
+QDebug& JuliaPlugin::operator<<(QDebug& d, const PackageData& p)
+{
+  return d << p.name;
+}
+
+
 PackageModel::PackageModel(QObject *parent) :
   QAbstractListModel(parent)
-{
-  //evaluator = new LocalEvaluator;
-  //connect( evaluator, SIGNAL(ready()), SLOT(GetAvailable()) );
-}
+{}
 
 int PackageModel::rowCount(const QModelIndex &parent) const
 {
@@ -18,31 +21,53 @@ int PackageModel::rowCount(const QModelIndex &parent) const
 
 QVariant PackageModel::data(const QModelIndex &index, int role) const
 {
-  if ( index.row() >= packages.count() || index.column() != 0 )
+  if (index.row() >= packages.count() || index.column() != 0)
       return QVariant();
 
-  if ( role == Qt::DisplayRole )
-      return packages.at( index.row() );
+  if (role == Qt::DisplayRole)
+    return packages.at(index.row()).name;
+  else if (role == Qt::UserRole)
+    return QVariant::fromValue(packages.at(index.row()));
 
   return QVariant();
 }
 
-bool PackageModel::insertRows(const QStringList &data, int row, const QModelIndex &parent)
+bool PackageModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+  if (index.row() >= packages.count() || index.column() != 0)
+    return false;
+
+  QList<PackageData>::iterator data = packages.begin();
+  data += index.row();
+
+  qDebug() << value.value<PackageData>().name;
+  *data = value.value<PackageData>();
+
+  emit dataChanged(index, index);
+
+  return true;
+}
+
+bool PackageModel::insertRows(const QList<PackageData> &data, int row, const QModelIndex &parent)
 {
   beginInsertRows( parent, row, data.size() );
   for ( int i = 0; i < data.size(); ++i )
-    packages.insert(row + i, data.at(i));
+  {
+    QList<PackageData>::iterator existing = qFind(packages.begin(), packages.end(), data.at(i));
+    if (existing != packages.end())
+      *existing = data.at(i);
+    else
+      packages.insert(row + i, data.at(i));
+  }
   endInsertRows();
-
-  qDebug() << packages;
 
   return true;
 }
 
 bool PackageModel::removeRows(int row, int count, const QModelIndex &parent)
 {
-  QStringList::iterator begin = packages.begin() + row;
-  QStringList::iterator end = begin + count;
+  QList<PackageData>::iterator begin = packages.begin() + row;
+  QList<PackageData>::iterator end = begin + count;
 
   beginRemoveRows( parent, row, row + count);
   packages.erase(begin, end);
@@ -56,28 +81,4 @@ void PackageModel::clear()
   beginRemoveRows( QModelIndex(), 0, rowCount() );
   packages.clear();
   endRemoveRows();
-}
-
-void PackageModel::GetAvailable()
-{
-  disconnect( evaluator, SIGNAL(ready()), this, SLOT(GetAvailable()) );
-
-  connect( evaluator, SIGNAL(output(QString)), SLOT(DisplayAvailable(QString)) );
-  evaluator->eval( "load(\"/Users/westley/test-proj/available-packages.jl\")" );
-}
-
-void PackageModel::DisplayAvailable( QString output )
-{
-  QRegExp julia_prompt("julia> ", Qt::CaseSensitive);
-  QStringList package_list = output.remove(julia_prompt).split('\n');
-  package_list.removeAll(QString(""));
-  insertRows(package_list, rowCount());
-}
-
-void PackageModel::AddPackage( const QModelIndex& index )
-{
-  disconnect( evaluator, SIGNAL(ready()), this, SLOT(AddPackage()) );
-
-  QString command( "Pkg.add(\"" + data(index).toString() + "\")\n" );
-  evaluator->eval( command );
 }

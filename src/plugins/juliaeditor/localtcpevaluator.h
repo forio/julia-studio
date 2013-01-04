@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QTcpSocket>
 #include <QTcpSocket>
+#include <QQueue>
 
 namespace JuliaPlugin {
 
@@ -44,12 +45,17 @@ private slots:
   void onSocketOutput();
   void onSocketError( QAbstractSocket::SocketError error );
 
+  void continueOrReady();
+
   void exit( int exit_code );
 
   void startJuliaProcess( QStringList args = QStringList() );
   void connectToJulia( unsigned port );
 
 private:
+  QQueue<ProjectExplorer::EvaluatorMessage> work_queue;
+  bool busy;
+
   QString process_string;
   QProcess* process;
 

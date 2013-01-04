@@ -11,11 +11,11 @@ PackageView::PackageView(QWidget *parent) :
   setWindowTitle( "Packages" );
 
   // layout -----
-  grid_layout = new QGridLayout(this);
-  grid_layout->setObjectName( QString::fromUtf8("package_grid_layout") );
+  layout = new QVBoxLayout(this);
+  layout->setObjectName( QString::fromUtf8("package_grid_layout") );
 
-  grid_layout->setSpacing(0);
-  grid_layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+  layout->setContentsMargins(0, 0, 0, 0);
   // -----
 
   // list customization -----
@@ -36,20 +36,21 @@ PackageView::PackageView(QWidget *parent) :
   list_view->header()->hide();
   list_view->header()->setStretchLastSection(false);
   list_view->header()->setResizeMode(0, QHeaderView::Stretch);
-  list_view->header()->setResizeMode(1, QHeaderView::Fixed);
-  list_view->header()->resizeSection(1, 16);
+  //list_view->header()->setResizeMode(1, QHeaderView::Stretch);
+  //list_view->header()->resizeSection(1, 16);
 
   list_view->viewport()->setAttribute(Qt::WA_Hover);
   list_view->viewport()->installEventFilter(this);
+  list_view->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   // -----
 
-  grid_layout->addWidget(list_view, 0, 0, 1, 1);
+  layout->addWidget(list_view, 1);
 }
 
 void PackageView::SetPackageModel(PackageModel *model)
 {
   list_view->setModel( package_model = model );
-  connect( list_view, SIGNAL(doubleClicked(QModelIndex)), package_model, SLOT(AddPackage(const QModelIndex&)) );
+  //connect( list_view, SIGNAL(doubleClicked(QModelIndex)), package_model, SLOT(AddPackage(const QModelIndex&)) );
 }
 
 
@@ -62,3 +63,6 @@ Core::NavigationView PackageViewFactory::createWidget()
   emit createdWidget(package_view);
   return view;
 }
+
+
+

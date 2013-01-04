@@ -2,7 +2,7 @@
 #define PACKAGEVIEW_H
 
 #include <QAbstractItemView>
-#include <QtGui/QGridLayout>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QTreeView>
 #include <QStyledItemDelegate>
 
@@ -19,7 +19,6 @@ class PackageDelegate : public QStyledItemDelegate
 public:
   PackageDelegate( QObject* parent ) : QStyledItemDelegate(parent)
   {}
-
 };
 
 
@@ -33,8 +32,8 @@ public:
 
   void SetPackageModel(PackageModel* model);
   
-private:
-  QGridLayout* grid_layout;
+//private:
+  QVBoxLayout* layout;
   QTreeView* list_view;
 
   PackageModel* package_model;
