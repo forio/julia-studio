@@ -47,9 +47,9 @@ signals:
 
 public slots:
   void BeginCommand();
-  void TryCommand( const QString& command );
   void DisplayResult( const ProjectExplorer::EvaluatorMessage* msg );
   void Reset( bool preserve_history = true );
+  void SetBusy(const QString& message = QString());
 
   void WindowsHack( const QString& command );
 

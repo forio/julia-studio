@@ -6,15 +6,17 @@
 #include <QString>
 #include <QDataStream>
 
-// NOTE: These values must stay
+// NOTE: These values MUST stay in sync with the julia side
 // -----------------------------------------
 const quint8 JM_NULL = 0;
 const quint8 JM_EVAL = 1;
 const quint8 JM_PACKAGE = 2;
+const quint8 JM_DIR = 3;
 
 const quint8 JM_OUTPUT_ERROR = 128;
 const quint8 JM_OUTPUT_EVAL = 129;
 const quint8 JM_OUTPUT_PACKAGE = 130;
+const quint8 JM_OUTPUT_DIR = 131;
 // -----------------------------------------
 
 #if 0

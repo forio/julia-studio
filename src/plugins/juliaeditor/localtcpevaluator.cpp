@@ -14,6 +14,7 @@ using namespace JuliaPlugin;
 LocalTcpEvaluator::LocalTcpEvaluator(QObject *parent) :
   ProjectExplorer::IEvaluator(parent), socket(NULL), busy(false)
 {
+  connect( this, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), this, SLOT(onChangeDirResult(const ProjectExplorer::EvaluatorMessage*)));
   startJuliaProcess();
 }
 
@@ -97,6 +98,19 @@ void LocalTcpEvaluator::kill()
 
 void LocalTcpEvaluator::setWorkingDir(const QString &working_directory)
 {
+  if (working_directory == curr_working_dir || socket->state() != QTcpSocket::ConnectedState)
+    return;
+
+  curr_working_dir = working_directory;
+
+  if (!curr_working_dir.size())
+    return;
+
+  ProjectExplorer::EvaluatorMessage msg;
+  msg.type = JM_DIR;
+  msg.params.push_back(curr_working_dir);
+
+  eval(msg);
 }
 
 void LocalTcpEvaluator::onProcessOutput()
@@ -109,13 +123,13 @@ void LocalTcpEvaluator::onProcessOutput()
   if (index != -1)
   {
     QString port_str = output_bytes.data() + index + 5;
-
     bool ok;
     unsigned port = port_str.toUInt(&ok);
 
-    qDebug() << port;
-
-    connectToJulia(port);
+    if (ok)
+      connectToJulia(port);
+    else
+      qDebug() << "ERROR connecting to Julia. Failed to determine port number.";
   }
 }
 
@@ -138,22 +152,26 @@ void LocalTcpEvaluator::onSocketOutput()
   busy = false;
 
   continueOrReady();
-
-#if 0
-  if (msg.params.size())
-  {
-    output(msg.params[0] + "\n");
-    emit ready();
-  }
-  else
-    output("DID NOT GET ANY MSG PARAMS");
-#endif
 }
 
 void LocalTcpEvaluator::onSocketError(QAbstractSocket::SocketError error)
 {
   //output("SOCKET ERROR");
   qDebug() << "SOCKET ERROR";
+}
+
+void LocalTcpEvaluator::onSocketConnected()
+{
+  if (curr_working_dir.size())
+  {
+    ProjectExplorer::EvaluatorMessage msg;
+    msg.type = JM_DIR;
+    msg.params.push_back(curr_working_dir);
+
+    eval(msg);
+  }
+  else
+    continueOrReady();
 }
 
 void LocalTcpEvaluator::continueOrReady()
@@ -208,7 +226,15 @@ void LocalTcpEvaluator::connectToJulia(unsigned port)
   socket = new QTcpSocket(this);
   connect(socket, SIGNAL(readyRead()), SLOT(onSocketOutput()));
   connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
-  connect(socket, SIGNAL(connected()), SLOT(continueOrReady()));
+  connect(socket, SIGNAL(connected()), SLOT(onSocketConnected()));
 
   socket->connectToHost("127.0.0.1", port);
+}
+
+void LocalTcpEvaluator::onChangeDirResult(const ProjectExplorer::EvaluatorMessage *msg)
+{
+  if (msg->type != JM_OUTPUT_DIR)
+    return;
+
+  //emit ready();
 }

@@ -205,6 +205,8 @@ void JuliaEditorPlugin::evalCurrFile()
 
     Core::IDocument* document = editor->document();
     QFileInfo file_info(document->fileName());
+
+    console_pane->outputWidget()->SetBusy(file_info.baseName());
     evaluator->eval(&file_info);
   }
 }

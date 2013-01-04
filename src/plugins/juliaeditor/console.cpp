@@ -70,6 +70,9 @@ TextEditor::BaseTextEditor *Console::createEditor()
 // ----------------------------------------------------------------------------
 void Console::BeginCommand()
 {
+  if (!busy)
+    return;
+
   setUndoRedoEnabled(false);  // skip the prompt text
 
   moveCursor( QTextCursor::End );
@@ -80,16 +83,6 @@ void Console::BeginCommand()
   setUndoRedoEnabled(true);
 
   emit( Ready( this ) );
-}
-
-// ----------------------------------------------------------------------------
-void Console::TryCommand(const QString &command)
-{
-  if ( !busy )
-  {
-    SetCurrCommand( command );
-    Handle_KeyReturn();
-  }
 }
 
 // ----------------------------------------------------------------------------
@@ -132,12 +125,29 @@ void Console::Reset( bool preserve_history )
   }
 
   clear();
+  busy = true;
 
 #if defined(Q_OS_WIN)
   remaining_bytes = 0;
 #endif
 
   emit( Reseting( preserve_history ) );
+}
+
+// ----------------------------------------------------------------------------
+void Console::SetBusy(const QString &message)
+{
+  if (busy)
+    return;
+
+  busy = true;
+
+  moveCursor( QTextCursor::End );
+
+  if (message.size())
+    insertPlainText(message);
+
+  insertPlainText( "\n" );
 }
 
 // ----------------------------------------------------------------------------
@@ -245,8 +255,7 @@ bool Console::Handle_KeyReturn()
   command_history.insertRows( QStringList(command), command_history.rowCount() );
   history_index = QModelIndex();
 
-  moveCursor( QTextCursor::End );
-  insertPlainText( "\n" );
+  SetBusy();
 
   // windows hack -----
 #if defined(Q_OS_WIN)
@@ -258,7 +267,6 @@ bool Console::Handle_KeyReturn()
   msg.type = JM_EVAL;
   msg.params.push_back(command);
 
-  busy = true;
   emit NewCommand(msg);
 
   return true;

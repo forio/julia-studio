@@ -44,6 +44,7 @@ private slots:
 
   void onSocketOutput();
   void onSocketError( QAbstractSocket::SocketError error );
+  void onSocketConnected();
 
   void continueOrReady();
 
@@ -51,6 +52,8 @@ private slots:
 
   void startJuliaProcess( QStringList args = QStringList() );
   void connectToJulia( unsigned port );
+
+  void onChangeDirResult(const ProjectExplorer::EvaluatorMessage* msg);
 
 private:
   QQueue<ProjectExplorer::EvaluatorMessage> work_queue;
