@@ -49,12 +49,9 @@ void PackageController::AddPackage(const QModelIndex &index)
 
   PackageData data = model->data(index, Qt::UserRole).value<PackageData>();
   msg.params.push_back(data.name);
-
-  data.installed = true;
-  qDebug() << data.name << data.installed;
-  qDebug() << model->setData(index, QVariant::fromValue(data));
-
   evaluator->eval(msg);
+
+  GetInstalled();
 }
 
 void PackageController::RemovePackage(const QModelIndex &index)
@@ -65,11 +62,9 @@ void PackageController::RemovePackage(const QModelIndex &index)
 
   PackageData data = model->data(index, Qt::UserRole).value<PackageData>();
   msg.params.push_back( data.name );
-
-  data.installed = false;
-  qDebug() << model->setData(index, QVariant::fromValue(data));
-
   evaluator->eval(msg);
+
+  GetInstalled();
 }
 
 void PackageController::UpdateAvailable()
@@ -101,6 +96,8 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
   }
   if ( msg->params[0] == "installed" )
   {
+    model->invalidateAll();
+
     QList<PackageData> package_list;
     for ( int i = 1; i < msg->params.size(); ++i )
       package_list.append(PackageData(msg->params[i], true));

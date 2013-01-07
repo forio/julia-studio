@@ -76,6 +76,17 @@ bool PackageModel::removeRows(int row, int count, const QModelIndex &parent)
   return true;
 }
 
+void PackageModel::invalidateAll()
+{
+  for(QList<PackageData>::iterator pkg = packages.begin(); pkg != packages.end(); ++pkg)
+    pkg->installed = false;
+
+  emit dataChanged(index(0), index(rowCount()));
+
+  for(QList<PackageData>::iterator pkg = packages.begin(); pkg != packages.end(); ++pkg)
+    qDebug() << pkg->installed;
+}
+
 void PackageModel::clear()
 {
   beginRemoveRows( QModelIndex(), 0, rowCount() );

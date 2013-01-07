@@ -17,8 +17,13 @@ class PackageDelegate : public QStyledItemDelegate
   Q_OBJECT
 
 public:
-  PackageDelegate( QObject* parent ) : QStyledItemDelegate(parent)
+  PackageDelegate( PackageModel* model, QObject* parent ) : QStyledItemDelegate(parent), package_model(model)
   {}
+
+  void paint(QPainter *painter, const QStyleOptionViewItem &option_, const QModelIndex &index) const;
+
+private:
+  PackageModel* package_model;
 };
 
 

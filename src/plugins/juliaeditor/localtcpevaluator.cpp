@@ -53,6 +53,7 @@ void LocalTcpEvaluator::eval( const ProjectExplorer::EvaluatorMessage& msg )
   QByteArray bytes;
   msg.toBytes(bytes);
 
+  busy = true;
   socket->write(bytes);
 }
 

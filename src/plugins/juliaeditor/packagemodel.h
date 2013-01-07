@@ -41,6 +41,8 @@ public:
   virtual bool insertRows(const QList<PackageData>& data, int row, const QModelIndex &parent = QModelIndex());
   virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
+  virtual void invalidateAll();
+
   virtual void clear();
 
 private:

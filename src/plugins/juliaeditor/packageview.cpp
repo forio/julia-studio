@@ -2,8 +2,24 @@
 #include "packagemodel.h"
 
 #include <QHeaderView>
+#include <QPainter>
 
 using namespace JuliaPlugin;
+
+void PackageDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option_, const QModelIndex &index) const
+{
+  painter->save();
+
+  QStyleOptionViewItem option = option_;
+  PackageData data = package_model->data(index, Qt::UserRole).value<PackageData>();
+  if (data.installed)
+    option.font.setBold(true);
+
+  QStyledItemDelegate::paint(painter, option, index);
+
+  painter->restore();
+}
+
 
 PackageView::PackageView(QWidget *parent) :
   QWidget(parent)
@@ -22,7 +38,6 @@ PackageView::PackageView(QWidget *parent) :
   list_view = new QTreeView(this);
   list_view->setObjectName( QString::fromUtf8("package_list_view") );
 
-  list_view->setItemDelegate( new PackageDelegate(this) );
   list_view->setIndentation(0);
   list_view->setFrameStyle(QFrame::NoFrame);
   list_view->setUniformRowHeights(true);
@@ -50,6 +65,7 @@ PackageView::PackageView(QWidget *parent) :
 void PackageView::SetPackageModel(PackageModel *model)
 {
   list_view->setModel( package_model = model );
+  list_view->setItemDelegate( new PackageDelegate(package_model, this) );
   //connect( list_view, SIGNAL(doubleClicked(QModelIndex)), package_model, SLOT(AddPackage(const QModelIndex&)) );
 }
 
@@ -63,6 +79,5 @@ Core::NavigationView PackageViewFactory::createWidget()
   emit createdWidget(package_view);
   return view;
 }
-
 
 
