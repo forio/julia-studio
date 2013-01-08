@@ -46,6 +46,9 @@ const int  P_MODE_WELCOME          = 100;
 const int  P_MODE_EDIT             = 90;
 const int  P_MODE_DESIGN           = 89;
 
+// Open Modes
+const char O_SEPERATE[]            = "QtCreator.Open.Seperate";
+
 // Menubar
 const char MENU_BAR[]              = "QtCreator.MenuBar";
 

@@ -37,6 +37,7 @@
 #include <QMap>
 #include <QImageReader>
 #include <QDebug>
+#include <coreplugin/editormanager/editormanager.h>
 
 namespace ImageViewer {
 namespace Internal {

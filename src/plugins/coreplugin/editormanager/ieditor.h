@@ -70,6 +70,7 @@ public:
     virtual QWidget *toolBar() = 0;
 
     virtual Id preferredModeType() const { return Id(); }
+    virtual Id preferredOpenMode() const { return Id(); }
 
 signals:
     void changed();

@@ -1307,6 +1307,12 @@ IEditor *EditorManager::openEditor(Core::Internal::EditorView *view, const QStri
     if (!editor) // Internal error
         return 0;
 
+    Id open_preference = editor->preferredOpenMode();
+    if (open_preference == Id(Constants::O_SEPERATE) && visibleEditors().size() < 2) {
+        splitSideBySide();
+        view = d->m_splitter->findFirstView()->view();
+    }
+
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     QString errorString;
     if (!editor->open(&errorString, fn, realFn)) {

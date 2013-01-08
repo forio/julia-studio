@@ -33,6 +33,8 @@
 
 #include <coreplugin/editormanager/ieditor.h>
 #include <coreplugin/idocument.h>
+#include <coreplugin/coreconstants.h>
+#include <coreplugin/id.h>
 
 #include <QScopedPointer>
 #include <QStringList>
@@ -73,6 +75,8 @@ public:
     bool isTemporary() const;
 
     QWidget *toolBar();
+
+    Core::Id preferredOpenMode() const  { return Core::Id(Core::Constants::O_SEPERATE); }
 
 public slots:
     void imageSizeUpdated(const QSize &size);
