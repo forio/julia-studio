@@ -1,5 +1,6 @@
 #include "juliaeditor.h"
 #include "juliaeditor_constants.h"
+#include "juliaeditorplugin.h"
 
 #include <coreplugin/mimedatabase.h>
 #include <coreplugin/icore.h>
@@ -8,8 +9,10 @@
 #include <texteditor/generichighlighter/manager.h>
 #include <texteditor/fontsettings.h>
 #include <texteditor/texteditorconstants.h>
+#include <texteditor/basetexteditor.h>
 #include <utils/uncommentselection.h>
 #include <texteditor/generichighlighter/highlightdefinition.h>
+#include <extensionsystem/pluginmanager.h>
 
 #include <QDebug>
 
@@ -23,6 +26,20 @@ JuliaEditor::JuliaEditor(TextEditor::BaseTextEditorWidget *widget)
   m_context.add(Constants::JULIAEDITOR);
   //m_context.add(ProjectExplorer::Constants::LANG_JULIA);
   //m_context.add(TextEditor::Constants::JULIA_TEXTEDITOR);
+}
+
+Core::IEditor *JuliaEditor::duplicate(QWidget *parent)
+{
+  QList<Internal::JuliaEditorFactory*> factories = ExtensionSystem::PluginManager::getObjects<Internal::JuliaEditorFactory>();
+  if (!factories.size())
+    return NULL;
+
+  JuliaEditor* editor = qobject_cast<JuliaEditor*>(factories.front()->createEditor(parent));//new JuliaEditorWidget(parent);
+  TextEditor::BaseTextEditorWidget* editor_widget = editor->editorWidget();
+  qDebug() << (editor_widget == NULL);
+  editor_widget->duplicateFrom(editorWidget());
+
+  return editor_widget->editor();
 }
 
 Core::Id JuliaEditor::id() const

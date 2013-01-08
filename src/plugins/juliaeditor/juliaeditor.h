@@ -14,8 +14,8 @@ class JuliaEditor : public TextEditor::BaseTextEditor
 public:
   JuliaEditor(TextEditor::BaseTextEditorWidget *widget);
 
-  bool duplicateSupported() const  { return false; }
-  Core::IEditor* duplicate(QWidget *parent)  { return NULL; }
+  bool duplicateSupported() const  { return true; }
+  Core::IEditor* duplicate(QWidget *parent);
 
   Core::Id id() const;
 
