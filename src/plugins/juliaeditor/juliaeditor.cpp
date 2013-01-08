@@ -36,7 +36,6 @@ Core::IEditor *JuliaEditor::duplicate(QWidget *parent)
 
   JuliaEditor* editor = qobject_cast<JuliaEditor*>(factories.front()->createEditor(parent));//new JuliaEditorWidget(parent);
   TextEditor::BaseTextEditorWidget* editor_widget = editor->editorWidget();
-  qDebug() << (editor_widget == NULL);
   editor_widget->duplicateFrom(editorWidget());
 
   return editor_widget->editor();

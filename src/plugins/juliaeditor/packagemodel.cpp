@@ -82,9 +82,6 @@ void PackageModel::invalidateAll()
     pkg->installed = false;
 
   emit dataChanged(index(0), index(rowCount()));
-
-  for(QList<PackageData>::iterator pkg = packages.begin(); pkg != packages.end(); ++pkg)
-    qDebug() << pkg->installed;
 }
 
 void PackageModel::clear()

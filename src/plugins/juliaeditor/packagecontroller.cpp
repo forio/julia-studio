@@ -87,7 +87,6 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
 
   if ( msg->params[0] == "available" )
   {
-    qDebug() << "RECEIVING AVAILABLE PACKAGE OUTPUT";
     QList<PackageData> package_list;
     for ( int i = 1; i < msg->params.size(); ++i )
       package_list.append(PackageData(msg->params[i]));
