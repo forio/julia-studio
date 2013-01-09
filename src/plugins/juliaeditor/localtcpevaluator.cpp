@@ -12,7 +12,7 @@
 using namespace JuliaPlugin;
 
 LocalTcpEvaluator::LocalTcpEvaluator(QObject *parent) :
-  ProjectExplorer::IEvaluator(parent), socket(NULL), busy(false)
+  ProjectExplorer::IEvaluator(parent), socket(NULL), busy(false), curr_msg_size(-1)
 {
   connect( this, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), this, SLOT(onChangeDirResult(const ProjectExplorer::EvaluatorMessage*)));
   startJuliaProcess();
@@ -73,6 +73,7 @@ void LocalTcpEvaluator::reset()
   socket->deleteLater();
 
   busy = false;
+  curr_msg_size = -1;
   work_queue.clear();
   startJuliaProcess();
 }
@@ -119,7 +120,6 @@ void LocalTcpEvaluator::setWorkingDir(const QString &working_directory)
 void LocalTcpEvaluator::onProcessOutput()
 {
   QByteArray output_bytes = process->readAll();
-  qDebug() << output_bytes;
 
   QRegExp connection_msg("PORT:");
   int index = connection_msg.indexIn(output_bytes);
@@ -147,12 +147,27 @@ void LocalTcpEvaluator::onProcessStarted()
 
 void LocalTcpEvaluator::onSocketOutput()
 {
+  int bytes_available = socket->bytesAvailable();
+  if (bytes_available < sizeof(qint32))
+    return;
+
+  QDataStream stream(socket);
+  stream.setVersion(QDataStream::Qt_4_0);
+  stream.setByteOrder(QDataStream::LittleEndian);
+
+  if (curr_msg_size == -1)
+    stream >> curr_msg_size;
+
+  if (curr_msg_size > socket->bytesAvailable())
+    return;
+
   ProjectExplorer::EvaluatorMessage msg;
-  QByteArray bytes = socket->readAll();
-  msg.fromBytes(bytes);
+  //QByteArray bytes = socket->readAll();
+  msg.from(stream);
 
   emit output(&msg);
   busy = false;
+  curr_msg_size = -1;
 
   continueOrReady();
 }

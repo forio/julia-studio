@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QString>
 #include <QDataStream>
+#include <QDebug>
 
 #include "projectexplorer_export.h"
 
@@ -22,12 +23,8 @@ public:
   QVector<QString> params;
 
 
-  void fromBytes( QByteArray& bytes )
+  void from( QDataStream& stream )
   {
-    QDataStream stream(&bytes, QIODevice::ReadOnly);
-    stream.setVersion(QDataStream::Qt_4_0);
-    stream.setByteOrder(QDataStream::LittleEndian);
-
     stream >> type;
 
     quint8 num_params;
@@ -44,6 +41,15 @@ public:
       params.push_back(QString::fromUtf8(buff, param_size));
       delete buff;
     }
+  }
+
+  void from( QByteArray& bytes )
+  {
+    QDataStream stream(&bytes, QIODevice::ReadOnly);
+    stream.setVersion(QDataStream::Qt_4_0);
+    stream.setByteOrder(QDataStream::LittleEndian);
+
+    from(stream);
   }
 
   void toBytes(QByteArray& bytes) const

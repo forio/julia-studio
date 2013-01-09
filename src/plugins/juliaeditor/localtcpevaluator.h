@@ -63,6 +63,7 @@ private:
   QProcess* process;
 
   QTcpSocket* socket;
+  qint32 curr_msg_size;
 
   QString curr_working_dir;
   
