@@ -72,6 +72,8 @@ void LocalTcpEvaluator::reset()
   process->deleteLater();
   socket->deleteLater();
 
+  busy = false;
+  work_queue.clear();
   startJuliaProcess();
 }
 
