@@ -47,7 +47,8 @@ signals:
 
 public slots:
   void BeginCommand();
-  void DisplayResult( const ProjectExplorer::EvaluatorMessage* msg );
+  void DisplayMsg( const ProjectExplorer::EvaluatorMessage* msg );
+  void DisplayMsg( const QString& msg );
   void Reset( bool preserve_history = true );
   void SetBusy(const QString& message = QString());
 

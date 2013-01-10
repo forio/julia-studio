@@ -86,7 +86,7 @@ void Console::BeginCommand()
 }
 
 // ----------------------------------------------------------------------------
-void Console::DisplayResult(const ProjectExplorer::EvaluatorMessage* msg)
+void Console::DisplayMsg(const ProjectExplorer::EvaluatorMessage* msg)
 {
   if ( msg->type != JM_OUTPUT_EVAL &&
        msg->type != JM_OUTPUT_ERROR )
@@ -113,6 +113,20 @@ void Console::DisplayResult(const ProjectExplorer::EvaluatorMessage* msg)
   QTextCursor cursor = textCursor();
   cursor.movePosition( QTextCursor::End );
   cursor.insertText( output );
+}
+
+// ----------------------------------------------------------------------------
+void Console::DisplayMsg(const QString &msg)
+{
+  bool expecting = busy;
+  SetBusy();
+
+  QTextCursor cursor = textCursor();
+  cursor.movePosition( QTextCursor::End );
+  cursor.insertText( msg );
+
+  if (!expecting)
+    BeginCommand();
 }
 
 // ----------------------------------------------------------------------------

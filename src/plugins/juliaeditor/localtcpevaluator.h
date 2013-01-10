@@ -36,6 +36,7 @@ signals:
   void finished( LocalTcpEvaluator* );
 
   void output( const ProjectExplorer::EvaluatorMessage* msg );
+  void output( const QString& msg );
   
 private slots:
   void onProcessOutput();

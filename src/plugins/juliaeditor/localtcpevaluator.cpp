@@ -136,7 +136,11 @@ void LocalTcpEvaluator::onProcessOutput()
       connectToJulia(port);
     else
       qDebug() << "ERROR connecting to Julia. Failed to determine port number.";
+
+    return;
   }
+
+  emit output(output_bytes);
 }
 
 void LocalTcpEvaluator::onProcessError(QProcess::ProcessError error_)
