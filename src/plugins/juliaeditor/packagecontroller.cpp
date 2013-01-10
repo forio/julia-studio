@@ -7,7 +7,7 @@
 using namespace JuliaPlugin;
 
 PackageController::PackageController(LocalTcpEvaluator* evaluator_, QObject *parent) :
-  QObject(parent), evaluator(evaluator_)
+  QObject(parent), evaluator(evaluator_), busy(false)
 {
   model = new PackageModel;
 
@@ -43,12 +43,17 @@ void PackageController::GetInstalled()
 
 void PackageController::AddPackage(const QModelIndex &index)
 {
+  if (busy)
+    return;
+
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
   msg.params.push_back("add");
 
   PackageData data = model->data(index, Qt::UserRole).value<PackageData>();
   msg.params.push_back(data.name);
+
+  busy = true;
   evaluator->eval(msg);
 
   GetInstalled();
@@ -56,12 +61,17 @@ void PackageController::AddPackage(const QModelIndex &index)
 
 void PackageController::RemovePackage(const QModelIndex &index)
 {
+  if (busy)
+    return;
+
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
   msg.params.push_back("remove");
 
   PackageData data = model->data(index, Qt::UserRole).value<PackageData>();
   msg.params.push_back( data.name );
+
+  busy = true;
   evaluator->eval(msg);
 
   GetInstalled();
@@ -69,6 +79,8 @@ void PackageController::RemovePackage(const QModelIndex &index)
 
 void PackageController::UpdateAvailable()
 {
+  if (busy)
+    return;
 }
 
 void PackageController::TogglePackage(const QModelIndex &index)
@@ -87,6 +99,8 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
 
   if ( msg->params[0] == "available" )
   {
+    busy = false;
+
     QList<PackageData> package_list;
     for ( int i = 1; i < msg->params.size(); ++i )
       package_list.append(PackageData(msg->params[i]));
@@ -95,6 +109,7 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
   }
   if ( msg->params[0] == "installed" )
   {
+    busy = false;
     model->invalidateAll();
 
     QList<PackageData> package_list;

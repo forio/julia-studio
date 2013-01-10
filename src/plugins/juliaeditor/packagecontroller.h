@@ -38,6 +38,7 @@ private:
   QStringList installed_packages;
 
   LocalTcpEvaluator* evaluator;
+  bool busy;
 };
 
 }
