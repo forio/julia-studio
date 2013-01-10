@@ -249,7 +249,7 @@ private:
     IEditor *activateEditor(Internal::EditorView *view, IEditor *editor, OpenEditorFlags flags = 0);
     void activateEditorForIndex(Internal::EditorView *view, const QModelIndex &index, OpenEditorFlags = 0);
     IEditor *openEditor(Internal::EditorView *view, const QString &fileName,
-        const Id &id = Id(), OpenEditorFlags flags = 0, bool *newEditor = 0);
+        const Id &id = Id(), OpenEditorFlags flags = 0, bool *newEditor = 0, bool restoring = false);
     Internal::SplitterOrView *currentSplitterOrView() const;
     Internal::SplitterOrView *topSplitterOrView() const;
 

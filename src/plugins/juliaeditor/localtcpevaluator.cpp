@@ -72,9 +72,12 @@ void LocalTcpEvaluator::reset()
   process->deleteLater();
   socket->deleteLater();
 
+  process = NULL;
+  socket = NULL;
   busy = false;
   curr_msg_size = -1;
   work_queue.clear();
+
   startJuliaProcess();
 }
 
@@ -102,7 +105,7 @@ void LocalTcpEvaluator::kill()
 
 void LocalTcpEvaluator::setWorkingDir(const QString &working_directory)
 {
-  if (working_directory == curr_working_dir || socket->state() != QTcpSocket::ConnectedState)
+  if (working_directory == curr_working_dir || !socket || socket->state() != QTcpSocket::ConnectedState)
     return;
 
   curr_working_dir = working_directory;

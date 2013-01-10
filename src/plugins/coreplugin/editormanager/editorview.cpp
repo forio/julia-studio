@@ -843,7 +843,7 @@ void SplitterOrView::restoreState(const QByteArray &state)
         if (!QFile::exists(fileName))
             return;
         IEditor *e = em->openEditor(view(), fileName, Id(id), Core::EditorManager::IgnoreNavigationHistory
-                                    | Core::EditorManager::NoActivate);
+                                    | Core::EditorManager::NoActivate, 0, true);
 
         if (!e) {
             QModelIndex idx = em->openedEditorsModel()->firstRestoredEditor();

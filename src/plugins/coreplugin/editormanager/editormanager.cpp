@@ -1267,7 +1267,7 @@ static QString autoSaveName(const QString &fileName)
 }
 
 IEditor *EditorManager::openEditor(Core::Internal::EditorView *view, const QString &fileName,
-                        const Id &editorId, OpenEditorFlags flags, bool *newEditor)
+                        const Id &editorId, OpenEditorFlags flags, bool *newEditor,  bool restoring)
 {
     if (debugEditorManager)
         qDebug() << Q_FUNC_INFO << fileName << editorId.name();
@@ -1308,7 +1308,7 @@ IEditor *EditorManager::openEditor(Core::Internal::EditorView *view, const QStri
         return 0;
 
     Id open_preference = editor->preferredOpenMode();
-    if (open_preference == Id(Constants::O_SEPERATE) && visibleEditors().size() < 2) {
+    if (!restoring && open_preference == Id(Constants::O_SEPERATE) && visibleEditors().size() == 1) {
         splitSideBySide();
         view = d->m_splitter->findFirstView()->view();
     }
