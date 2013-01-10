@@ -12,7 +12,7 @@ void PackageDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
 
   QStyleOptionViewItem option = option_;
   PackageData data = package_model->data(index, Qt::UserRole).value<PackageData>();
-  if (data.installed)
+  if (data.required)
     option.font.setBold(true);
 
   QStyledItemDelegate::paint(painter, option, index);

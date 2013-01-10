@@ -23,7 +23,7 @@ public slots:
   void OnNewPackageView(PackageView* package_view);
 
   void GetAvailable();
-  void GetInstalled();
+  void GetRequired();
   void AddPackage(const QModelIndex& index);
   void RemovePackage(const QModelIndex& index);
 

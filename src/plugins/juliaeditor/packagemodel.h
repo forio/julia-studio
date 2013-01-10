@@ -12,15 +12,15 @@ namespace JuliaPlugin {
 
 struct PackageData
 {
-  PackageData() : installed(false)  {}
-  PackageData(const QString name_) : name(name_), installed(false)  {}
-  PackageData(const QString name_, bool installed_) : name(name_), installed(installed_)  {}
+  PackageData() : required(false)  {}
+  PackageData(const QString name_) : name(name_), required(false)  {}
+  PackageData(const QString name_, bool installed_) : name(name_), required(installed_)  {}
 
   bool operator < (const PackageData& rhs) const  { return name < rhs.name; }
   bool operator == (const PackageData& rhs) const  { return name == rhs.name; }
 
   QString name;
-  bool installed;
+  bool required;
 };
 
 QDebug& operator << (QDebug& d, const PackageData& p);

@@ -13,7 +13,7 @@ PackageController::PackageController(LocalTcpEvaluator* evaluator_, Console* con
 
   connect(evaluator, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), SLOT(EvaluatorOutput(const ProjectExplorer::EvaluatorMessage*)));
   GetAvailable();
-  GetInstalled();
+  GetRequired();
 }
 
 void PackageController::OnConsoleReset()
@@ -37,11 +37,11 @@ void PackageController::GetAvailable()
   evaluator->eval(msg);
 }
 
-void PackageController::GetInstalled()
+void PackageController::GetRequired()
 {
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
-  msg.params.push_back("installed");
+  msg.params.push_back("required");
 
   evaluator->eval(msg);
 }
@@ -62,7 +62,7 @@ void PackageController::AddPackage(const QModelIndex &index)
   console->SetBusy("adding " + data.name);
   evaluator->eval(msg);
 
-  GetInstalled();
+  GetRequired();
 }
 
 void PackageController::RemovePackage(const QModelIndex &index)
@@ -81,7 +81,7 @@ void PackageController::RemovePackage(const QModelIndex &index)
   console->SetBusy("removing " + data.name);
   evaluator->eval(msg);
 
-  GetInstalled();
+  GetRequired();
 }
 
 void PackageController::UpdateAvailable()
@@ -93,7 +93,7 @@ void PackageController::UpdateAvailable()
 void PackageController::TogglePackage(const QModelIndex &index)
 {
   PackageData pdata = model->data(index, Qt::UserRole).value<PackageData>();
-  if (pdata.installed)
+  if (pdata.required)
     RemovePackage(index);
   else
     AddPackage(index);
@@ -114,7 +114,7 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
 
     model->insertRows(package_list, model->rowCount());
   }
-  if ( msg->params[0] == "installed" )
+  if ( msg->params[0] == "required" )
   {
     busy = false;
     model->invalidateAll();
@@ -132,5 +132,5 @@ void PackageController::ResetOnConsoleReady()
   disconnect(console, SIGNAL(Ready(Console*)), this, SLOT(ResetOnConsoleReady()));
   busy = false;
   GetAvailable();
-  GetInstalled();
+  GetRequired();
 }
