@@ -59,7 +59,7 @@ void PackageController::AddPackage(const QModelIndex &index)
   msg.params.push_back(data.name);
 
   busy = true;
-  console->SetBusy();
+  console->SetBusy("adding " + data.name);
   evaluator->eval(msg);
 
   GetInstalled();
@@ -78,7 +78,7 @@ void PackageController::RemovePackage(const QModelIndex &index)
   msg.params.push_back( data.name );
 
   busy = true;
-  console->SetBusy();
+  console->SetBusy("removing " + data.name);
   evaluator->eval(msg);
 
   GetInstalled();
