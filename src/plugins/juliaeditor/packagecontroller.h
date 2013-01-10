@@ -5,6 +5,7 @@
 
 #include "packageview.h"
 #include "packagemodel.h"
+#include "console.h"
 
 namespace JuliaPlugin {
 
@@ -15,9 +16,10 @@ class PackageController : public QObject
   Q_OBJECT
 
 public:
-  explicit PackageController(LocalTcpEvaluator* evaluator_, QObject *parent = 0);
+  explicit PackageController(LocalTcpEvaluator* evaluator_, Console* console_, QObject *parent = 0);
 
 public slots:
+  void OnConsoleReset();
   void OnNewPackageView(PackageView* package_view);
 
   void GetAvailable();
@@ -30,6 +32,7 @@ private slots:
   void TogglePackage(const QModelIndex& index);
 
   void EvaluatorOutput(const ProjectExplorer::EvaluatorMessage* msg);
+  void ResetOnConsoleReady();
 
 signals:
 
@@ -38,6 +41,7 @@ private:
   QStringList installed_packages;
 
   LocalTcpEvaluator* evaluator;
+  Console* console;
   bool busy;
 };
 

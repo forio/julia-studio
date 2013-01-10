@@ -127,9 +127,10 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   // Navigation Menus -------
   addAutoReleasedObject( new CommandHistoryViewFactory( console_pane->getConsoleHandle() ) );
 
-  PackageController* package_controller = new PackageController(evaluator);
+  PackageController* package_controller = new PackageController(evaluator, console);
   PackageViewFactory* package_view_factory = new PackageViewFactory;
   connect(package_view_factory, SIGNAL(createdWidget(PackageView*)), package_controller, SLOT(OnNewPackageView(PackageView*)));
+  connect(console, SIGNAL(Reseting()), package_controller, SLOT(OnConsoleReset()));
 
   addAutoReleasedObject(package_controller);
   addAutoReleasedObject(package_view_factory);

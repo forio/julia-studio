@@ -6,14 +6,19 @@
 
 using namespace JuliaPlugin;
 
-PackageController::PackageController(LocalTcpEvaluator* evaluator_, QObject *parent) :
-  QObject(parent), evaluator(evaluator_), busy(false)
+PackageController::PackageController(LocalTcpEvaluator* evaluator_, Console* console_, QObject *parent) :
+  QObject(parent), evaluator(evaluator_), console(console_), busy(false)
 {
   model = new PackageModel;
 
   connect(evaluator, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), SLOT(EvaluatorOutput(const ProjectExplorer::EvaluatorMessage*)));
   GetAvailable();
   GetInstalled();
+}
+
+void PackageController::OnConsoleReset()
+{
+  connect(console, SIGNAL(Ready(Console*)), SLOT(ResetOnConsoleReady()));
 }
 
 void PackageController::OnNewPackageView(PackageView *package_view)
@@ -54,6 +59,7 @@ void PackageController::AddPackage(const QModelIndex &index)
   msg.params.push_back(data.name);
 
   busy = true;
+  console->SetBusy();
   evaluator->eval(msg);
 
   GetInstalled();
@@ -72,6 +78,7 @@ void PackageController::RemovePackage(const QModelIndex &index)
   msg.params.push_back( data.name );
 
   busy = true;
+  console->SetBusy();
   evaluator->eval(msg);
 
   GetInstalled();
@@ -118,4 +125,12 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
 
     model->insertRows(package_list, model->rowCount());
   }
+}
+
+void PackageController::ResetOnConsoleReady()
+{
+  disconnect(console, SIGNAL(Ready(Console*)), this, SLOT(ResetOnConsoleReady()));
+  busy = false;
+  GetAvailable();
+  GetInstalled();
 }
