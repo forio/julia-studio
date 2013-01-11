@@ -20,15 +20,15 @@ public:
 
 public slots:
   void OnConsoleReset();
-  void OnNewPackageView(PackageView* package_view);
+  void OnNewPackageView(Core::NavigationView* package_view);
 
   void GetAvailable();
   void GetRequired();
   void AddPackage(const QModelIndex& index);
   void RemovePackage(const QModelIndex& index);
+  void UpdatePackages();
 
 private slots:
-  void UpdateAvailable();
   void TogglePackage(const QModelIndex& index);
 
   void EvaluatorOutput(const ProjectExplorer::EvaluatorMessage* msg);

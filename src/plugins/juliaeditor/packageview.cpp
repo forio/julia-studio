@@ -3,6 +3,7 @@
 
 #include <QHeaderView>
 #include <QPainter>
+#include <QToolButton>
 
 using namespace JuliaPlugin;
 
@@ -76,7 +77,12 @@ Core::NavigationView PackageViewFactory::createWidget()
   PackageView* package_view = new PackageView;
   view.widget = package_view;
 
-  emit createdWidget(package_view);
+  QToolButton* update_packages = new QToolButton;
+  update_packages->setText("Update");
+  update_packages->setToolTip("Update packages");
+  view.dockToolBarWidgets << update_packages;
+
+  emit createdWidget(&view);
   return view;
 }
 

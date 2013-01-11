@@ -61,7 +61,7 @@ public:
   Core::NavigationView createWidget();
 
 signals:
-  void createdWidget(PackageView* widget);
+  void createdWidget(Core::NavigationView* widget);
 };
 
 }

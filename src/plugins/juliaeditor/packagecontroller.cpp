@@ -4,6 +4,8 @@
 
 #include <extensionsystem/iplugin.h>
 
+#include <QToolButton>
+
 using namespace JuliaPlugin;
 
 PackageController::PackageController(LocalTcpEvaluator* evaluator_, Console* console_, QObject *parent) :
@@ -21,11 +23,14 @@ void PackageController::OnConsoleReset()
   connect(console, SIGNAL(Ready(Console*)), SLOT(ResetOnConsoleReady()));
 }
 
-void PackageController::OnNewPackageView(PackageView *package_view)
+void PackageController::OnNewPackageView(Core::NavigationView* view)
 {
+  PackageView* package_view = qobject_cast<PackageView*>(view->widget);
   package_view->SetPackageModel(model);
-
   connect(package_view->list_view, SIGNAL(doubleClicked(QModelIndex)), SLOT(TogglePackage(QModelIndex)));
+
+  QToolButton* update_buttong = view->dockToolBarWidgets.front();
+  connect(update_buttong, SIGNAL(clicked()), SLOT(UpdatePackages()));
 }
 
 void PackageController::GetAvailable()
@@ -84,10 +89,21 @@ void PackageController::RemovePackage(const QModelIndex &index)
   GetRequired();
 }
 
-void PackageController::UpdateAvailable()
+void PackageController::UpdatePackages()
 {
-  if (busy)
+  if (busy == true)
     return;
+
+  ProjectExplorer::EvaluatorMessage msg;
+  msg.type = JM_PACKAGE;
+  msg.params.push_back("update");
+
+  busy = true;
+  console->SetBusy("Updating packages");
+  evaluator->eval(msg);
+
+  GetAvailable();
+  GetRequired();
 }
 
 void PackageController::TogglePackage(const QModelIndex &index)
@@ -104,7 +120,7 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
   if ( msg->type != JM_OUTPUT_PACKAGE )
     return;
 
-  if ( msg->params[0] == "available" )
+  else if ( msg->params[0] == "available" )
   {
     busy = false;
 
@@ -114,7 +130,7 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
 
     model->insertRows(package_list, model->rowCount());
   }
-  if ( msg->params[0] == "required" )
+  else if ( msg->params[0] == "required" )
   {
     busy = false;
     model->invalidateAll();
