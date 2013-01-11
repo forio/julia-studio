@@ -3,6 +3,8 @@
 #include "singleton.h"
 #include "juliamsg.h"
 
+#include <coreplugin/icore.h>
+
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
@@ -242,7 +244,12 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
   process->setProcessEnvironment( environment );
 #endif
 
-  args.append("/Users/westley/Code/sandbox/main.jl");
+  QString juliaengine_path = Core::ICore::resourcePath() + QLatin1String("/juliaengine");
+  args.append(juliaengine_path + "/main.jl");
+
+  //args.append("/Users/westley/Code/sandbox/main.jl");
+
+  process->setWorkingDirectory(juliaengine_path);
   process->start( process_string, args, QProcess::ReadWrite );
 }
 
