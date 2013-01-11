@@ -33,7 +33,7 @@ void LocalTcpEvaluator::eval( const QFileInfo* file_info )
   output("\n");
   executing( command );  // windows hack!
 #else
-  command = QString("push(LOAD_PATH, \"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii();
+  command = QString("push!(LOAD_PATH, \"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii();
   //output(file_info->baseName() + "\n");
 #endif
 
