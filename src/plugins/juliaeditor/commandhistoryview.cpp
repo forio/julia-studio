@@ -53,7 +53,7 @@ CommandHistoryView::CommandHistoryView(QWeakPointer<Console> console_handle, QWi
   // -----
 
   connect( console.data(), SIGNAL(SetCommandFromHistory(QModelIndex)), list_view, SLOT(setCurrentIndex(QModelIndex)) );
-  connect( console.data(), SIGNAL(NewCommand(QString)), list_view, SLOT(clearSelection()) );
+  connect( console.data(), SIGNAL(NewCommand(const ProjectExplorer::EvaluatorMessage&)), list_view, SLOT(clearSelection()) );
   connect( list_view, SIGNAL(clicked(QModelIndex)), console.data(), SLOT(SetCurrCommand(QModelIndex)) );
 
   grid_layout->addWidget(list_view, 0, 0, 1, 1);
