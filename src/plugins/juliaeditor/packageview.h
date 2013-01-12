@@ -38,7 +38,7 @@ public:
   void SetPackageModel(PackageModel* model);
   
 //private:
-  QVBoxLayout* layout;
+  QGridLayout* layout;
   QTreeView* list_view;
 
   PackageModel* package_model;

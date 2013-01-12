@@ -45,8 +45,6 @@ CommandHistoryView::CommandHistoryView(QWeakPointer<Console> console_handle, QWi
   list_view->header()->hide();
   list_view->header()->setStretchLastSection(false);
   list_view->header()->setResizeMode(0, QHeaderView::Stretch);
-  //list_view->header()->setResizeMode(1, QHeaderView::Fixed);
-  //list_view->header()->resizeSection(1, 16);
 
   list_view->viewport()->setAttribute(Qt::WA_Hover);
   list_view->viewport()->installEventFilter(this);
