@@ -58,7 +58,7 @@ void HistoryModel::clear()
 Console::Console( QWidget* parent ) :
   TextEditor::BaseTextEditorWidget(parent), begin_command_pos(0), busy(true), remaining_bytes(0)
 {
-  SetPrompt("badass julia> ");
+  SetPrompt("julia> ");
 }
 
 // ----------------------------------------------------------------------------
