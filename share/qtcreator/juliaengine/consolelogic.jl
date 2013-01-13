@@ -6,7 +6,6 @@ module __ConsoleLogic
 
 import __Sandbox
 import __Event
-import Pkg
 
 type ConsoleLogicSystem <: __Sandbox.System
 end
@@ -105,10 +104,6 @@ function Init(console::ConsoleLogicSystem, core::__Sandbox.SandboxCore)
   __Event.RegisterHandler(event_system, "package", (msg...)->OnPackageMsg(console, msg...))
   __Event.RegisterHandler(event_system, "dir", (msg)->OnDirMessage(console, msg))
 
-  if !Pkg.is_initialized()
-    println("Setting up the package manager for the first time...")
-    Pkg.init()
-  end
 end
 
 function Update(system::ConsoleLogicSystem)
