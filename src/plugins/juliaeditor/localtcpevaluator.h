@@ -19,6 +19,8 @@ public:
   virtual ~LocalTcpEvaluator();
 
 public slots:
+  virtual void startup();
+
   virtual void eval(const QFileInfo* file);
   virtual void eval( const ProjectExplorer::EvaluatorMessage& msg );
 
@@ -52,6 +54,7 @@ private slots:
   void exit( int exit_code );
 
   void startJuliaProcess( QStringList args = QStringList() );
+  void prepareJulia();
   void connectToJulia( unsigned port );
 
   void onChangeDirResult(const ProjectExplorer::EvaluatorMessage* msg);

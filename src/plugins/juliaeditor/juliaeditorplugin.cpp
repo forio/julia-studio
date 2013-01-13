@@ -112,9 +112,11 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   connect( console, SIGNAL( NewCommand(ProjectExplorer::EvaluatorMessage) ), evaluator, SLOT( eval(const ProjectExplorer::EvaluatorMessage&) ) );
   connect( evaluator, SIGNAL( output(const ProjectExplorer::EvaluatorMessage*) ), console, SLOT( DisplayMsg(const ProjectExplorer::EvaluatorMessage*) ) );
   connect( evaluator, SIGNAL( output(const QString&) ), console, SLOT( DisplayMsg(const QString&) ) );
-  //connect( console, SIGNAL( destroyed() ), evaluator, SLOT( kill() ) );
+
+  evaluator->startup();
+
   connect( console, SIGNAL( Reseting(bool) ), evaluator, SLOT( reset() ) );
-#if defined(Q_OS_WIN)
+#if 0 // defined(Q_OS_WIN)
   connect( evaluator, SIGNAL(executing(QString)), console, SLOT(WindowsHack(QString)) );
 #endif
   connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&)), console, SLOT(Reset()) );

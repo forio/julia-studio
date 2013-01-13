@@ -11,27 +11,45 @@
 #include <QRegExp>
 #include <QStringBuilder>
 
+#if defined(Q_OS_WIN)
+#include <Windows.h>
+#include <sstream>
+#endif
+
 using namespace JuliaPlugin;
 
 LocalTcpEvaluator::LocalTcpEvaluator(QObject *parent) :
-  ProjectExplorer::IEvaluator(parent), socket(NULL), busy(false), curr_msg_size(-1)
+  ProjectExplorer::IEvaluator(parent), process(NULL), socket(NULL), busy(false), curr_msg_size(-1)
 {
   connect( this, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), this, SLOT(onChangeDirResult(const ProjectExplorer::EvaluatorMessage*)));
-  startJuliaProcess();
 }
 
 LocalTcpEvaluator::~LocalTcpEvaluator()
 {
-  kill();
+    kill();
+}
+
+void LocalTcpEvaluator::startup()
+{
+#if defined(Q_OS_WIN)
+  // test for sys.ji
+  QDir sysimg(Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
+  sysimg.cd("lib/julia");
+  if (!sysimg.exists("sys.ji"))
+  {
+    prepareJulia();
+    return;
+  }
+#endif
+
+  reset();
 }
 
 void LocalTcpEvaluator::eval( const QFileInfo* file_info )
 {
   QString command;
 #if defined(Q_OS_WIN)
-  command = QString("include(\"" + file_info->absoluteFilePath() + "\")\r\n");
-  output("\n");
-  executing( command );  // windows hack!
+  command = QString("push!(LOAD_PATH, \"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\r\n").toAscii();
 #else
   command = QString("push!(LOAD_PATH, \"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii();
   //output(file_info->baseName() + "\n");
@@ -61,18 +79,24 @@ void LocalTcpEvaluator::eval( const ProjectExplorer::EvaluatorMessage& msg )
 
 void LocalTcpEvaluator::reset()
 {
-  disconnect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT( onProcessError(QProcess::ProcessError) ) );
-  disconnect( process, SIGNAL( readyRead() ), this, SLOT( onProcessOutput() ) );
-  disconnect( process, SIGNAL( finished(int) ), this, SLOT( exit(int) ) );
-  disconnect( process, SIGNAL( started()), this, SLOT(onProcessStarted()) );
+  if (process) {
+    disconnect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT( onProcessError(QProcess::ProcessError) ) );
+    disconnect( process, SIGNAL( readyRead() ), this, SLOT( onProcessOutput() ) );
+    disconnect( process, SIGNAL( finished(int) ), this, SLOT( exit(int) ) );
+    disconnect( process, SIGNAL( started()), this, SLOT(onProcessStarted()) );
+  }
 
-  disconnect(socket, SIGNAL(readyRead()), this, SLOT(onSocketOutput()));
-  disconnect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onSocketError(QAbstractSocket::SocketError)));
-  disconnect(socket, SIGNAL(connected()), this, SIGNAL(ready()));
+  if (socket) {
+    disconnect(socket, SIGNAL(readyRead()), this, SLOT(onSocketOutput()));
+    disconnect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onSocketError(QAbstractSocket::SocketError)));
+    disconnect(socket, SIGNAL(connected()), this, SIGNAL(ready()));
+  }
 
   kill();
-  process->deleteLater();
-  socket->deleteLater();
+  if (process)
+    process->deleteLater();
+  if (socket)
+    socket->deleteLater();
 
   process = NULL;
   socket = NULL;
@@ -95,11 +119,17 @@ bool LocalTcpEvaluator::isRunning()
 
 void LocalTcpEvaluator::kill()
 {
+  if (!process)
+    return;
+
 #if defined(Q_OS_WIN)
   std::ostringstream stream;
-  stream << process->pid()->dwProcessId;
-  std::string pid = stream.str();
-  QProcess::execute( "taskkill /pid " + QString::fromUtf8(pid.data(), pid.size()) + " /f /t" );
+  Q_PID id = process->pid();
+  if (id) {
+    stream << process->pid()->dwProcessId;
+    std::string pid = stream.str();
+    QProcess::execute( "taskkill /pid " + QString::fromUtf8(pid.data(), pid.size()) + " /f /t" );
+  }
 #else
   process->kill();
 #endif
@@ -128,7 +158,7 @@ void LocalTcpEvaluator::onProcessOutput()
 
   QRegExp connection_msg("PORT:");
   int index = connection_msg.indexIn(output_bytes);
-  if (index != -1)
+  if (index != -1 && !socket)
   {
     QString port_str = output_bytes.data() + index + 5;
     bool ok;
@@ -235,22 +265,44 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
 
 #if defined(Q_OS_WIN)
   process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("julia.bat"));
-  // set up context for julia (only for windows)
-  QDir lib_dir(julia_dir);
-  lib_dir.cd("lib");
 
+  // set up context for julia (only for windows)
   QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
-  environment.insert("PATH", environment.value("Path") + ";" + QDir::toNativeSeparators( lib_dir.absolutePath() ) );
+
+  QDir dir(julia_dir);
+  dir.cd("lib");
+  environment.insert("PATH", environment.value("Path") + ";" + QDir::toNativeSeparators( dir.absolutePath() ) );
+
+  dir.cdUp();
+  dir.cd("share/julia/base");
+  environment.insert("PATH", environment.value("Path") + ";" + QDir::toNativeSeparators( dir.absolutePath() ) );
+
   process->setProcessEnvironment( environment );
 #endif
 
   QString juliaengine_path = Core::ICore::resourcePath() + QLatin1String("/juliaengine");
   args.append(juliaengine_path + "/main.jl");
 
-  //args.append("/Users/westley/Code/sandbox/main.jl");
-
   process->setWorkingDirectory(juliaengine_path);
   process->start( process_string, args, QProcess::ReadWrite );
+}
+
+void LocalTcpEvaluator::prepareJulia()
+{
+  process = new QProcess(this);
+  process->setProcessChannelMode(QProcess::MergedChannels);
+
+  connect( process, SIGNAL( error(QProcess::ProcessError) ), SLOT( onProcessError(QProcess::ProcessError) ) );
+  connect( process, SIGNAL( finished(int) ), SLOT( reset() ) );
+
+  QDir julia_dir(Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
+  process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("prepare-julia-env.bat"));
+  julia_dir.cd("share/julia/base");
+
+  output("Preparing Julia for first launch. This may take a while, please be patient...\n\n");
+
+  process->setWorkingDirectory(julia_dir.absolutePath());
+  process->start( process_string, QProcess::ReadWrite );
 }
 
 void LocalTcpEvaluator::connectToJulia(unsigned port)

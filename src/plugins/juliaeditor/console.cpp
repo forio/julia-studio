@@ -96,7 +96,7 @@ void Console::DisplayMsg(const ProjectExplorer::EvaluatorMessage* msg)
 
   QString output( msg->params[0] + "\n\n" );
 
-#if defined(Q_OS_WIN)
+#if 0 //defined(Q_OS_WIN)
     output.remove( QRegExp("\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]") );
 
     if ( remaining_bytes > 0 )
@@ -141,7 +141,7 @@ void Console::Reset( bool preserve_history )
   clear();
   busy = true;
 
-#if defined(Q_OS_WIN)
+#if 0 // defined(Q_OS_WIN)
   remaining_bytes = 0;
 #endif
 
@@ -272,7 +272,7 @@ bool Console::Handle_KeyReturn()
   SetBusy();
 
   // windows hack -----
-#if defined(Q_OS_WIN)
+#if 0 // defined(Q_OS_WIN)
   WindowsHack(command);
 #endif
   // -----
@@ -343,7 +343,7 @@ QString Console::GetCurrCommand()
   command_cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
   QString command = command_cursor.selectedText();
 
-#if defined(Q_OS_WIN)
+#if 0 //defined(Q_OS_WIN)
   command.replace( "\u+2029", "\n" );
 #endif
   return command;
