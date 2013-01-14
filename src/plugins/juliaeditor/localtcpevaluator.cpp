@@ -31,17 +31,6 @@ LocalTcpEvaluator::~LocalTcpEvaluator()
 
 void LocalTcpEvaluator::startup()
 {
-#if defined(Q_OS_WIN)
-  // test for sys.ji
-  QDir sysimg(Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
-  sysimg.cd("lib/julia");
-  if (!sysimg.exists("sys.ji"))
-  {
-    prepareJulia();
-    return;
-  }
-#endif
-
   reset();
 }
 
@@ -49,7 +38,7 @@ void LocalTcpEvaluator::eval( const QFileInfo* file_info )
 {
   QString command;
 #if defined(Q_OS_WIN)
-  command = QString("push!(LOAD_PATH, \"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\r\n").toAscii();
+  command = QString("include(\"" + file_info->absoluteFilePath() + "\")\r\n").toAscii();
 #else
   command = QString("push!(LOAD_PATH, \"" + file_info->absolutePath() + "\");include(\"" + file_info->absoluteFilePath() + "\")\n").toAscii();
   //output(file_info->baseName() + "\n");
@@ -103,6 +92,19 @@ void LocalTcpEvaluator::reset()
   busy = false;
   curr_msg_size = -1;
   work_queue.clear();
+
+#if defined(Q_OS_WIN)
+  // test for sys.ji
+  QDir sysimg(Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
+  if (sysimg.cd("lib/julia"))
+  {
+    if (!sysimg.exists("sys.ji"))
+    {
+      prepareJulia();
+      return;
+    }
+  }
+#endif
 
   startJuliaProcess();
 }
@@ -177,8 +179,33 @@ void LocalTcpEvaluator::onProcessOutput()
 
 void LocalTcpEvaluator::onProcessError(QProcess::ProcessError error_)
 {
-  //output("PROCESS ERROR!");
-  qDebug() << "PROCESS ERROR";
+    switch( error_ )
+    {
+    case QProcess::FailedToStart:
+        output( "Error: Failed to start Julia.\nExpected location: " + process_string );
+        break;
+
+    case QProcess::Crashed:
+        output( "Error: Julia crashed unexpectedly.\nIt's still a young language, this can happen from time to time.\nPlease reset the console and try again..." );
+        break;
+
+    case QProcess::Timedout:
+        output( "Error: Timeout waiting for Julia." );
+        break;
+
+    case QProcess::WriteError:
+        output( "Error: Write to Julia failed. Try again..." );
+        break;
+
+    case QProcess::ReadError:
+        output( "Error: Read from Julia failed. Try again..." );
+        break;
+
+    case QProcess::UnknownError:
+    default:
+        output( "Unknown Error. We apologize and wish you luck :/" );
+        break;
+    }
 }
 
 void LocalTcpEvaluator::onProcessStarted()
