@@ -326,12 +326,12 @@ void NavigationWidget::restoreSettings(QSettings *settings)
 
     int version = settings->value(QLatin1String("Navigation/Version"), 1).toInt();
     QStringList viewIds = settings->value(QLatin1String("Navigation/Views"),
-                                          QStringList(QLatin1String("Projects"))).toStringList();
+                                          QStringList(QLatin1String("File System"))).toStringList();
 
     bool restoreSplitterState = true;
     if (version == 1) {
-        if (!viewIds.contains(QLatin1String("Open Documents"))) {
-            viewIds += QLatin1String("Open Documents");
+        if (!viewIds.contains(QLatin1String("Packages"))) {
+            viewIds += QLatin1String("Packages");
             restoreSplitterState = false;
         }
         settings->setValue(QLatin1String("Navigation/Version"), 2);
