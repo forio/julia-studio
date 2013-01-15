@@ -40,42 +40,57 @@ function OnPackageMsg(console::ConsoleLogicSystem, command, params...)
   event_system = __Sandbox.GetSystem(__Event.EventSystem)
 
   if isequal(command, "available")
-    #println("REQUEST FOR AVAILABLE BEING ANSWERED")
-    packages = Pkg.available()
-    #println(packages)
-    __Event.NewEvent(event_system, "network-output", "output-package", "available", packages...)
+    try
+      packages = Pkg.available()
+      __Event.NewEvent(event_system, "network-output", "output-package", "available", packages...)
+    catch
+      __Event.NewEvent(event_system, "network-output", "output-package", "failed")
+    end
 
   elseif isequal(command, "required")
-    package_map = Pkg.required()
-    packages = Array(ASCIIString, 0)
-    for p in package_map
-      push!(packages, p.package)
-    end
+    try
+      package_map = Pkg.required()
+      packages = Array(ASCIIString, 0)
+      for p in package_map
+        push!(packages, p.package)
+      end
 
-    #println("REQUEST FOR INSTALLED BEING ANSWERED")
-    #println(packages)
-    __Event.NewEvent(event_system, "network-output", "output-package", "required", packages...)
+      __Event.NewEvent(event_system, "network-output", "output-package", "required", packages...)
+    catch
+      __Event.NewEvent(event_system, "network-output", "output-package", "failed")
+    end
 
   elseif isequal(command, "add")
-    #println("JULIA RECIEVED ADD FOR ", params)
-    for pkg in params
-      Pkg.add(pkg)
+    try
+      for pkg in params
+        Pkg.add(pkg)
+      end
+
+      println()
+      __Event.NewEvent(event_system, "network-output", "output-package", "add")
+    catch err
+      println()
+      __Event.NewEvent(event_system, "network-output", "output-package", "add", "failed")
     end
-    println()
-    __Event.NewEvent(event_system, "network-output", "output-package", "add")
 
   elseif isequal(command, "remove")
-    #println("JULIA RECIEVED REMOVE FOR ", params)
-    for pkg in params
-      Pkg.rm(pkg)
+    try
+      for pkg in params
+        Pkg.rm(pkg)
+      end
+      println()
+      __Event.NewEvent(event_system, "network-output", "output-package", "remove")
+    catch err
+      __Event.NewEvent(event_system, "network-output", "output-package", "remove", "failed")
     end
-    println()
-    __Event.NewEvent(event_system, "network-output", "output-package", "remove")
 
   elseif isequal(command, "update")
-    #println("JULIA RECIEVED UPDATE")
-    Pkg.update()
-    __Event.NewEvent(event_system, "network-output", "output-package", "update")
+    try
+      Pkg.update()
+      __Event.NewEvent(event_system, "network-output", "output-package", "update")
+    catch err
+      __Event.NewEvent(event_system, "network-output", "output-package", "update", "failed")
+    end
   end
 end
 
@@ -84,7 +99,6 @@ function OnDirMessage(console::ConsoleLogicSystem, dir)
     error("cannot change directory to $dir")
   end
 
-  #println("CHANGING DIR: $dir")
   cd(dir)
 
   event_system = __Sandbox.GetSystem(__Event.EventSystem)

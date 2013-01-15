@@ -141,6 +141,10 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
 
     model->insertRows(package_list, model->rowCount());
   }
+  else if ( msg->params[0] == "error" )
+  {
+    busy = false;
+  }
 }
 
 void PackageController::ResetOnConsoleReady()
