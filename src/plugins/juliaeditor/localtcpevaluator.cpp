@@ -306,6 +306,12 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
 
   process->setProcessEnvironment( environment );
 #endif
+#if defined(Q_OS_DARWIN)
+  QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+  environment.insert("PATH", environment.value("PATH") + ":/usr/local/bin:/opt/local/bin");
+  process->setProcessEnvironment(environment);
+  qDebug() << environment.toStringList();
+#endif
 
   QString juliaengine_path = Core::ICore::resourcePath() + QLatin1String("/juliaengine");
   args.append(juliaengine_path + "/main.jl");
