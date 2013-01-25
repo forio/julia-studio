@@ -118,6 +118,12 @@ function Init(console::ConsoleLogicSystem, core::__Sandbox.SandboxCore)
   __Event.RegisterHandler(event_system, "package", (msg...)->OnPackageMsg(console, msg...))
   __Event.RegisterHandler(event_system, "dir", (msg)->OnDirMessage(console, msg))
 
+  if !isdir(julia_pkgdir())
+    println("Initializing package repo for the first time, hold on.\n")
+    try
+      Pkg.init()
+    catch end
+  end
 end
 
 function Update(system::ConsoleLogicSystem)
