@@ -50,7 +50,7 @@ bool PackageModel::setData(const QModelIndex &index, const QVariant &value, int 
 
 bool PackageModel::insertRows(const QList<PackageData> &data, int row, const QModelIndex &parent)
 {
-  beginInsertRows( parent, row, data.size() );
+  beginInsertRows( parent, row, rowCount() );
   for ( int i = 0; i < data.size(); ++i )
   {
     QList<PackageData>::iterator existing = qFind(packages.begin(), packages.end(), data.at(i));
