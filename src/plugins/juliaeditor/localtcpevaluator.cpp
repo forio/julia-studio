@@ -308,7 +308,7 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
 #endif
 #if defined(Q_OS_DARWIN)
   QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
-  environment.insert("PATH", environment.value("PATH") + ":/usr/local/bin:/opt/local/bin");
+  environment.insert("PATH", environment.value("PATH") + ":/usr/local/bin:/opt/local/bin:/usr/local/git/bin");
   process->setProcessEnvironment(environment);
   qDebug() << environment.toStringList();
 #endif
