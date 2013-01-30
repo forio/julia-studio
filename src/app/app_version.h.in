@@ -44,8 +44,8 @@ namespace Constants {
 #define IDE_VERSION_RELEASE $$replace(QTCREATOR_VERSION, "^\\d+\\.\\d+\\.(\\d+)(-.*)?$", \\1)
 
 const char * const IDE_VERSION_LONG      = IDE_VERSION_STR;
-const char * const IDE_AUTHOR            = \"Digia Plc\";
-const char * const IDE_YEAR              = \"2012\";
+const char * const IDE_AUTHOR            = \"Forio Online Simulations\";
+const char * const IDE_YEAR              = \"2013\";
 
 #ifdef IDE_VERSION_DESCRIPTION
 const char * const IDE_VERSION_DESCRIPTION_STR = STRINGIFY(IDE_VERSION_DESCRIPTION);
