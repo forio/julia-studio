@@ -206,6 +206,14 @@ void Console::keyPressEvent( QKeyEvent* e )
       cursor.setPosition( begin_command_pos );
       setTextCursor( cursor );
     }
+    else if ( e->matches(QKeySequence::MoveToEndOfLine) ||
+              e->matches(QKeySequence::MoveToEndOfBlock) ||
+              e->matches(QKeySequence::MoveToEndOfDocument) )
+    {
+      QTextCursor cursor = textCursor();
+      cursor.movePosition(QTextCursor::End);
+      setTextCursor(cursor);
+    }
     return;
   }
   else if ( e->modifiers() & Qt::MetaModifier )
@@ -218,6 +226,14 @@ void Console::keyPressEvent( QKeyEvent* e )
       cursor.setPosition( begin_command_pos );
       setTextCursor( cursor );
       return;
+    }
+    if ( e->matches(QKeySequence::MoveToEndOfLine) ||
+         e->matches(QKeySequence::MoveToEndOfBlock) ||
+         e->matches(QKeySequence::MoveToEndOfDocument) )
+    {
+     QTextCursor cursor = textCursor();
+     cursor.movePosition(QTextCursor::End);
+     setTextCursor(cursor);
     }
   }
   // -----
