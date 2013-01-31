@@ -85,6 +85,16 @@
 			<string>Qt UI File</string>
 		</dict>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>jl</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Julia Script</string>
+		</dict>
+		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>h</string>
@@ -210,7 +220,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-  <string>Julia Studio</string>
+  <string>JuliaStudio</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.qt-project.qtcreator</string>
 	<key>CFBundleVersion</key>
