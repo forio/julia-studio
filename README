@@ -2,6 +2,8 @@ Julia Studio
 ==========
 Julia Studio is a cross-platform IDE for the Julia language based on Qt Creator and the Qt framework.
 
+
+
 Supported Platforms
 ===================
 The binary packages support the following platforms:
@@ -11,6 +13,8 @@ Windows 7, Windows XP SP2, Windows Vista
 Mac OS 10.5 or later
 
 Building the sources requires Qt 4.8.0 or later.
+
+
 
 Compiling Julia Studio
 ====================
@@ -33,7 +37,6 @@ You can build Julia Studio with
 Installation ("make install") is not needed. It is however possible, using
 
     make install INSTALL_ROOT=$INSTALL_DIRECTORY
-
 
 
 Compiling Qt and Julia Studio on Windows
@@ -146,6 +149,8 @@ SDK (release builds of Qt using MinGW and Visual C++ 2008).
        "Debugging Tools for Windows" the library should also be built with
        a 64 bit compiler (rebuild src\libs\qtcreatorcdbext using a 64 bit
        compiler).
+
+
 
 Third-party Components
 ======================
