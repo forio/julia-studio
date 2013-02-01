@@ -1,18 +1,18 @@
-Qt Creator
+Julia Studio
 ==========
-Qt Creator is a cross-platform C++ IDE for development with the Qt framework.
+Julia Studio is a cross-platform IDE for the Julia language based on Qt Creator and the Qt framework.
 
 Supported Platforms
 ===================
 The binary packages support the following platforms:
 
 Windows 7, Windows XP SP2, Windows Vista
-(K)Ubuntu Linux 8.04 (32-bit and 64-bit) or later
+(K)Ubuntu Linux 8.04 (32-bit) or later
 Mac OS 10.5 or later
 
 Building the sources requires Qt 4.8.0 or later.
 
-Compiling Qt Creator
+Compiling Julia Studio
 ====================
 Prerequisites:
    * Qt 4.8.0
@@ -24,7 +24,7 @@ Prerequisites:
    * On Mac: XCode 2.5 or later, compiling on 10.4 requires setting the
      environment variable QTC_TIGER_COMPAT before running qmake
 
-You can build Qt Creator with
+You can build Julia Studio with
 
     cd $SOURCE_DIRECTORY
     qmake -r
@@ -34,41 +34,18 @@ Installation ("make install") is not needed. It is however possible, using
 
     make install INSTALL_ROOT=$INSTALL_DIRECTORY
 
-Compiling Qt Quick Designer
----------------------------
-
-Qt Quick Designer (QmlDesigner plugin) depends on "private" headers from Qt
-4.8.0, specifically from the QtDeclarative module. These private headers always
-end with an "_p.h". Digia does not promise to keep these files or APIs binary
-or source compatible between releases. This means that when compiled, the
-plugin has a dependency to the exact Qt version it was compiled with. Running
-Qt Creator with the plugin against updated Qt libraries (also for patch
-releases) might lead to link time failures, or even crashes.
-
-If you want to disable the plugin, you can pass "QT_PRIVATE_HEADERS=" to qmake:
-
-  qmake "QT_PRIVATE_HEADERS=" $SOURCE_DIRECTORY/qtcreator.pro
-
-The plugin is not compiled if the private header files are not found. This
-might be the case when you use a Qt version from your distribution, or
-installed a self-compiled Qt to a separate directory via 'make install'. You
-can fix this by either re-building your Qt with the "-developer-build"
-configure option, or by passing the include directory in the source directory
-to qmake. For example:
-
-  qmake "QT_PRIVATE_HEADERS=$$QT_BUILD_TREE/include" $SOURCE_DIRECTORY/qtcreator.pro
 
 
-Compiling Qt and Qt Creator on Windows
+Compiling Qt and Julia Studio on Windows
 --------------------------------------
 
 This section provides step by step instructions for compiling the latest
-versions of Qt and Qt Creator on Windows. Alternatively, to avoid having to
+versions of Qt and Julia Studio on Windows. Alternatively, to avoid having to
 compile Qt yourself, you can use one of the versions of Qt shipped with the Qt
 SDK (release builds of Qt using MinGW and Visual C++ 2008).
 
    1.  Decide which compiler to use: MinGW or Microsoft Visual Studio. If you
-       plan to contribute to Qt Creator, you should compile your changes with
+       plan to contribute to Julia Studio, you should compile your changes with
        both compilers.
 
    2.  Install msysGit from http://code.google.com/p/msysgit/. If you plan to
@@ -76,7 +53,7 @@ SDK (release builds of Qt using MinGW and Visual C++ 2008).
        default path of Windows command prompts. For more information, see
        step 9.
 
-   3.  Create a working directory under which to check out Qt and Qt Creator,
+   3.  Create a working directory under which to check out Qt and Julia Studio,
        for example, c:\work. If you plan to use MinGW and Microsoft Visual
        Studio simultaneously or mix different Qt versions, we recommend
        creating a directory structure which reflects that. For example:
@@ -86,11 +63,11 @@ SDK (release builds of Qt using MinGW and Visual C++ 2008).
        and check that perl.exe is added to the path.
 
    5.  In the working directory, check out the respective branch of Qt
-       (we recommend 4.7; see http://qt.gitorious.org/qt).
+       (see http://qt.gitorious.org/qt).
 
-   6.  Check out Qt Creator (master branch, see
-       http://qt.gitorious.org/qt-creator).
-       You should now have the directories qt and creator under your working
+   6.  Check out Julia Studio (master branch, see
+       http://github.com/forio/julia-studio).
+       You should now have the directories qt and julia-studio under your working
        directory.
 
    7.  Install a compiler:
@@ -127,7 +104,7 @@ SDK (release builds of Qt using MinGW and Visual C++ 2008).
 
          CALL "C:\Program Files (x86)\MSVC10\VC\vcvarsall.bat" amd64
          set QTDIR=<working_directory>\qt
-         set PATH=%QTDIR%\bin;<working_directory>\creator\bin;%PATH%
+         set PATH=%QTDIR%\bin;<working_directory>\julia-studio\bin;%PATH%
          set QMAKESPEC=win32-msvc2010
 
        You can create desktop links to the bat files using the working
@@ -143,49 +120,43 @@ SDK (release builds of Qt using MinGW and Visual C++ 2008).
        command...' error. If a sh.exe is found, the compile process will fail.
        You have to remove it from the path.
 
-  10.  You are now ready to configure and build Qt and Qt Creator.
+  10.  You are now ready to configure and build Qt and Julia Studio.
        To use MinGW, open the the shell prompt and enter:
 
          cd qt
          configure -debug && mingw32-make -s
-         cd ..\creator
+         cd ..\julia-studio
          qmake && mingw32-make -s
 
        To use the Visual C++ compilers, enter:
 
          cd qt
          configure -debug && jom
-         cd ..\creator
+         cd ..\julia-studio
          qmake && jom
 
-   11. To launch Qt Creator, enter:
-       qtcreator
+   11. To launch JuliaStudio, enter:
+       JuliaStudio
 
    12. When using  Visual C++ with the "Debugging Tools for Windows" installed,
        the extension library qtcreatorcdbext.dll to be loaded into the
        Windows console debugger (cdb.exe) should have been built under
        lib\qtcreatorcdbext32 or lib\qtcreatorcdbext64.
-       When using a 32 bit-build of Qt Creator with the 64 bit version of the
+       When using a 32 bit-build of Julia Studio with the 64 bit version of the
        "Debugging Tools for Windows" the library should also be built with
        a 64 bit compiler (rebuild src\libs\qtcreatorcdbext using a 64 bit
        compiler).
 
-Note that unlike on Unix, you cannot overwrite executables that are running.
-Thus, if you want to work on Qt Creator using Qt Creator, you need a
-separate build of it. We recommend using a separate, release-built version
-of Qt and Qt Creator to work on a debug-built version of Qt and Qt Creator
-or using shadow builds.
-
 Third-party Components
 ======================
-Qt Creator includes the following third-party components,
+Julia Studio includes the following third-party components,
 we thank the authors who made this possible:
 
 * Open Source front-end for C++ (license MIT), enhanced for use in Qt Creator
 
   Roberto Raggi <roberto.raggi@gmail.com>
 
-  QtCreator/src/shared/cplusplus
+  JuliaStudio/src/shared/cplusplus
 
   Copyright 2005 Roberto Raggi <roberto@kdevelop.org>
 
@@ -247,7 +218,7 @@ we thank the authors who made this possible:
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   The source code of Botan C++ crypto library can be found in
-  QtCreator/src/libs/3rdparty
+  JuliaStudio/src/libs/3rdparty
 
 
 * ClassView and ImageViewer plugins
@@ -259,7 +230,7 @@ we thank the authors who made this possible:
 
   Contact: http://www.qt-project.org/
 
-  This file is part of Qt Creator.
+  This file is part of Julia Studio.
 
   You may use this file under the terms of the BSD license as follows:
 
