@@ -1,9 +1,9 @@
-### Julia Studio
+## Julia Studio
 Julia Studio is a cross-platform IDE for the Julia language based on Qt Creator and the Qt framework.
 
 
 
-### Supported Platforms
+## Supported Platforms
 The binary packages support the following platforms:
 
 Windows 7, Windows XP SP2, Windows Vista
@@ -14,7 +14,7 @@ Building the sources requires Qt 4.8.0 or later.
 
 
 
-### Compiling Julia Studio
+## Compiling Julia Studio
 Prerequisites:
    * Qt 4.8.0
    * On Windows:
@@ -36,7 +36,7 @@ Installation ("make install") is not needed. It is however possible, using
     make install INSTALL_ROOT=$INSTALL_DIRECTORY
 
 
-## Compiling Qt and Julia Studio on Windows
+### Compiling Qt and Julia Studio on Windows
 
 This section provides step by step instructions for compiling the latest
 versions of Qt and Julia Studio on Windows. Alternatively, to avoid having to
@@ -70,22 +70,19 @@ SDK (release builds of Qt using MinGW and Visual C++ 2008).
        directory.
 
    7.  Install a compiler:
-       - For MinGW (4.4 onwards), see http://www.mingw.org/. Note that gcc 4.5
-         produces insufficient debugging information, and therefore, we
-         recommend that you use gcc 4.4 for debugging.
-
-       - For Microsoft Visual C++, install the Windows SDK and the "Debugging
-         Tools for Windows" from the SDK image. We strongly recommend using the
-         64-bit version and 64-bit compilers on 64-bit systems.
-
-         When using Visual C++ 2010, you must apply a hotfix that is available
-         from http://support.microsoft.com/kb/2280741
-         (See https://bugreports.qt-project.org/browse/QTBUG-11445).
-
-         For the Visual C++ compilers, it is recommended to use the tool 'jom'.
-         It is a replacement for nmake that utilizes all CPU cores and thus
-         speeds up compilation significantly. Download it from
-         http://releases.qt-project.org/jom/ and add the executable to the path.
+    - For MinGW (4.4 onwards), see http://www.mingw.org/. Note that gcc 4.5
+    produces insufficient debugging information, and therefore, we
+    recommend that you use gcc 4.4 for debugging.
+    - For Microsoft Visual C++, install the Windows SDK and the "Debugging
+    Tools for Windows" from the SDK image. We strongly recommend using the
+    64-bit version and 64-bit compilers on 64-bit systems.
+    - When using Visual C++ 2010, you must apply a hotfix that is available
+    from http://support.microsoft.com/kb/2280741
+    (See https://bugreports.qt-project.org/browse/QTBUG-11445).
+    - For the Visual C++ compilers, it is recommended to use the tool 'jom'.
+    It is a replacement for nmake that utilizes all CPU cores and thus
+    speeds up compilation significantly. Download it from
+    http://releases.qt-project.org/jom/ and add the executable to the path.
 
    8.  For convenience, we recommend creating shell prompts with the correct
        environment. This can be done by creating a .bat-file
@@ -96,30 +93,30 @@ SDK (release builds of Qt using MinGW and Visual C++ 2008).
          set QTDIR=<working_directory>\qt
          set PATH=%QTDIR%\bin;<path_to_mingw>\bin;<working_directory>\creator\bin;%PATH%
          set QMAKESPEC=win32-g++
-
-       For the Visual C++ compilers, call the .bat file that sets up the
-       environment for the compiler (provided by the Windows SDK or the
-       compiler):
+         
+  For the Visual C++ compilers, call the .bat file that sets up the
+  environment for the compiler (provided by the Windows SDK or the
+  compiler):
 
          CALL "C:\Program Files (x86)\MSVC10\VC\vcvarsall.bat" amd64
          set QTDIR=<working_directory>\qt
          set PATH=%QTDIR%\bin;<working_directory>\julia-studio\bin;%PATH%
          set QMAKESPEC=win32-msvc2010
 
-       You can create desktop links to the bat files using the working
-       directory and specifying
+  You can create desktop links to the bat files using the working
+  directory and specifying
 
-       %SystemRoot%\system32\cmd.exe /E:ON /V:ON  /k <working_directory>\qtvars.bat
+         %SystemRoot%\system32\cmd.exe /E:ON /V:ON  /k <working_directory>\qtvars.bat
 
    9.  When using MinGW, open the shell prompt and enter:
 
-       sh.exe
+       `sh.exe`
 
        That should result in a 'sh is not recognized as internal or external
        command...' error. If a sh.exe is found, the compile process will fail.
        You have to remove it from the path.
 
-  10.  You are now ready to configure and build Qt and Julia Studio.
+   10.  You are now ready to configure and build Qt and Julia Studio.
        To use MinGW, open the the shell prompt and enter:
 
          cd qt
@@ -135,7 +132,7 @@ SDK (release builds of Qt using MinGW and Visual C++ 2008).
          qmake && jom
 
    11. To launch JuliaStudio, enter:
-       JuliaStudio
+       `JuliaStudio`
 
    12. When using  Visual C++ with the "Debugging Tools for Windows" installed,
        the extension library qtcreatorcdbext.dll to be loaded into the
@@ -148,7 +145,7 @@ SDK (release builds of Qt using MinGW and Visual C++ 2008).
 
 
 
-### Third-party Components
+## Third-party Components
 Julia Studio includes the following third-party components,
 we thank the authors who made this possible:
 
