@@ -1,8 +1,6 @@
 #ifndef PACKAGEMODEL_H
 #define PACKAGEMODEL_H
 
-#include "LocalEvaluator.h"
-
 #include <QAbstractListModel>
 #include <QDebug>
 #include <QList>
