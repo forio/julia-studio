@@ -1,7 +1,7 @@
 ## Julia Studio
-Julia Studio is a cross-platform IDE for the Julia language based on Qt Creator and the Qt framework.
+[Julia Studio is a cross-platform IDE for the Julia language](http://forio.com/julia) based on Qt Creator and the Qt framework.
 
-
+[Click here to download Julia Studio](http://forio.com/julia/downloads) for Mac, Windows, or Linux
 
 ## Supported Platforms
 The binary packages support the following platforms:
