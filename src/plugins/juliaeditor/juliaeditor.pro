@@ -11,13 +11,7 @@ isEmpty(QTCREATOR_SOURCES):QTCREATOR_SOURCES=../../../
 
 ## set the QTC_BUILD environment variable to override the setting here
 IDE_BUILD_TREE = $$(QTC_BUILD)
-
-#CONFIG( release ) {
-#  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../julia-studio-build-Desktop-Release
-#}
-#else {
-  isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=../../../../julia-studio-build-Desktop-Debug
-#}
+isEmpty(IDE_BUILD_TREE):IDE_BUILD_TREE=$$DESTDIR
 
 ## uncomment to build plugin into user config directory
 ## <localappdata>/plugins/<ideversion>
