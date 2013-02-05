@@ -20,7 +20,7 @@ function OnEvalMsg(console::ConsoleLogicSystem, code)
     parsed_result = isa(expr, Expr)
 
     if parsed_result && expr.head == :error
-      return __Event.NewEvent(event_system, "network-output", "output-error", sprint(repl_show, expr.args[1]))
+      return __Event.NewEvent(event_system, "network-output", "output-error", sprint(show, expr.args[1]))
     end
 
     result = eval(expr)
@@ -28,11 +28,11 @@ function OnEvalMsg(console::ConsoleLogicSystem, code)
     if isa(result, Nothing)
       return __Event.NewEvent(event_system, "network-output", "output-eval", "")
     else
-      return __Event.NewEvent(event_system, "network-output", "output-eval", sprint(repl_show, result))
+      return __Event.NewEvent(event_system, "network-output", "output-eval", sprint(show, result))
     end
 
   catch error
-    return __Event.NewEvent(event_system, "network-output", "output-error", sprint(repl_show, error))
+    return __Event.NewEvent(event_system, "network-output", "output-error", sprint(show, error))
   end
 end
 

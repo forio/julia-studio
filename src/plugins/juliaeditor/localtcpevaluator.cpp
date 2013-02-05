@@ -214,7 +214,8 @@ void LocalTcpEvaluator::onProcessStarted()
 void LocalTcpEvaluator::onSocketOutput()
 {
   int bytes_available = socket->bytesAvailable();
-  if (bytes_available < sizeof(qint32))
+
+  if (curr_msg_size == -1 && bytes_available < sizeof(qint32))
     return;
 
   QDataStream stream(socket);
@@ -228,7 +229,6 @@ void LocalTcpEvaluator::onSocketOutput()
     return;
 
   ProjectExplorer::EvaluatorMessage msg;
-  //QByteArray bytes = socket->readAll();
   msg.from(stream);
 
   emit output(&msg);
@@ -310,7 +310,6 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
   QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
   environment.insert("PATH", environment.value("PATH") + ":/usr/local/bin:/opt/local/bin:/usr/local/git/bin");
   process->setProcessEnvironment(environment);
-  qDebug() << environment.toStringList();
 #endif
 
   QString juliaengine_path = Core::ICore::resourcePath() + QLatin1String("/juliaengine");

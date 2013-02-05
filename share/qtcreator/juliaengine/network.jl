@@ -54,10 +54,12 @@ function ReadMessage(io)
   return Message(io)
 end
 
+const __io_out_buff = PipeString()
 function WriteMessage(io, msg::Message)
   total_size = sizeof(Uint8) * 2
   for param in msg.params
-    param_str = string(param)
+    write(__io_out_buff, param)
+    param_str = takebuf_array(__io_out_buff)
     total_size += sizeof(Uint32)
     total_size += length(param_str)
   end
@@ -67,13 +69,11 @@ function WriteMessage(io, msg::Message)
   write(io, uint8(length(msg.params)))
 
   for param in msg.params
-    #println(param)
-    param_str = string(param)
+    write(__io_out_buff, param)
+    param_str = takebuf_array(__io_out_buff)
     write(io, uint32(length(param_str)))
     write(io, param_str)
   end
-
-  #flush(io)
 end
 
 function ConnectionCallback(connection, manager)
