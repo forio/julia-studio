@@ -16,23 +16,17 @@ function OnEvalMsg(console::ConsoleLogicSystem, code)
   event_system = __Sandbox.GetSystem(__Event.EventSystem)
 
   try
-    expr = parse_input_line(code)
-    parsed_result = isa(expr, Expr)
-
-    if parsed_result && expr.head == :error
-      return __Event.NewEvent(event_system, "network-output", "output-error", sprint(show, expr.args[1]))
-    end
-
-    result = eval(expr)
+    e = parse(code)
+    result = @eval e
 
     if isa(result, Nothing)
       return __Event.NewEvent(event_system, "network-output", "output-eval", "")
     else
-      return __Event.NewEvent(event_system, "network-output", "output-eval", sprint(show, result))
+      return __Event.NewEvent(event_system, "network-output", "output-eval", sprint(repl_show, result))
     end
 
   catch error
-    return __Event.NewEvent(event_system, "network-output", "output-error", sprint(show, error))
+    return __Event.NewEvent(event_system, "network-output", "output-error", sprint(repl_show, error))
   end
 end
 
