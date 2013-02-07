@@ -7,7 +7,7 @@ Julia Studio is open source and is freely available for download and redistribut
 We happily accept pull requests, however, we do ask that you sign a [Contributor License Agreement](http://forio.com/julia/fca.html) so that we have the right to relicense your contributions.
 
 ##How you can help:
-- Whenever you find yourself frustrated you can blow off some steam by raising an issue on our [issue tracker](https://github.com/forio/julia-studio/issues).
+- You can report bugs, feature requests, or suggest improvements using our [issue tracker](https://github.com/forio/julia-studio/issues).
 - You can make a big difference by helping people who've themselves raised issues.
 - You can fork Julia Studio from  http://github.com/forio/julia-studio, make cool things happen, and submit pull requests so that everyone else can make cool things too. 
 
