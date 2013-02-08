@@ -16,8 +16,8 @@ function OnEvalMsg(console::ConsoleLogicSystem, code)
   event_system = __Sandbox.GetSystem(__Event.EventSystem)
 
   try
-    e = parse(code)
-    result = @eval e
+    parsed_expr = parse(code)
+    result = @eval $(parsed_expr[1])
 
     if isa(result, Nothing)
       return __Event.NewEvent(event_system, "network-output", "output-eval", "")
