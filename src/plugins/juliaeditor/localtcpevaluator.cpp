@@ -291,7 +291,7 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
   process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("bin/julia-release-basic"));
 
 #if defined(Q_OS_WIN)
-  process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("julia.bat"));
+  process_string = "\"" + QDir::toNativeSeparators(julia_dir.absoluteFilePath("julia.bat")) + "\"";
 
   // set up context for julia (only for windows)
   QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
@@ -334,7 +334,7 @@ void LocalTcpEvaluator::prepareJulia()
   output("Preparing Julia for first launch. This may take a while, please be patient...\n\n");
 
   process->setWorkingDirectory(julia_dir.absolutePath());
-  process->start( process_string, QProcess::ReadWrite );
+  process->start( "\"" + process_string + "\"", QProcess::ReadWrite );
 }
 
 void LocalTcpEvaluator::connectToJulia(unsigned port)
