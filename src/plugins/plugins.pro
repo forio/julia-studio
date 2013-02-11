@@ -33,7 +33,8 @@ SUBDIRS   = plugin_coreplugin \
             plugin_qmljstools \
             plugin_macros \
             plugin_todo \
-            plugin_juliaeditor
+            plugin_juliaeditor \
+            plugin_htmlviewer
 
 isEmpty(IDE_PACKAGE_MODE) {
     SUBDIRS += plugin_updateinfo
@@ -219,3 +220,7 @@ plugin_juliaeditor.subdir = juliaeditor
 plugin_juliaeditor.depends = plugin_texteditor
 plugin_juliaeditor.depends += plugin_coreplugin
 plugin_juliaeditor.depends += plugin_projectexplorer
+
+plugin_htmlviewer.subdir = htmlviewer
+plugin_htmlviewer.depends += plugin_coreplugin
+plugin_htmlviewer.depends += plugin_projectexplorer

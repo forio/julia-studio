@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/htmlviewer">
+        <file>HtmlViewer.mimetypes.xml</file>
+    </qresource>
+</RCC>

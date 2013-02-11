@@ -1,0 +1,11 @@
+<plugin name=\"HtmlViewer\" version=\"0.0.1\" compatVersion=\"0.0.1\">
+    <vendor>Forio</vendor>
+    <copyright>(C) Forio Online Simulations</copyright>
+    <license></license>
+    <description></description>
+    <url>http://www.forio.com</url>
+    <dependencyList>
+        <dependency name=\"Core\" version=\"$$QTCREATOR_VERSION\"/>
+    </dependencyList>
+</plugin>
+
