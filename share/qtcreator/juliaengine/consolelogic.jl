@@ -1,4 +1,3 @@
-require("pkg.jl")
 require("sandbox.jl")
 require("event.jl")
 
@@ -17,7 +16,7 @@ function OnEvalMsg(console::ConsoleLogicSystem, code)
 
   try
     parsed_expr = parse(code)
-    result = @eval $(parsed_expr[1])
+    result = @eval $parsed_expr
 
     if isa(result, Nothing)
       return __Event.NewEvent(event_system, "network-output", "output-eval", "")
@@ -26,7 +25,7 @@ function OnEvalMsg(console::ConsoleLogicSystem, code)
     end
 
   catch error
-    return __Event.NewEvent(event_system, "network-output", "output-error", sprint(repl_show, error))
+    return __Event.NewEvent(event_system, "network-output", "output-error", sprint(repl_show, error.msg))
   end
 end
 
@@ -112,7 +111,7 @@ function Init(console::ConsoleLogicSystem, core::__Sandbox.SandboxCore)
   __Event.RegisterHandler(event_system, "package", (msg...)->OnPackageMsg(console, msg...))
   __Event.RegisterHandler(event_system, "dir", (msg)->OnDirMessage(console, msg))
 
-  if !isdir(julia_pkgdir())
+  if !isdir(Pkg.dir())
     println("Initializing package repo for the first time, hold on.\n")
     try
       Pkg.init()

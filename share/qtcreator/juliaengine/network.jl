@@ -76,7 +76,7 @@ function WriteMessage(io, msg::Message)
   end
 end
 
-function ConnectionCallback(connection, manager)
+function ConnectionCallback(manager)
   msg = Message(manager.io)
   __Event.NewEvent(__Sandbox.GetSystem(__Event.EventSystem), __MsgTypes.GetMsgType(msg.msg_type), msg.params...)
 end
@@ -87,29 +87,17 @@ function EngineCallback(manager, msg_type, params...)
 end
 
 function Connect(manager::NetworkManager, port::Int16)
-  #portbuff = [port]
-  #manager.socket = ccall(:open_any_tcp_port, Int32, (Ptr{Int16},), portbuff)
-  #if manager.socket == -1
-  #  error("Could not open socket on any port")
-  #end
-
-  #manager.port = portbuff[1]
-  #println("PORT:", manager.port)
-
-  #manager.connection = ccall(:accept, Int32, (Int32, Ptr{Void}, Ptr{Void}), manager.socket, C_NULL, C_NULL)
-  #manager.io = fdio(manager.connection)
-
-  (manager.port, manager.socket) = Base.open_any_tcp_port(port, false)
+  (manager.port, manager.socket) = Base.open_any_tcp_port(port)
 
   println(STDOUT,"PORT:$(manager.port)")
 
+
   manager.io = Base.wait_accept(manager.socket)
-  Base.start_reading(manager.io)2
+  Base.start_reading(manager.io)
 
   enq_work(@task while true
-                   ConnectionCallback(nothing, manager)
+                   ConnectionCallback(manager)
                  end)
-  #add_fd_handler(manager.connection, (connection)->ConnectionCallback(connection, manager))
 
   return manager
 end
