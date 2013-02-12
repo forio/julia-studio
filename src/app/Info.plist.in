@@ -224,8 +224,8 @@
 	<key>CFBundleIdentifier</key>
 	<string>org.qt-project.qtcreator</string>
 	<key>CFBundleVersion</key>
-	<string>$$QTCREATOR_VERSION</string>
+        <string>$$JULIA_STUDIO_VERSION</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$$QTCREATOR_VERSION</string>
+        <string>$$JULIA_STUDIO_VERSION</string>
 </dict>
 </plist>
