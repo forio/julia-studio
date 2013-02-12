@@ -18,7 +18,7 @@ Core::IEditor *HtmlViewerPlugin::HtmlViewerFactory::createEditor(QWidget *parent
 
 QStringList HtmlViewerPlugin::HtmlViewerFactory::mimeTypes() const
 {
-    return mimeTypes();
+    return mimeTypeList;
 }
 
 Core::Id HtmlViewerPlugin::HtmlViewerFactory::id() const

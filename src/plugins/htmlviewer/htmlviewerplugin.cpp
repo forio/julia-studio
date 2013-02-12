@@ -1,5 +1,6 @@
 #include "htmlviewerplugin.h"
 #include "htmlviewerconstants.h"
+#include "htmlviewerfactory.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -34,7 +35,8 @@ bool HtmlViewPlugin::initialize(const QStringList &arguments, QString *errorStri
     if (!Core::ICore::mimeDatabase()->addMimeTypes(":/htmlviewer/HtmlViewer.mimetypes.xml", errorString))
         return false;
 
-
+    factory = new HtmlViewerFactory();
+    addAutoReleasedObject(factory);
     
     return true;
 }

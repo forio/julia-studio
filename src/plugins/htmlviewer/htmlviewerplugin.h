@@ -6,6 +6,8 @@
 #include <extensionsystem/iplugin.h>
 
 namespace HtmlViewerPlugin {
+    class HtmlViewerFactory;
+
 namespace Internal {
 
 class HtmlViewPlugin : public ExtensionSystem::IPlugin
@@ -22,6 +24,9 @@ public:
     
 private slots:
     void triggerAction();
+
+private:
+    HtmlViewerFactory* factory;
 };
 
 } // namespace Internal

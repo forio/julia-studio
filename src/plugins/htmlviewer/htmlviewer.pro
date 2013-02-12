@@ -1,6 +1,8 @@
 TARGET = HtmlViewer
 TEMPLATE = lib
 
+QT += webkit
+
 DEFINES += HTMLVIEWER_LIBRARY
 
 # HtmlViewer files
@@ -49,4 +51,10 @@ HEADERS += \
 
 SOURCES += \
     htmlviewer.cpp
+
+HEADERS += \
+    htmlfile.h
+
+SOURCES += \
+    htmlfile.cpp
 

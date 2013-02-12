@@ -1,9 +1,13 @@
 #ifndef HTMLVIEWER_H
 #define HTMLVIEWER_H
 
+#include "htmlfile.h"
+
 #include <coreplugin/editormanager/ieditor.h>
 #include <coreplugin/idocument.h>
 #include <coreplugin/coreconstants.h>
+
+#include <QWebView>
 
 namespace HtmlViewerPlugin {
 
@@ -32,11 +36,14 @@ public slots:
 
     virtual QWidget *toolBar();
 
-    virtual Core::Id preferredOpenMode() const { return Core::Id(Core::Constants::O_SEPERATE); }
+    virtual Core::Id preferredOpenMode() const;
     
 signals:
     
 private:
+    HtmlFile* file;
+    QWebView* webView;
+    QString name;
 
 };
 
