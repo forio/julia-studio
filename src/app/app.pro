@@ -44,7 +44,7 @@ CONFIG += no_batch
 
 # Fervor autoupdater
 FV_APP_NAME = "JuliaStudio"
-FV_APP_VERSION = $$JULIA_STUDIO_VERSION
+FV_APP_VERSION = "$$JULIA_STUDIO_VERSION_STR"
 
 !include("../../fervor/Fervor.pri") {
     error("Unable to include Fervor autoupdater.")
