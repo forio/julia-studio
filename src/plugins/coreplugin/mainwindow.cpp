@@ -178,13 +178,13 @@ MainWindow::MainWindow() :
 
     Utils::HistoryCompleter::setSettings(m_settings);
 
-    setWindowTitle(tr("{ Julia } Studio"));
+    setWindowTitle(tr("Julia Studio"));
 #ifndef Q_OS_MAC
     QApplication::setWindowIcon(QIcon(QLatin1String(Constants::ICON_QTLOGO_128)));
 #endif
-    QCoreApplication::setApplicationName(QLatin1String("JuliaStudio"));
+    QCoreApplication::setApplicationName(QLatin1String("Julia Studio"));
     QCoreApplication::setApplicationVersion(QLatin1String(Core::Constants::IDE_VERSION_LONG));
-    QCoreApplication::setOrganizationName(QLatin1String(Constants::IDE_SETTINGSVARIANT_STR));
+    QCoreApplication::setOrganizationName(QLatin1String("Forio"));
     QString baseName = QApplication::style()->objectName();
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
     if (baseName == QLatin1String("windows")) {

@@ -466,7 +466,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QApplication::setApplicationName(QLatin1String(titleC));
-    QApplication::setOrganizationName(QLatin1String(Core::Constants::IDE_SETTINGSVARIANT_STR));
+    QApplication::setOrganizationName(QLatin1String("Forio"));
     QString errorMessage;
 
     if (!parseArguments(QApplication::arguments(), &errorMessage)) {
