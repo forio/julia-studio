@@ -62,7 +62,6 @@ private:
 
     MainWindow *m_mainWindow;
     EditMode *m_editMode;
-    DesignMode *m_designMode;
 };
 
 } // namespace Internal

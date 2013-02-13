@@ -641,11 +641,10 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     cmd = Core::ActionManager::registerAction(d->m_cancelBuildAction, Constants::CANCELBUILD, globalcontext);
 
     // run action ~~~
-    d->m_runAction = new QAction(runIcon, tr("Load Current File"), this);
+    d->m_runAction = new QAction(runIcon, tr("Run Current File"), this);
     cmd = Core::ActionManager::registerAction(d->m_runAction, Constants::RUN, globalcontext);
     cmd->setAttribute(Core::Command::CA_UpdateText);
     cmd->setDefaultKeySequence(Qt::Key_F5);
-    Core::ModeManager::addAction(cmd->action(), Constants::P_ACTION_RUN);
 
     // Run without deployment action
     d->m_runWithoutDeployAction = new QAction(tr("Run Without Deployment"), this);

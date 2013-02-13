@@ -58,12 +58,6 @@ CorePlugin::~CorePlugin()
         delete m_editMode;
     }
 
-    if (m_designMode) {
-        if (m_designMode->designModeIsRequired())
-            removeObject(m_designMode);
-        delete m_designMode;
-    }
-
     // delete FileIconProvider singleton
     delete FileIconProvider::instance();
 
@@ -91,7 +85,6 @@ bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage)
         m_editMode = new EditMode;
         addObject(m_editMode);
         ModeManager::activateMode(m_editMode->id());
-        m_designMode = new DesignMode;
     }
     return success;
 }
@@ -99,8 +92,6 @@ bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage)
 void CorePlugin::extensionsInitialized()
 {
     m_mainWindow->mimeDatabase()->syncUserModifiedMimeTypes();
-    if (m_designMode->designModeIsRequired())
-        addObject(m_designMode);
     m_mainWindow->extensionsInitialized();
 }
 

@@ -61,7 +61,6 @@ public:
     static IMode *currentMode();
     static IMode *mode(Id id);
 
-    static void addAction(QAction *action, int priority);
     static void addProjectSelector(QAction *action);
     static void addWidget(QWidget *widget);
 
@@ -82,7 +81,6 @@ private slots:
     void aboutToRemoveObject(QObject *obj);
     void currentTabAboutToChange(int index);
     void currentTabChanged(int index);
-    void updateModeToolTip();
     void enabledStateChanged();
     void handleStartup();
     void handleShutdown();
