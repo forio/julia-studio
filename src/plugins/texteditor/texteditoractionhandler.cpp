@@ -200,8 +200,8 @@ void TextEditorActionHandler::createActions()
     m_unCommentSelectionAction = new QAction(tr("Toggle Comment &Selection"), this);
     m_modifyingActions << m_unCommentSelectionAction;
     command = Core::ActionManager::registerAction(m_unCommentSelectionAction, Constants::UN_COMMENT_SELECTION, m_contextId, true);
-    command->setDefaultKeySequence(QKeySequence(Core::UseMacShortcuts ? QString::fromLatin1("Meta+%1").arg(3)
-                                                                : QString::fromLatin1("Ctrl+%1").arg(3)));
+    command->setDefaultKeySequence(QKeySequence(Core::UseMacShortcuts ? QString::fromLatin1("Meta+3")
+                                                                      : QString::fromLatin1("Ctrl+3")));
     connect(m_unCommentSelectionAction, SIGNAL(triggered()), this, SLOT(unCommentSelection()));
     advancedMenu->addAction(command, Core::Constants::G_EDIT_FORMAT);
 
