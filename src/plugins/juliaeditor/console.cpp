@@ -227,7 +227,8 @@ void Console::keyPressEvent( QKeyEvent* e )
       setTextCursor( cursor );
       return;
     }
-    if ( e->matches(QKeySequence::MoveToEndOfLine) ||
+    if ( e->key() == Qt::Key_E ||
+         e->matches(QKeySequence::MoveToEndOfLine) ||
          e->matches(QKeySequence::MoveToEndOfBlock) ||
          e->matches(QKeySequence::MoveToEndOfDocument) )
     {

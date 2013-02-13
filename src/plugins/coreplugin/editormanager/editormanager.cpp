@@ -368,31 +368,31 @@ EditorManager::EditorManager(QWidget *parent) :
 
     d->m_splitAction = new QAction(tr("Split"), this);
     cmd = ActionManager::registerAction(d->m_splitAction, Constants::SPLIT, editManagerContext);
-    cmd->setDefaultKeySequence(QKeySequence(UseMacShortcuts ? tr("Meta+E,2") : tr("Ctrl+E,2")));
+    //cmd->setDefaultKeySequence(QKeySequence(UseMacShortcuts ? tr("Meta+E,2") : tr("Ctrl+E,2")));
     mwindow->addAction(cmd, Constants::G_WINDOW_SPLIT);
     connect(d->m_splitAction, SIGNAL(triggered()), this, SLOT(split()));
 
     d->m_splitSideBySideAction = new QAction(tr("Split Side by Side"), this);
     cmd = ActionManager::registerAction(d->m_splitSideBySideAction, Constants::SPLIT_SIDE_BY_SIDE, editManagerContext);
-    cmd->setDefaultKeySequence(QKeySequence(UseMacShortcuts ? tr("Meta+E,3") : tr("Ctrl+E,3")));
+    //cmd->setDefaultKeySequence(QKeySequence(UseMacShortcuts ? tr("Meta+E,3") : tr("Ctrl+E,3")));
     mwindow->addAction(cmd, Constants::G_WINDOW_SPLIT);
     connect(d->m_splitSideBySideAction, SIGNAL(triggered()), this, SLOT(splitSideBySide()));
 
     d->m_removeCurrentSplitAction = new QAction(tr("Remove Current Split"), this);
     cmd = ActionManager::registerAction(d->m_removeCurrentSplitAction, Constants::REMOVE_CURRENT_SPLIT, editManagerContext);
-    cmd->setDefaultKeySequence(QKeySequence(UseMacShortcuts ? tr("Meta+E,0") : tr("Ctrl+E,0")));
+    //cmd->setDefaultKeySequence(QKeySequence(UseMacShortcuts ? tr("Meta+E,0") : tr("Ctrl+E,0")));
     mwindow->addAction(cmd, Constants::G_WINDOW_SPLIT);
     connect(d->m_removeCurrentSplitAction, SIGNAL(triggered()), this, SLOT(removeCurrentSplit()));
 
     d->m_removeAllSplitsAction = new QAction(tr("Remove All Splits"), this);
     cmd = ActionManager::registerAction(d->m_removeAllSplitsAction, Constants::REMOVE_ALL_SPLITS, editManagerContext);
-    cmd->setDefaultKeySequence(QKeySequence(UseMacShortcuts ? tr("Meta+E,1") : tr("Ctrl+E,1")));
+    //cmd->setDefaultKeySequence(QKeySequence(UseMacShortcuts ? tr("Meta+E,1") : tr("Ctrl+E,1")));
     mwindow->addAction(cmd, Constants::G_WINDOW_SPLIT);
     connect(d->m_removeAllSplitsAction, SIGNAL(triggered()), this, SLOT(removeAllSplits()));
 
     d->m_gotoOtherSplitAction = new QAction(tr("Go to Next Split"), this);
     cmd = ActionManager::registerAction(d->m_gotoOtherSplitAction, Constants::GOTO_OTHER_SPLIT, editManagerContext);
-    cmd->setDefaultKeySequence(QKeySequence(UseMacShortcuts ? tr("Meta+E,o") : tr("Ctrl+E,o")));
+    //cmd->setDefaultKeySequence(QKeySequence(UseMacShortcuts ? tr("Meta+E,o") : tr("Ctrl+E,o")));
     mwindow->addAction(cmd, Constants::G_WINDOW_SPLIT);
     connect(d->m_gotoOtherSplitAction, SIGNAL(triggered()), this, SLOT(gotoOtherSplit()));
 
