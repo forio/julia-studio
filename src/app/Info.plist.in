@@ -9,84 +9,6 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>CFBundleTypeIconFile</key>
-			<string>profile.icns</string>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>pro</string>
-			</array>
-			<key>CFBundleTypeName</key>
-			<string>Qt Project File</string>
-			<key>LSHandlerRank</key>
-			<string>Default</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleTypeIconFile</key>
-			<string>prifile.icns</string>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>pri</string>
-			</array>
-			<key>CFBundleTypeName</key>
-			<string>Qt Project Include File</string>
-			<key>LSHandlerRank</key>
-			<string>Default</string>
-		</dict>
-                <dict>
-                        <key>CFBundleTypeRole</key>
-                        <string>Editor</string>
-                        <key>CFBundleTypeIconFile</key>
-                        <string>profile.icns</string>
-                        <key>CFBundleTypeExtensions</key>
-                        <array>
-                                <string>creator</string>
-                        </array>
-                        <key>CFBundleTypeName</key>
-                        <string>Qt Creator Makefile Based Project File</string>
-                        <key>LSHandlerRank</key>
-                        <string>Default</string>
-                </dict>
-                <dict>
-                        <key>CFBundleTypeRole</key>
-                        <string>Editor</string>
-                        <key>CFBundleTypeIconFile</key>
-                        <string>profile.icns</string>
-                        <key>CFBundleTypeExtensions</key>
-                        <array>
-                                <string>qmlproject</string>
-                        </array>
-                        <key>CFBundleTypeName</key>
-                        <string>Quick Project File</string>
-                        <key>LSHandlerRank</key>
-                        <string>Default</string>
-                </dict>
-                <dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>qrc</string>
-			</array>
-			<key>CFBundleTypeName</key>
-			<string>Qt Resource File</string>
-			<key>LSHandlerRank</key>
-			<string>Default</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>ui</string>
-			</array>
-			<key>CFBundleTypeName</key>
-			<string>Qt UI File</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>jl</string>
@@ -211,8 +133,8 @@
 			<string>Editor</string>
 		</dict>
 	</array>
-        <key>NSHumanReadableCopyright</key>
-        <string>(C) 2012 Digia Plc</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>(C) 2013 Forio Online Simulations</string>
 	<key>CFBundleIconFile</key>
 	<string>$$ICON</string>
 	<key>CFBundlePackageType</key>
@@ -220,9 +142,13 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-  <string>JuliaStudio</string>
+    <string>JuliaStudio</string>
+    <key>CFBundleName</key>
+    <string>Julia Studio</string>
+    <key>CFBundleDisplayName</key>
+    <string>Julia Studio</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.qt-project.qtcreator</string>
+	<string>com.forio.juliastudio</string>
 	<key>CFBundleVersion</key>
         <string>$$JULIA_STUDIO_VERSION</string>
 	<key>CFBundleShortVersionString</key>
