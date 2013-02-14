@@ -1005,6 +1005,8 @@ void ProjectExplorerPlugin::extensionsInitialized()
     DeviceManager *dm = DeviceManager::instance();
     if (dm->find(Core::Id(Constants::DESKTOP_DEVICE_ID)).isNull())
         DeviceManager::instance()->addDevice(IDevice::Ptr(new DesktopDevice));
+
+   loadSession(d->m_session->lastSession());
 }
 
 void ProjectExplorerPlugin::loadCustomWizards()
