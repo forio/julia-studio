@@ -247,6 +247,8 @@ bool FolderNavigationWidget::setCurrentDirectory(const QString &directory)
     const QDir current(QDir::cleanPath(newDirectory));
     setCurrentTitle(current.dirName(),
                     QDir::toNativeSeparators(current.absolutePath()));
+
+    Core::DocumentManager::setFileDialogLastVisitedDirectory(newDirectory);
     return !directory.isEmpty();
 }
 
