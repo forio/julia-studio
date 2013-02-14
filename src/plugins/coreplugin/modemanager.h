@@ -61,6 +61,7 @@ public:
     static IMode *currentMode();
     static IMode *mode(Id id);
 
+    static void addAction(QAction *action, int priority);
     static void addProjectSelector(QAction *action);
     static void addWidget(QWidget *widget);
 

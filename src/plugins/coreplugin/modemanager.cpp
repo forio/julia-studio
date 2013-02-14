@@ -74,6 +74,7 @@ struct ModeManagerPrivate
     QMap<QAction*, int> m_actions;
     QVector<IMode*> m_modes;
     QSignalMapper *m_signalMapper;
+    QVector<Command*> m_modeShortcuts;
     Context m_addedContexts;
     int m_oldCurrent;
     bool m_saveSettingsOnModeChange;
@@ -276,6 +277,20 @@ void ModeManager::currentTabChanged(int index)
         d->m_oldCurrent = index;
         emit currentModeChanged(mode, oldMode);
     }
+}
+
+void ModeManager::addAction(QAction *action, int priority)
+{
+    d->m_actions.insert(action, priority);
+
+    // Count the number of commands with a higher priority
+    int index = 0;
+    foreach (int p, d->m_actions) {
+        if (p > priority)
+            ++index;
+    }
+
+    d->m_actionBar->insertAction(index, action);
 }
 
 void ModeManager::setFocusToCurrentMode()
