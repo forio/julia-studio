@@ -27,6 +27,7 @@
 #include <texteditor/texteditoractionhandler.h>
 #include <extensionsystem/pluginmanager.h>
 #include <coreplugin/editormanager/editormanager.h>
+#include <coreplugin/fileiconprovider.h>
 
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
@@ -67,6 +68,10 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   // Types and settings -------
   if (!Core::ICore::mimeDatabase()->addMimeTypes(QLatin1String(":/juliaeditor/juliaeditor.mimetypes.xml"), errorString))
       return false;
+
+  Core::FileIconProvider *iconProvider = Core::FileIconProvider::instance();
+  iconProvider->registerIconOverlayForSuffix(QIcon(QLatin1String(":/juliaeditor/images/jlfile.png")), "jl");
+
 
   addAutoReleasedObject( new JuliaSettingsPage() );
   Singleton<JuliaSettings>::GetInstance()->FromSettings(Core::ICore::settings());
