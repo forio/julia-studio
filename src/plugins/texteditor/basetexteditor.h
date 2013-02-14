@@ -658,7 +658,7 @@ private:
     QToolBar *m_toolBar;
     QWidget *m_stretchWidget;
     QAction *m_cursorPositionLabelAction;
-    Utils::LineColumnLabel *m_cursorPositionLabel;
+    //Utils::LineColumnLabel *m_cursorPositionLabel;
 };
 
 } // namespace TextEditor

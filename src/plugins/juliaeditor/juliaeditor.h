@@ -23,6 +23,9 @@ public:
 
   bool open(QString *errorString, const QString &fileName, const QString &realFileName);
 
+public slots:
+  void runThisFile();
+
 signals:
 
 public slots:

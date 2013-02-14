@@ -13,6 +13,8 @@
 #include <utils/uncommentselection.h>
 #include <texteditor/generichighlighter/highlightdefinition.h>
 #include <extensionsystem/pluginmanager.h>
+#include <projectexplorer/projectexplorerconstants.h>
+#include <coreplugin/actionmanager/actionmanager.h>
 
 #include <QDebug>
 
@@ -26,6 +28,11 @@ JuliaEditor::JuliaEditor(TextEditor::BaseTextEditorWidget *widget)
   m_context.add(Constants::JULIAEDITOR);
   //m_context.add(ProjectExplorer::Constants::LANG_JULIA);
   //m_context.add(TextEditor::Constants::JULIA_TEXTEDITOR);
+
+  QAction* action = new QAction(QIcon(QLatin1String(ProjectExplorer::Constants::ICON_RUN)), "Run this file", this);
+  connect(action, SIGNAL(triggered()), SLOT(runThisFile()));
+
+  toolBar()->addAction(action);
 }
 
 Core::IEditor *JuliaEditor::duplicate(QWidget *parent)
@@ -51,6 +58,13 @@ bool JuliaEditor::open(QString *errorString, const QString &fileName, const QStr
   bool success = TextEditor::BaseTextEditor::open( errorString, fileName, realFileName );
   editorWidget()->setMimeType( Core::ICore::mimeDatabase()->findByFile( QFileInfo( fileName ) ).type() );
   return success;
+}
+
+void JuliaEditor::runThisFile()
+{
+    Core::EditorManager::activateEditor(this);
+    Core::Command* cmd = Core::ActionManager::instance()->command(ProjectExplorer::Constants::RUN);
+    cmd->action()->trigger();
 }
 
 

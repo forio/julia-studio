@@ -70,6 +70,7 @@
 #include <utils/hostosinfo.h>
 #include <utils/qtcassert.h>
 #include <utils/stylehelper.h>
+#include <projectexplorer/projectexplorerconstants.h>
 
 #include <QCoreApplication>
 #include <QTextCodec>
@@ -6169,15 +6170,12 @@ BaseTextEditor::BaseTextEditor(BaseTextEditorWidget *editor)
     aggregate->add(baseTextFind);
     aggregate->add(editor);
 
-    m_cursorPositionLabel = new Utils::LineColumnLabel;
-
     m_stretchWidget = new QWidget;
     m_stretchWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     m_toolBar = new QToolBar;
     m_toolBar->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    m_toolBar->addWidget(m_stretchWidget);
-    m_cursorPositionLabelAction = m_toolBar->addWidget(m_cursorPositionLabel);
+    m_cursorPositionLabelAction = m_toolBar->addWidget(m_stretchWidget);
 
     connect(editor, SIGNAL(cursorPositionChanged()), this, SLOT(updateCursorPosition()));
 }
@@ -6301,8 +6299,8 @@ void BaseTextEditor::updateCursorPosition()
     const QTextBlock block = cursor.block();
     const int line = block.blockNumber() + 1;
     const int column = cursor.position() - block.position();
-    m_cursorPositionLabel->setText(tr("Line: %1, Col: %2").arg(line).arg(e->tabSettings().columnAt(block.text(), column)+1),
-                                   tr("Line: 9999, Col: 999"));
+    //m_cursorPositionLabel->setText(tr("Line: %1, Col: %2").arg(line).arg(e->tabSettings().columnAt(block.text(), column)+1),
+    //                               tr("Line: 9999, Col: 999"));
     m_contextHelpId.clear();
 
     if (!block.isVisible())
