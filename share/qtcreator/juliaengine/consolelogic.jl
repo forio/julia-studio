@@ -25,7 +25,7 @@ function OnEvalMsg(console::ConsoleLogicSystem, code)
     end
 
   catch error
-    return __Event.NewEvent(event_system, "network-output", "output-error", sprint(repl_show, error.msg))
+    return __Event.NewEvent(event_system, "network-output", "output-error", sprint(Base.error_show, error))
   end
 end
 
