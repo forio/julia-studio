@@ -384,6 +384,7 @@ FancyTabWidget::FancyTabWidget(QWidget *parent)
     m_tabBar = new FancyTabBar(this);
 
     m_selectionWidget = new QWidget(this);
+
     QVBoxLayout *selectionLayout = new QVBoxLayout;
     selectionLayout->setSpacing(0);
     selectionLayout->setMargin(0);
@@ -460,6 +461,9 @@ void FancyTabWidget::setBackgroundBrush(const QBrush &brush)
 void FancyTabWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
+    if (m_selectionWidget->isHidden())
+        return;
+
     QPainter painter(this);
 
     QRect rect = m_selectionWidget->rect().adjusted(0, 0, 1, 0);

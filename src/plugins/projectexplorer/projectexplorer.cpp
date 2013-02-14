@@ -895,7 +895,7 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     connect(vm, SIGNAL(variableUpdateRequested(QByteArray)),
             this, SLOT(updateVariable(QByteArray)));
 
-
+    Core::ModeManager::setModeBarHidden(true);
 
     return true;
 }
