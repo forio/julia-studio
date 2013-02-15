@@ -4,6 +4,7 @@
 #include "juliamsg.h"
 
 #include <coreplugin/icore.h>
+#include <coreplugin/editormanager/editormanager.h>
 
 #include <QDebug>
 #include <QDir>
@@ -22,6 +23,7 @@ LocalTcpEvaluator::LocalTcpEvaluator(QObject *parent) :
   ProjectExplorer::IEvaluator(parent), process(NULL), socket(NULL), busy(false), curr_msg_size(-1)
 {
   connect( this, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), this, SLOT(onChangeDirResult(const ProjectExplorer::EvaluatorMessage*)));
+  connect( this, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), this, SLOT(onPlot(const ProjectExplorer::EvaluatorMessage*)));
 }
 
 LocalTcpEvaluator::~LocalTcpEvaluator()
@@ -139,7 +141,7 @@ void LocalTcpEvaluator::kill()
 
 void LocalTcpEvaluator::setWorkingDir(const QString &working_directory)
 {
-  if (working_directory == curr_working_dir || !socket || socket->state() != QTcpSocket::ConnectedState)
+  if (working_directory == curr_working_dir)
     return;
 
   curr_working_dir = working_directory;
@@ -353,4 +355,12 @@ void LocalTcpEvaluator::onChangeDirResult(const ProjectExplorer::EvaluatorMessag
     return;
 
   //emit ready();
+}
+
+void LocalTcpEvaluator::onPlot(const ProjectExplorer::EvaluatorMessage *msg)
+{
+    if (msg->type != JM_OUTPUT_PLOT)
+      return;
+
+    Core::EditorManager::openEditor(curr_working_dir + "/" + msg->params.front());
 }

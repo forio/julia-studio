@@ -58,6 +58,7 @@ private slots:
   void connectToJulia( unsigned port );
 
   void onChangeDirResult(const ProjectExplorer::EvaluatorMessage* msg);
+  void onPlot( const ProjectExplorer::EvaluatorMessage* msg );
 
 private:
   QQueue<ProjectExplorer::EvaluatorMessage> work_queue;

@@ -29,5 +29,6 @@ RegisterMsg("output-error", 128)
 RegisterMsg("output-eval", 129)
 RegisterMsg("output-package", 130)
 RegisterMsg("output-dir", 131)
+RegisterMsg("output-plot", 132)
 
 end

@@ -41,7 +41,10 @@ end
 
 function NewEvent(system, event_name, parameters...)
   push!(system.pending_events, EventInfo(event_name, parameters))
-  put(system.event_signal, Nothing)
+
+  if !isready(system.event_signal)
+    put(system.event_signal, nothing)
+  end
 end
 
 
@@ -81,6 +84,10 @@ function HandlePendingEvents(system::EventSystem)
     for handler in handlers
       handler(event.params...)
     end
+  end
+
+  if isready(system.event_signal)
+    take(system.event_signal)
   end
 
   # Note that more events may have been queued while we were handling

@@ -39,6 +39,7 @@ private slots:
   void evalCurrFile();
   void updateLoadAction();
   void currEditorChanged(Core::IEditor* editor);
+  void sessionLoaded();
 
 private:
   TextEditor::TextEditorActionHandler* action_handler;

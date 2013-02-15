@@ -17,6 +17,7 @@ const quint8 JM_OUTPUT_ERROR = 128;
 const quint8 JM_OUTPUT_EVAL = 129;
 const quint8 JM_OUTPUT_PACKAGE = 130;
 const quint8 JM_OUTPUT_DIR = 131;
+const quint8 JM_OUTPUT_PLOT = 132;
 // -----------------------------------------
 
 #if 0

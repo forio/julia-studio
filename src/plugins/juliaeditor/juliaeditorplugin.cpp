@@ -28,6 +28,8 @@
 #include <extensionsystem/pluginmanager.h>
 #include <coreplugin/editormanager/editormanager.h>
 #include <coreplugin/fileiconprovider.h>
+#include <projectexplorer/projectexplorer.h>
+#include <projectexplorer/session.h>
 
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
@@ -112,6 +114,7 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   evaluator = new LocalTcpEvaluator(this);
   console_pane = new JuliaConsolePane(this);
   Console* console = console_pane->outputWidget();
+  Core::EditorManager* editor_manager = Core::EditorManager::instance();
 
   connect( evaluator, SIGNAL( ready() ), console, SLOT( BeginCommand() ) );
   connect( console, SIGNAL( NewCommand(ProjectExplorer::EvaluatorMessage) ), evaluator, SLOT( eval(const ProjectExplorer::EvaluatorMessage&) ) );
@@ -121,11 +124,15 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   evaluator->startup();
 
   connect( console, SIGNAL( Reseting(bool) ), evaluator, SLOT( reset() ) );
-#if 0 // defined(Q_OS_WIN)
-  connect( evaluator, SIGNAL(executing(QString)), console, SLOT(WindowsHack(QString)) );
-#endif
   connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&)), console, SLOT(Reset()) );
-  connect( Core::EditorManager::instance(), SIGNAL(currentEditorChanged(Core::IEditor*)), SLOT(currEditorChanged(Core::IEditor*)) );
+  connect( editor_manager, SIGNAL(currentEditorChanged(Core::IEditor*)), SLOT(currEditorChanged(Core::IEditor*)) );
+  connect(ProjectExplorer::ProjectExplorerPlugin::instance()->session(), SIGNAL(sessionLoaded(QString)), this, SLOT(sessionLoaded()));
+
+//  Core::IEditor* curr_editor = editor_manager->currentEditor();
+//  if (curr_editor)
+//    evaluator->setWorkingDir(QFileInfo( curr_editor->document()->fileName() ).absoluteDir().absolutePath());
+//  else
+//    evaluator->setWorkingDir(QDir::currentPath());
 
   addAutoReleasedObject(evaluator);
   ExtensionSystem::PluginManager::addObject(console_pane);
@@ -232,6 +239,16 @@ void JuliaEditorPlugin::currEditorChanged(Core::IEditor *editor)
     return;
 
   evaluator->setWorkingDir( QFileInfo( editor->document()->fileName() ).absoluteDir().absolutePath() );
+}
+
+void JuliaEditorPlugin::sessionLoaded()
+{
+    if (!evaluator)
+      return;
+
+    Core::IEditor* editor = Core::EditorManager::instance()->currentEditor();
+    if (editor)
+      evaluator->setWorkingDir( QFileInfo( editor->document()->fileName() ).dir().absolutePath() );
 }
 
 
