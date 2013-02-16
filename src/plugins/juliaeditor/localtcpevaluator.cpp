@@ -237,7 +237,10 @@ void LocalTcpEvaluator::onSocketOutput()
   busy = false;
   curr_msg_size = -1;
 
-  continueOrReady();
+  if (socket->bytesAvailable())
+    onSocketOutput();
+  else
+    continueOrReady();
 }
 
 void LocalTcpEvaluator::onSocketError(QAbstractSocket::SocketError error)
@@ -362,5 +365,5 @@ void LocalTcpEvaluator::onPlot(const ProjectExplorer::EvaluatorMessage *msg)
     if (msg->type != JM_OUTPUT_PLOT)
       return;
 
-    Core::EditorManager::openEditor(curr_working_dir + "/" + msg->params.front());
+    Core::EditorManager::openEditor(Core::ICore::resourcePath() + QLatin1String("/juliaengine/graphics/") + msg->params.front(), Core::Id(), Core::EditorManager::ModeSwitch);
 }

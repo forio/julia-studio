@@ -238,7 +238,9 @@ void JuliaEditorPlugin::currEditorChanged(Core::IEditor *editor)
   if ( !editor || !evaluator )
     return;
 
-  evaluator->setWorkingDir( QFileInfo( editor->document()->fileName() ).absoluteDir().absolutePath() );
+  QString file_name = editor->document()->fileName();
+  if (file_name.size())
+    evaluator->setWorkingDir( QFileInfo( file_name ).absoluteDir().absolutePath() );
 }
 
 void JuliaEditorPlugin::sessionLoaded()
@@ -248,7 +250,11 @@ void JuliaEditorPlugin::sessionLoaded()
 
     Core::IEditor* editor = Core::EditorManager::instance()->currentEditor();
     if (editor)
-      evaluator->setWorkingDir( QFileInfo( editor->document()->fileName() ).dir().absolutePath() );
+    {
+      QString file_name = editor->document()->fileName();
+      if (file_name.size())
+        evaluator->setWorkingDir( QFileInfo( file_name ).dir().absolutePath() );
+    }
 }
 
 
