@@ -81,6 +81,7 @@ void Console::BeginCommand()
 
   moveCursor( QTextCursor::End );
   insertPlainText( prompt );
+  moveCursor( QTextCursor::End );
   begin_command_pos = textCursor().position();
   busy = false;
 
