@@ -1,5 +1,10 @@
 #include "htmlviewer.h"
 #include "htmlviewerconstants.h"
+#include "htmlviewerfactory.h"
+
+#include <extensionsystem/pluginmanager.h>
+
+#include <QDebug>
 
 using namespace HtmlViewerPlugin;
 
@@ -52,7 +57,15 @@ bool HtmlViewer::duplicateSupported() const
 
 Core::IEditor *HtmlViewer::duplicate(QWidget *parent)
 {
-    return NULL;
+    QList<HtmlViewerFactory*> factories = ExtensionSystem::PluginManager::getObjects<HtmlViewerFactory>();
+    if (!factories.size())
+      return NULL;
+
+    HtmlViewer* editor = qobject_cast<HtmlViewer*>(factories.front()->createEditor(parent));
+    QWebView* editor_widget = editor->editorWidget();
+    editor_widget->setPage(editorWidget()->page());
+
+    return editor;
 }
 
 QByteArray HtmlViewer::saveState() const
@@ -78,4 +91,9 @@ QWidget *HtmlViewer::toolBar()
 Core::Id HtmlViewer::preferredOpenMode() const
 {
     return Core::Id(Core::Constants::O_SEPERATE);
+}
+
+QWebView *HtmlViewer::editorWidget()
+{
+    return webView;
 }

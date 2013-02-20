@@ -71,6 +71,7 @@ private:
   qint32 curr_msg_size;
 
   QString curr_working_dir;
+  QString plot_view_filename;
   
 };
 

@@ -7,6 +7,7 @@ namespace JuliaPlugin {
     char const * const ACTION_ID_RESET_CONSOLE = "JuliaEditor.ResetConsole";
     char const * const ACTION_ID_CLEAR_CONSOLE = "JuliaEditor.ClearConsole";
     char const * const MENU_ID = "JuliaEditor.Menu";
+    char const * const EDITOR_PLOT = "Editor.Plot";
 
     char const * const JULIAEDITOR = "JuliaPlugin.JuliaEditor";
     char const * const JULIAEDITOR_ID = "JuliaPlugin.JuliaEditor";

@@ -2,6 +2,7 @@
 #include "juliasettingspage.h"
 #include "singleton.h"
 #include "juliamsg.h"
+#include "juliaeditor_constants.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/editormanager/editormanager.h>
@@ -311,6 +312,7 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
 
   process->setProcessEnvironment( environment );
 #endif
+
 #if defined(Q_OS_DARWIN)
   QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
   environment.insert("PATH", environment.value("PATH") + ":/usr/local/bin:/opt/local/bin:/usr/local/git/bin");
@@ -365,5 +367,16 @@ void LocalTcpEvaluator::onPlot(const ProjectExplorer::EvaluatorMessage *msg)
     if (msg->type != JM_OUTPUT_PLOT)
       return;
 
-    Core::EditorManager::openEditor(Core::ICore::resourcePath() + QLatin1String("/juliaengine/graphics/") + msg->params.front(), Core::Id(), Core::EditorManager::ModeSwitch);
+    Core::EditorManager* editor_manager = Core::EditorManager::instance();
+
+    plot_view_filename = Core::ICore::resourcePath() + QLatin1String("/juliaengine/graphics/") + msg->params.front();
+    QList<Core::IEditor*> plot_editors = editor_manager->editorsForFileName(plot_view_filename);
+
+    Core::IEditor* editor;
+    if (plot_editors.size())
+      editor_manager->activateEditor(plot_editors.front());
+    else
+      editor = editor_manager->openEditor(plot_view_filename);
+
+
 }

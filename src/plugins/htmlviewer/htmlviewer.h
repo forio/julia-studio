@@ -37,6 +37,8 @@ public slots:
     virtual QWidget *toolBar();
 
     virtual Core::Id preferredOpenMode() const;
+
+    virtual QWebView* editorWidget();
     
 signals:
     
