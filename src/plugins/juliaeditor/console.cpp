@@ -6,12 +6,13 @@
 
 using namespace JuliaPlugin;
 
-
+// ----------------------------------------------------------------------------
 int HistoryModel::rowCount(const QModelIndex &parent) const
 {
   return parent.isValid() ? 0 : command_history.count();
 }
 
+// ----------------------------------------------------------------------------
 QVariant HistoryModel::data(const QModelIndex &index, int role) const
 {
   if ( index.row() >= command_history.count() || index.column() != 0 )
@@ -23,6 +24,7 @@ QVariant HistoryModel::data(const QModelIndex &index, int role) const
   return QVariant();
 }
 
+// ----------------------------------------------------------------------------
 bool HistoryModel::insertRows(const QStringList& data, int row, const QModelIndex &parent)
 {
   beginInsertRows( parent, row, row + data.size() );
@@ -33,6 +35,7 @@ bool HistoryModel::insertRows(const QStringList& data, int row, const QModelInde
   return true;
 }
 
+// ----------------------------------------------------------------------------
 bool HistoryModel::removeRows(int row, int count, const QModelIndex &parent)
 {
   QStringList::iterator begin = command_history.begin() + row;
@@ -45,6 +48,7 @@ bool HistoryModel::removeRows(int row, int count, const QModelIndex &parent)
   return true;
 }
 
+// ----------------------------------------------------------------------------
 void HistoryModel::clear()
 {
   beginRemoveRows( QModelIndex(), 0, rowCount() );
@@ -58,7 +62,7 @@ void HistoryModel::clear()
 Console::Console( QWidget* parent ) :
   TextEditor::BaseTextEditorWidget(parent), begin_command_pos(0), busy(true), remaining_bytes(0)
 {
-  SetPrompt("julia> ");
+  SetPrompt("\njulia> ");
 }
 
 // ----------------------------------------------------------------------------
@@ -94,7 +98,7 @@ void Console::DisplayMsg(const ProjectExplorer::EvaluatorMessage* msg)
     return;
   }
 
-  QString output( msg->params[0] + "\n\n" );
+  QString output( msg->params[0] + "\n" );
 
 #if 0 //defined(Q_OS_WIN)
     output.remove( QRegExp("\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]") );
@@ -376,6 +380,7 @@ void Console::SetCurrCommand( const QString& command )
   setTextCursor( cursor );
 }
 
+// ----------------------------------------------------------------------------
 void Console::SetCurrCommand(const QModelIndex &index)
 {
   history_index = index;
