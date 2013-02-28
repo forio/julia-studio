@@ -9,19 +9,58 @@ import __Event
 type ConsoleLogicSystem <: __Sandbox.System
 end
 
+function ParseLines(__input)
+    __lines = split(__input, '\u2029')
+    __parsed_exprs = {}
+    __input_so_far = ""
+    __all_nothing = true
+
+    for i = 1:length(__lines)
+        __input_so_far = string(__input_so_far, __lines[i], "\n")
+        __expr = Base.parse_input_line(__input_so_far)
+
+        # if there was nothing to parse, just keep going
+        if __expr == nothing
+            continue
+        end
+
+        __all_nothing = false
+        __expr_multitoken = isa(__expr, Expr)
+
+        # stop now if there was a parsing error
+        if __expr_multitoken && __expr.head == :error
+            return [__expr.args[1]]
+        end
+
+        # if the expression was incomplete, just keep going
+        if __expr_multitoken && __expr.head == :continue
+            continue
+        end
+
+        # add the parsed expression to the list
+        __input_so_far = ""
+        __parsed_exprs = [__parsed_exprs, __expr]
+    end
+    return __parsed_exprs
+end
+
 
 ### Events ###########################
 function OnEvalMsg(console::ConsoleLogicSystem, code)
   event_system = __Sandbox.GetSystem(__Event.EventSystem)
 
+  #println("code:", code)
   try
-    parsed_expr = parse(code)
-    result = @eval $parsed_expr
+    __parsed_exprs = ParseLines(code)
+    __result = nothing
+    for __expression in __parsed_exprs
+        __result = @eval $__expression
+    end
 
-    if isa(result, Nothing)
+    if isa(__result, Nothing)
       return __Event.NewEvent(event_system, "network-output", "output-eval", "")
     else
-      return __Event.NewEvent(event_system, "network-output", "output-eval", sprint(repl_show, result))
+      return __Event.NewEvent(event_system, "network-output", "output-eval", sprint(repl_show, __result))
     end
 
   catch error

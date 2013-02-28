@@ -57,7 +57,7 @@ void LocalEvaluator::eval( const QString& code )
 
   QString command( code );
   command.append( "\n\r" );
-  process->write( command.toAscii() );
+  process->write( command.toLocal8Bit() );
 }
 
 // ----------------------------------------------------------------------------

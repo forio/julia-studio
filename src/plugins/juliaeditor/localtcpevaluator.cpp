@@ -12,6 +12,7 @@
 #include <QFileInfo>
 #include <QRegExp>
 #include <QStringBuilder>
+#include <QTextCodec>
 
 #if defined(Q_OS_WIN)
 #include <Windows.h>
@@ -23,6 +24,7 @@ using namespace JuliaPlugin;
 LocalTcpEvaluator::LocalTcpEvaluator(QObject *parent) :
   ProjectExplorer::IEvaluator(parent), process(NULL), socket(NULL), busy(false), curr_msg_size(-1)
 {
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
   connect( this, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), this, SLOT(onChangeDirResult(const ProjectExplorer::EvaluatorMessage*)));
   connect( this, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), this, SLOT(onPlot(const ProjectExplorer::EvaluatorMessage*)));
 }

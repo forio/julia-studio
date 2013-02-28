@@ -63,7 +63,11 @@ public:
 
     // when qt streams a char* it does so as the size and then the data
     for (int i = 0; i < params.size(); ++i)
-      stream << params[i].toStdString().c_str();
+    {
+      QByteArray mangled_param = params[i].toLocal8Bit();
+      stream << mangled_param.data();
+      //stream << mangled_param.toStdString().c_str();
+    }
   }
 };
 

@@ -26,7 +26,7 @@ type Message
     param
     for i = 1 : num_params
       param_length = uint32(read(io, Uint32))
-      param = ASCIIString(read(io, Uint8, param_length))
+      param = utf8(read(io, Uint8, param_length))
 
       #if endswith(param, '\0')
         param = chop(param)
