@@ -1,57 +1,44 @@
 require("sandbox.jl")
 require("event.jl")
 
-module __ConsoleLogic
-
 import __Sandbox
 import __Event
 
-type ConsoleLogicSystem <: __Sandbox.System
-end
+# TO BE REPLACED as soon as we move on from 0.1
+function parse_lines(str::String, line_delim::Char)
+  lines = split(str, line_delim)
+  parsed_exprs = {}
+  curr_str = ""
 
-function ParseLines(__input)
-    __lines = split(__input, '\u2029')
-    __parsed_exprs = {}
-    __input_so_far = ""
-    __all_nothing = true
+  for i = 1:length(lines)
+    curr_str = string(curr_str, lines[i], "\n")
+    ex = Base.parse_input_line(curr_str)
 
-    for i = 1:length(__lines)
-        __input_so_far = string(__input_so_far, __lines[i], "\n")
-        __expr = Base.parse_input_line(__input_so_far)
+    if ex == nothing
+      continue
 
-        # if there was nothing to parse, just keep going
-        if __expr == nothing
-            continue
-        end
+    elseif isa(ex, Expr)
 
-        __all_nothing = false
-        __expr_multitoken = isa(__expr, Expr)
+      if ex.head == :error
+        return {ex}
+      elseif ex.head == :continue
+        continue
+      end
 
-        # stop now if there was a parsing error
-        if __expr_multitoken && __expr.head == :error
-            return [__expr.args[1]]
-        end
-
-        # if the expression was incomplete, just keep going
-        if __expr_multitoken && __expr.head == :continue
-            continue
-        end
-
-        # add the parsed expression to the list
-        __input_so_far = ""
-        __parsed_exprs = [__parsed_exprs, __expr]
     end
-    return __parsed_exprs
+
+    curr_str = ""
+    push!(parsed_exprs, ex)
+  end
+
+  return parsed_exprs
 end
 
-
-### Events ###########################
-function OnEvalMsg(console::ConsoleLogicSystem, code)
+function __OnEvalMsg(__code)
   event_system = __Sandbox.GetSystem(__Event.EventSystem)
 
-  #println("code:", code)
   try
-    __parsed_exprs = ParseLines(code)
+    __parsed_exprs = parse_lines(__code, '\u2029')
     __result = nothing
     for __expression in __parsed_exprs
         __result = @eval $__expression
@@ -67,6 +54,22 @@ function OnEvalMsg(console::ConsoleLogicSystem, code)
     return __Event.NewEvent(event_system, "network-output", "output-error", sprint(Base.error_show, error))
   end
 end
+
+
+module __ConsoleLogic
+
+import __Sandbox
+import __Event
+
+require("consolelogic.jl")
+
+### System ###########################
+type ConsoleLogicSystem <: __Sandbox.System
+end
+
+
+### Events ###########################
+
 
 function OnPackageMsg(console::ConsoleLogicSystem, command, params...)
   event_system = __Sandbox.GetSystem(__Event.EventSystem)
@@ -146,7 +149,7 @@ end
 function Init(console::ConsoleLogicSystem, core::__Sandbox.SandboxCore)
   event_system = __Sandbox.GetSystem(__Event.EventSystem)
 
-  __Event.RegisterHandler(event_system, "eval", (msg)->OnEvalMsg(console, msg))
+  __Event.RegisterHandler(event_system, "eval", Main.__OnEvalMsg)
   __Event.RegisterHandler(event_system, "package", (msg...)->OnPackageMsg(console, msg...))
   __Event.RegisterHandler(event_system, "dir", (msg)->OnDirMessage(console, msg))
 
