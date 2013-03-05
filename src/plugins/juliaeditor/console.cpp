@@ -319,7 +319,8 @@ bool Console::Handle_KeyReturn()
 // ----------------------------------------------------------------------------
 bool Console::Handle_KeyBackspace()
 {
-  if ( !InCommandArea() || textCursor().position() == begin_command_pos )
+  const QTextCursor& cursor = textCursor();
+  if ( !InCommandArea() || ( cursor.position() == begin_command_pos && !cursor.hasSelection() ) )
     return true;
 
   return false;
