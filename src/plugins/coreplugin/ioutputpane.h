@@ -47,6 +47,9 @@ class CORE_EXPORT IOutputPane : public QObject
     Q_OBJECT
 
 public:
+    enum Flag { NoModeSwitch = 0, ModeSwitch = 1, WithFocus = 2, EnsureSizeHint = 4};
+    Q_DECLARE_FLAGS(Flags, Flag)
+
     IOutputPane(QObject *parent = 0) : QObject(parent) {}
 
     virtual QWidget *outputWidget(QWidget *parent) = 0;
@@ -56,6 +59,7 @@ public:
     // -1 don't show in statusBar
     // 100...0 show at front...end
     virtual int priorityInStatusBar() const = 0;
+    virtual int startingFlags() const { return NoModeSwitch; }
 
     virtual void clearContents() = 0;
     virtual void visibilityChanged(bool visible) = 0;
@@ -73,9 +77,6 @@ public:
     virtual bool canPrevious() const = 0;
     virtual void goToNext() = 0;
     virtual void goToPrev() = 0;
-
-    enum Flag { NoModeSwitch = 0, ModeSwitch = 1, WithFocus = 2, EnsureSizeHint = 4};
-    Q_DECLARE_FLAGS(Flags, Flag)
 
 public slots:
     void popup(int flags) { emit showPage(flags); }

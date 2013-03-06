@@ -69,6 +69,7 @@ private slots:
 private:
     bool canMaximizeOrMinimize() const;
     void maximizeOrMinimize(bool maximize);
+    void setHalfMast();
 
     OutputPanePlaceHolderPrivate *d;
 };

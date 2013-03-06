@@ -134,6 +134,26 @@ void OutputPanePlaceHolder::maximizeOrMinimize(bool maximize)
 
 }
 
+void OutputPanePlaceHolder::setHalfMast()
+{
+    if (!d->m_splitter)
+        return;
+
+    int idx = d->m_splitter->indexOf(this);
+    if (idx < 0)
+        return;
+
+    QList<int> sizes = d->m_splitter->sizes();
+
+    int sum = 0;
+    foreach(int s, sizes)
+        sum += s;
+
+    sizes[idx] = sum - (sizes.count()-1) * 100;
+    d->m_lastNonMaxSize = sizes[idx];
+    d->m_splitter->setSizes(sizes);
+}
+
 bool OutputPanePlaceHolder::isMaximized() const
 {
     return Internal::OutputPaneManager::instance()->isMaximized();

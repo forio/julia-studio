@@ -56,7 +56,12 @@ QString JuliaConsolePane::displayName() const
 
 int JuliaConsolePane::priorityInStatusBar() const
 {
-  return 21;
+    return 21;
+}
+
+int JuliaConsolePane::startingFlags() const
+{
+    return Core::IOutputPane::ModeSwitch | Core::IOutputPane::WithFocus | Core::IOutputPane::EnsureSizeHint;
 }
 
 void JuliaConsolePane::clearContents()

@@ -31,6 +31,7 @@ public slots:
   // -1 don't show in statusBar
   // 100...0 show at front...end
   virtual int priorityInStatusBar() const;
+  virtual int startingFlags() const;
 
   virtual void clearContents();
   virtual void visibilityChanged(bool visible);

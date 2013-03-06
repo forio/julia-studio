@@ -303,6 +303,18 @@ void OutputPaneManager::init()
     connect(m_manageButton, SIGNAL(clicked()), this, SLOT(popupMenu()));
 
     readSettings();
+
+    OutputPanePlaceHolder *ph = OutputPanePlaceHolder::getCurrent();
+    for (int i = 0; i != n; ++i) {
+        IOutputPane *outPane = m_panes.at(i);
+        int flags = outPane->startingFlags();
+        if (flags != IOutputPane::NoModeSwitch) {
+            showPage(i, flags);
+            ph->setHalfMast();
+            break;
+        }
+    }
+
 }
 
 void OutputPaneManager::shortcutTriggered()
