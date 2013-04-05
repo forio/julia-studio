@@ -8,11 +8,11 @@ abstract System
 
 type Entity
   id::Uint
-  components::Dict{AbstractKind, Array{Any}}  # components indexed by their singleton type
+  components::Dict{Any, Array{Any}}  # components indexed by their singleton type
 end
 
 function Entity(components::Tuple)
-  entity = Entity(GetUniqueId(), Dict{AbstractKind, Array{Any}}())
+  entity = Entity(GetUniqueId(), Dict{Any, Array{Any}}())
   RegisterEntity(entity)
   return AddComponents(entity, components)
 end
@@ -30,13 +30,13 @@ end
 type SandboxCore
   modules::Array{ModuleBundle, 1}  # initialized / updated in order, destroyed in reverse order
   entities::Dict{Uint, Entity}
-  components::Dict{AbstractKind, Array{WeakRef}}
+  components::Dict{Any, Array{WeakRef}}
 
   curr_unique_id::Uint
 end
 
 function SandboxCore()
-  return SandboxCore(Array(ModuleBundle, 0), Dict{Uint, Entity}(), Dict{AbstractKind, Array{WeakRef}}(), uint(0))
+  return SandboxCore(Array(ModuleBundle, 0), Dict{Uint, Entity}(), Dict{Any, Array{WeakRef}}(), uint(0))
 end
 
 
