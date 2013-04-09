@@ -41,12 +41,12 @@ end
 
 ####
 type NetworkManager <: __Sandbox.System
-  port::Int16
+  port::Uint16
   socket
   io
 end
 
-NetworkManager() = NetworkManager(int16(0), Nothing, Nothing)
+NetworkManager() = NetworkManager(uint16(0), Nothing, Nothing)
 
 
 ### Utility ###########################
@@ -86,18 +86,17 @@ function EngineCallback(manager, msg_type, params...)
   WriteMessage(manager.io, msg)
 end
 
-function Connect(manager::NetworkManager, port::Int16)
+function Connect(manager::NetworkManager, port::Int)
   (manager.port, manager.socket) = Base.open_any_tcp_port(port)
 
-  println(STDOUT,"PORT:$(manager.port)")
+  println(STDOUT,"PORT:$(int16(manager.port))")
 
-
-  manager.io = Base.wait_accept(manager.socket)
+  manager.io = Base.accept(manager.socket)
   Base.start_reading(manager.io)
 
-  enq_work(@task while true
-                   ConnectionCallback(manager)
-                 end)
+  @async while true
+             ConnectionCallback(manager)
+         end
 
   return manager
 end
@@ -112,7 +111,7 @@ function Init(manager::NetworkManager, core::__Sandbox.SandboxCore)
   event_system = __Sandbox.GetSystem(__Event.EventSystem)
   __Event.RegisterHandler(event_system, "network-output", (info...)->EngineCallback(manager, info...))
 
-  Connect(manager, int16(1984))
+  Connect(manager, 1984)
 end
 
 function Update(manager::NetworkManager)
