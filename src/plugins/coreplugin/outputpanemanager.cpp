@@ -305,13 +305,15 @@ void OutputPaneManager::init()
     readSettings();
 
     OutputPanePlaceHolder *ph = OutputPanePlaceHolder::getCurrent();
-    for (int i = 0; i != n; ++i) {
-        IOutputPane *outPane = m_panes.at(i);
-        int flags = outPane->startingFlags();
-        if (flags != IOutputPane::NoModeSwitch) {
-            showPage(i, flags);
-            ph->setHalfMast();
-            break;
+    if (ph) {
+        for (int i = 0; i != n; ++i) {
+            IOutputPane *outPane = m_panes.at(i);
+            int flags = outPane->startingFlags();
+            if (flags != IOutputPane::NoModeSwitch) {
+                showPage(i, flags);
+                ph->setHalfMast();
+                break;
+            }
         }
     }
 

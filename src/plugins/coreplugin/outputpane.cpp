@@ -136,7 +136,7 @@ void OutputPanePlaceHolder::maximizeOrMinimize(bool maximize)
 
 void OutputPanePlaceHolder::setHalfMast()
 {
-    if (!d->m_splitter)
+    if (!d || !d->m_splitter)
         return;
 
     int idx = d->m_splitter->indexOf(this);
