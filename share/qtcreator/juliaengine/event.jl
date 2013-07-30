@@ -22,7 +22,7 @@ EventSystem() = EventSystem(Dict{String, Array{Any}}(), Array(EventInfo, 0), Rem
 
 ### Interface ###########################
 function RegisterHandler(system, event_name, handler)
-  if has(system.registrar, event_name)
+  if haskey(system.registrar, event_name)
     push!(ref(system.registrar, event_name), handler)
   else
     system.registrar[event_name] = [handler]

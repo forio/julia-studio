@@ -118,13 +118,13 @@ function AddComponents(entity::Entity, components...)
     type_single = Type{comp_type}
 
     while type_single != Type{Component}
-      if has(entity.components, type_single)
+      if haskey(entity.components, type_single)
         push!(ref(entity.components, type_single), c)
       else
         entity.components[type_single] = [c]
       end
 
-      if has(core.components, type_single)
+      if haskey(core.components, type_single)
         push!(ref(core.components, type_single), WeakRef(c))
       else
         core.components[type_single] = [WeakRef(c)]
@@ -183,7 +183,7 @@ function GetUniqueId()
 end
 
 function RegisterEntity(entity::Entity)
-  if has(core.entities, entity.id)
+  if haskey(core.entities, entity.id)
     error("Entity.id must be unique!")
   end
 

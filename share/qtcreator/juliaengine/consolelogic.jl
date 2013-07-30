@@ -61,8 +61,6 @@ module __ConsoleLogic
 import __Sandbox
 import __Event
 
-require("consolelogic.jl")
-
 ### System ###########################
 type ConsoleLogicSystem <: __Sandbox.System
 end
