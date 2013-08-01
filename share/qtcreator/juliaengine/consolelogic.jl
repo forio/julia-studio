@@ -1,83 +1,38 @@
-require("sandbox.jl")
-require("event.jl")
 
-import __Sandbox
-import __Event
+module ConsoleLogic
 
-# TO BE REPLACED as soon as we move on from 0.1
-function parse_lines(str::String, line_delim::Char)
-  lines = split(str, line_delim)
-  parsed_exprs = {}
-  curr_str = ""
-
-  for i = 1:length(lines)
-    curr_str = string(curr_str, lines[i], "\n")
-    ex = Base.parse_input_line(curr_str)
-
-    if ex == nothing
-      continue
-
-    elseif isa(ex, Expr)
-
-      if ex.head == :error
-        return {ex}
-      elseif ex.head == :continue
-        continue
-      end
-
-    end
-
-    curr_str = ""
-    push!(parsed_exprs, ex)
-  end
-
-  return parsed_exprs
-end
-
-function __OnEvalMsg(__code)
-  event_system = __Sandbox.GetSystem(__Event.EventSystem)
-
-  try
-    __parsed_exprs = parse_lines(__code, '\u2029')
-    __result = nothing
-    for __expression in __parsed_exprs
-        __result = @eval $__expression
-    end
-
-    if isa(__result, Nothing)
-      return __Event.NewEvent(event_system, "network-output", "output-eval", "")
-    else
-      return __Event.NewEvent(event_system, "network-output", "output-eval", sprint(repl_show, __result))
-    end
-
-  catch error
-    return __Event.NewEvent(event_system, "network-output", "output-error", sprint(Base.error_show, error))
-  end
-end
-
-
-module __ConsoleLogic
-
-import __Sandbox
-import __Event
-
-### System ###########################
-type ConsoleLogicSystem <: __Sandbox.System
+type ConsoleLogicSystem <: Juliet.System
 end
 
 
 ### Events ###########################
+function OnEvalMsg(console::ConsoleLogicSystem, code)
+  event_system = Juliet.GetSystem(Event.EventSystem)
 
+  try
+    parsed_expr = parse(code)
+    result = @eval $parsed_expr
+
+    if isa(result, Nothing)
+      return Event.NewEvent(event_system, "network-output", "output-eval", "")
+    else
+      return Event.NewEvent(event_system, "network-output", "output-eval", sprint(repl_show, result))
+    end
+
+  catch error
+    return Event.NewEvent(event_system, "network-output", "output-error", sprint(Base.error_show, error))
+  end
+end
 
 function OnPackageMsg(console::ConsoleLogicSystem, command, params...)
-  event_system = __Sandbox.GetSystem(__Event.EventSystem)
+  event_system = Juliet.GetSystem(Event.EventSystem)
 
   if isequal(command, "available")
     try
       packages = Pkg.available()
-      __Event.NewEvent(event_system, "network-output", "output-package", "available", packages...)
+      Event.NewEvent(event_system, "network-output", "output-package", "available", packages...)
     catch
-      __Event.NewEvent(event_system, "network-output", "output-package", "failed")
+      Event.NewEvent(event_system, "network-output", "output-package", "failed")
     end
 
   elseif isequal(command, "required")
@@ -88,9 +43,9 @@ function OnPackageMsg(console::ConsoleLogicSystem, command, params...)
         push!(packages, p.package)
       end
 
-      __Event.NewEvent(event_system, "network-output", "output-package", "required", packages...)
+      Event.NewEvent(event_system, "network-output", "output-package", "required", packages...)
     catch
-      __Event.NewEvent(event_system, "network-output", "output-package", "failed")
+      Event.NewEvent(event_system, "network-output", "output-package", "failed")
     end
 
   elseif isequal(command, "add")
@@ -100,10 +55,10 @@ function OnPackageMsg(console::ConsoleLogicSystem, command, params...)
       end
 
       println()
-      __Event.NewEvent(event_system, "network-output", "output-package", "add")
+      Event.NewEvent(event_system, "network-output", "output-package", "add")
     catch err
       println()
-      __Event.NewEvent(event_system, "network-output", "output-package", "add", "failed")
+      Event.NewEvent(event_system, "network-output", "output-package", "add", "failed")
     end
 
   elseif isequal(command, "remove")
@@ -112,17 +67,17 @@ function OnPackageMsg(console::ConsoleLogicSystem, command, params...)
         Pkg.rm(pkg)
       end
       println()
-      __Event.NewEvent(event_system, "network-output", "output-package", "remove")
+      Event.NewEvent(event_system, "network-output", "output-package", "remove")
     catch err
-      __Event.NewEvent(event_system, "network-output", "output-package", "remove", "failed")
+      Event.NewEvent(event_system, "network-output", "output-package", "remove", "failed")
     end
 
   elseif isequal(command, "update")
     try
       Pkg.update()
-      __Event.NewEvent(event_system, "network-output", "output-package", "update")
+      Event.NewEvent(event_system, "network-output", "output-package", "update")
     catch err
-      __Event.NewEvent(event_system, "network-output", "output-package", "update", "failed")
+      Event.NewEvent(event_system, "network-output", "output-package", "update", "failed")
     end
   end
 end
@@ -134,22 +89,22 @@ function OnDirMessage(console::ConsoleLogicSystem, dir)
 
   cd(dir)
 
-  event_system = __Sandbox.GetSystem(__Event.EventSystem)
-  __Event.NewEvent(event_system, "network-output", "output-dir", dir)
+  event_system = Juliet.GetSystem(Event.EventSystem)
+  Event.NewEvent(event_system, "network-output", "output-dir", dir)
 end
 
 
-### Sandbox interface ###########################
-function Load(core::__Sandbox.SandboxCore)
+### Juliet interface ###########################
+function Load(core::Juliet.JulietCore)
   return ConsoleLogicSystem()
 end
 
-function Init(console::ConsoleLogicSystem, core::__Sandbox.SandboxCore)
-  event_system = __Sandbox.GetSystem(__Event.EventSystem)
+function Init(console::ConsoleLogicSystem, core::Juliet.JulietCore)
+  event_system = Juliet.GetSystem(Event.EventSystem)
 
-  __Event.RegisterHandler(event_system, "eval", Main.__OnEvalMsg)
-  __Event.RegisterHandler(event_system, "package", (msg...)->OnPackageMsg(console, msg...))
-  __Event.RegisterHandler(event_system, "dir", (msg)->OnDirMessage(console, msg))
+  Event.RegisterHandler(event_system, "eval", (msg)->OnEvalMsg(console, msg))
+  Event.RegisterHandler(event_system, "package", (msg...)->OnPackageMsg(console, msg...))
+  Event.RegisterHandler(event_system, "dir", (msg)->OnDirMessage(console, msg))
 
   if !isdir(Pkg.dir())
     println("Initializing package repo for the first time, hold on.\n")
