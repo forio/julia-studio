@@ -39,7 +39,7 @@ DATA_DIRS = \
     qml-type-descriptions \
     generic-highlighter \
     glsl \
-    juliaengine \
+    Console.jl \
     Juliet.jl \
     JSON.jl
 
