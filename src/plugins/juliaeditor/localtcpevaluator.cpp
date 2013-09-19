@@ -321,7 +321,7 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
   process->setProcessEnvironment(environment);
 #endif
 
-  QString juliaengine_path = Core::ICore::resourcePath() + QLatin1String("/Console.jl");
+  QString juliaengine_path = Core::ICore::resourcePath() + QLatin1String("/Console");
   args.append(juliaengine_path + "/Console.jl");
 
   process->setWorkingDirectory(juliaengine_path);
