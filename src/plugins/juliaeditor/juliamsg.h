@@ -13,11 +13,22 @@ const quint8 JM_EVAL = 1;
 const quint8 JM_PACKAGE = 2;
 const quint8 JM_DIR = 3;
 
+char const * const NULL_name =    "null";
+char const * const EVAL_name =    "eval";
+char const * const PACKAGE_name = "package";
+char const * const DIR_name     = "dir";
+
 const quint8 JM_OUTPUT_ERROR = 128;
 const quint8 JM_OUTPUT_EVAL = 129;
 const quint8 JM_OUTPUT_PACKAGE = 130;
 const quint8 JM_OUTPUT_DIR = 131;
 const quint8 JM_OUTPUT_PLOT = 132;
+
+char const * const OUTPUT_ERROR_name = "output-error";
+char const * const OUTPUT_EVAL_name = "output-eval";
+char const * const OUTPUT_PACKAGE_name = "output-package";
+char const * const OUTPUT_DIR_name = "output-dir";
+char const * const OUTPUT_PLOT_name = "output-plot";
 // -----------------------------------------
 
 #if 0

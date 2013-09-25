@@ -39,9 +39,9 @@ DATA_DIRS = \
     qml-type-descriptions \
     generic-highlighter \
     glsl \
-    Console.jl \
-    Juliet.jl \
-    JSON.jl
+    Console \
+    Juliet \
+    JSON
 
 macx: DATA_DIRS += scripts
 
