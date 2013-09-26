@@ -136,7 +136,7 @@ void LocalTcpEvaluator::kill()
   if (id) {
     stream << process->pid()->dwProcessId;
     std::string pid = stream.str();
-    QProcess::execute( "taskkill /pid " + QString::fromUtf8(pid.data(), pid.size()) + " /f /t" );
+    QProcess::execute( "taskkill /pid " + QString::fromUtf8( pid.data(), static_cast<int>( pid.size() ) ) + " /f /t" );
   }
 #else
   process->kill();
@@ -254,7 +254,7 @@ void LocalTcpEvaluator::onSocketOutput()
 void LocalTcpEvaluator::onSocketError(QAbstractSocket::SocketError error)
 {
   //output("SOCKET ERROR");
-  qDebug() << "SOCKET ERROR";
+  qDebug() << "SOCKET ERROR" << error;
 }
 
 void LocalTcpEvaluator::onSocketConnected()
@@ -364,7 +364,6 @@ void LocalTcpEvaluator::connectToJulia(unsigned port)
 
 void LocalTcpEvaluator::onChangeDirResult(const ProjectExplorer::EvaluatorMessage *msg)
 {
-  //if (msg->type != JM_OUTPUT_DIR)
   if ( msg->typnam != OUTPUT_DIR_name )
     return;
 
@@ -373,19 +372,17 @@ void LocalTcpEvaluator::onChangeDirResult(const ProjectExplorer::EvaluatorMessag
 
 void LocalTcpEvaluator::onPlot(const ProjectExplorer::EvaluatorMessage *msg)
 {
-    if (msg->type != JM_OUTPUT_PLOT)
-      return;
+  if ( msg->typnam != OUTPUT_PLOT_name )
+    return;
 
-    Core::EditorManager* editor_manager = Core::EditorManager::instance();
+  Core::EditorManager* editor_manager = Core::EditorManager::instance();
 
-    plot_view_filename = Core::ICore::resourcePath() + QLatin1String("/juliaengine/graphics/") + msg->params.front();
-    QList<Core::IEditor*> plot_editors = editor_manager->editorsForFileName(plot_view_filename);
+  plot_view_filename = Core::ICore::resourcePath() + QLatin1String("/juliaengine/graphics/") + msg->params.front();
+  QList<Core::IEditor*> plot_editors = editor_manager->editorsForFileName(plot_view_filename);
 
-    Core::IEditor* editor;
-    if (plot_editors.size())
-      editor_manager->activateEditor(plot_editors.front());
-    else
-      editor = editor_manager->openEditor(plot_view_filename);
-
-
+  Core::IEditor* editor;
+  if (plot_editors.size())
+    editor_manager->activateEditor(plot_editors.front());
+  else
+    editor = editor_manager->openEditor(plot_view_filename);
 }

@@ -122,10 +122,10 @@ void PackageController::TogglePackage(const QModelIndex &index)
 
 void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage *msg)
 {
-  if ( msg->type != JM_OUTPUT_PACKAGE )
+  if ( msg->typnam != OUTPUT_PACKAGE_name )
     return;
 
-  else if ( msg->params[0] == "available" )
+  if ( msg->params[0] == "available" )
   {
     busy = false;
 

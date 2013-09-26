@@ -95,8 +95,6 @@ void Console::DisplayMsg(const ProjectExplorer::EvaluatorMessage* msg)
 {
   if ( msg->typnam != OUTPUT_EVAL_name &&
        msg->typnam != OUTPUT_ERROR_name )
-  //if ( msg->type != JM_OUTPUT_EVAL &&
-  //     msg->type != JM_OUTPUT_ERROR )
   {
     return;
   }
@@ -283,6 +281,11 @@ void Console::keyPressEvent( QKeyEvent* e )
       return;
     break;
 
+  case Qt::Key_Home:
+    if ( Handle_KeyHome() )
+      return;
+    break;
+
   default:
     if ( !InCommandArea() )
       moveCursor( QTextCursor::End );
@@ -367,6 +370,15 @@ bool Console::Handle_KeyLeft()
     return true;
 
   return false;
+}
+
+// ----------------------------------------------------------------------------
+bool Console::Handle_KeyHome()
+{
+  QTextCursor cursor = textCursor();
+  cursor.setPosition( begin_command_pos );
+  setTextCursor( cursor );
+  return true;
 }
 
 // ----------------------------------------------------------------------------

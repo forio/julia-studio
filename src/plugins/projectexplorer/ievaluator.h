@@ -80,7 +80,7 @@ public:
     else // array
     {
       const Value& data = jsondoc["data"];
-      for ( int i = 0; i < data.Size(); i++ )
+      for ( unsigned int i = 0; i < data.Size(); i++ )
       {
         params.push_back( QString::fromUtf8( data[i].GetString() ) );
       }

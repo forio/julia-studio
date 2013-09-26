@@ -83,6 +83,7 @@ protected:
   bool Handle_KeyUp();
   bool Handle_KeyDown();
   bool Handle_KeyLeft();
+  bool Handle_KeyHome();
   // -----
 
   // utility -----

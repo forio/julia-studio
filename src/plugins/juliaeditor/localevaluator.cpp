@@ -95,7 +95,7 @@ void LocalEvaluator::kill()
   std::ostringstream stream;
   stream << process->pid()->dwProcessId;
   std::string pid = stream.str();
-  QProcess::execute( "taskkill /pid " + QString::fromUtf8(pid.data(), pid.size()) + " /f /t" );
+  QProcess::execute( "taskkill /pid " + QString::fromUtf8( pid.data(), static_cast<int>( pid.size() ) ) + " /f /t" );
 #else
   process->kill();
 #endif
