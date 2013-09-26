@@ -14,8 +14,8 @@ PackageController::PackageController(LocalTcpEvaluator* evaluator_, Console* con
   model = new PackageModel;
 
   connect(evaluator, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), SLOT(EvaluatorOutput(const ProjectExplorer::EvaluatorMessage*)));
-  GetAvailable();
-  GetRequired();
+  //GetAvailable();
+  //GetRequired();
 }
 
 void PackageController::OnConsoleReset()
@@ -37,6 +37,7 @@ void PackageController::GetAvailable()
 {
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
+  msg.typnam = QString( PACKAGE_name );
   msg.params.push_back("available");
 
   evaluator->eval(msg);
@@ -46,6 +47,7 @@ void PackageController::GetRequired()
 {
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
+  msg.typnam = QString( PACKAGE_name );
   msg.params.push_back("required");
 
   evaluator->eval(msg);
@@ -58,6 +60,7 @@ void PackageController::AddPackage(const QModelIndex &index)
 
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
+  msg.typnam = QString( PACKAGE_name );
   msg.params.push_back("add");
 
   PackageData data = model->data(index, Qt::UserRole).value<PackageData>();
@@ -77,6 +80,7 @@ void PackageController::RemovePackage(const QModelIndex &index)
 
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
+  msg.typnam = QString( PACKAGE_name );
   msg.params.push_back("remove");
 
   PackageData data = model->data(index, Qt::UserRole).value<PackageData>();
@@ -96,6 +100,7 @@ void PackageController::UpdatePackages()
 
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
+  msg.typnam = QString( PACKAGE_name );
   msg.params.push_back("update");
 
   busy = true;

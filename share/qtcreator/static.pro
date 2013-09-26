@@ -39,7 +39,10 @@ DATA_DIRS = \
     qml-type-descriptions \
     generic-highlighter \
     glsl \
-    juliaengine
+    Console \
+    Juliet \
+    JSON
+
 macx: DATA_DIRS += scripts
 
 for(data_dir, DATA_DIRS) {

@@ -93,8 +93,10 @@ void Console::BeginCommand()
 // ----------------------------------------------------------------------------
 void Console::DisplayMsg(const ProjectExplorer::EvaluatorMessage* msg)
 {
-  if ( msg->type != JM_OUTPUT_EVAL &&
-       msg->type != JM_OUTPUT_ERROR )
+  if ( msg->typnam != OUTPUT_EVAL_name &&
+       msg->typnam != OUTPUT_ERROR_name )
+  //if ( msg->type != JM_OUTPUT_EVAL &&
+  //     msg->type != JM_OUTPUT_ERROR )
   {
     return;
   }
@@ -309,6 +311,7 @@ bool Console::Handle_KeyReturn()
 
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_EVAL;
+  msg.typnam = QString( EVAL_name );
   msg.params.push_back(command);
 
   emit NewCommand(msg);
