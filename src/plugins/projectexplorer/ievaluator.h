@@ -8,6 +8,7 @@
 #include <QDebug>
 
 #include "projectexplorer_export.h"
+#include "rapidjson/document.h"
 
 QT_BEGIN_NAMESPACE
   class QFileInfo;
@@ -16,15 +17,19 @@ QT_END_NAMESPACE
 
 namespace ProjectExplorer {
 
+using namespace rapidjson;
+
 class PROJECTEXPLORER_EXPORT EvaluatorMessage
 {
 public:
   quint8 type;
+  QString typnam;
   QVector<QString> params;
 
 
-  void from( QDataStream& stream )
+  void from( QDataStream& stream, int nbytes )
   {
+    /*
     stream >> type;
 
     quint8 num_params;
@@ -41,6 +46,46 @@ public:
       params.push_back(QString::fromUtf8(buff, param_size));
       delete buff;
     }
+    */
+    char* buff = new char[nbytes + 1];
+    stream.readRawData( buff, nbytes );
+    buff[nbytes] = 0;
+
+    Document jsondoc;
+    if ( jsondoc.ParseInsitu<0>(buff).HasParseError() )
+    {
+      qDebug() << "ERROR JSON parsing on output-eval" << buff;
+      return;
+    }
+    if ( !( jsondoc.HasMember( "msgtype" ) && jsondoc.HasMember( "data" ) ) )
+    {
+      qDebug() << "ERROR no \"msgtype\" or \"data\" in JSON output" << buff;
+      return;
+    }
+    if ( !jsondoc["msgtype"].IsString() )
+    {
+      qDebug() << "ERROR \"msgtype\" in JSON not string" << buff;
+      return;
+    }
+    if ( !( jsondoc["data"].IsString() || jsondoc["data"].IsArray() ) )
+    {
+      qDebug() << "ERROR \"data\" in JSON not string or array" << buff;
+      return;
+    }
+    typnam = QString::fromUtf8( jsondoc["msgtype"].GetString() );
+    if ( jsondoc["data"].IsString() )
+    {
+      params.push_back( QString::fromUtf8( jsondoc["data"].GetString() ) );
+    }
+    else // array
+    {
+      const Value& data = jsondoc["data"];
+      for ( int i = 0; i < data.Size(); i++ )
+      {
+        params.push_back( QString::fromUtf8( data[i].GetString() ) );
+      }
+    }
+    delete [] buff;
   }
 
   void from( QByteArray& bytes )
@@ -49,7 +94,7 @@ public:
     stream.setVersion(QDataStream::Qt_4_0);
     stream.setByteOrder(QDataStream::LittleEndian);
 
-    from(stream);
+    from( stream, bytes.count() );
   }
 
   void toBytes(QByteArray& bytes) const
@@ -58,6 +103,7 @@ public:
     stream.setVersion(QDataStream::Qt_4_0);
     stream.setByteOrder(QDataStream::LittleEndian);
 
+    /*
     stream << type;
     stream << static_cast<qint8>(params.size());
 
@@ -68,7 +114,37 @@ public:
       stream << mangled_param.data();
       //stream << mangled_param.toStdString().c_str();
     }
-  }
+
+    */
+    /*
+    stream << QByteArray( "{\n  \"type\": \"" );
+    stream << typnam.toLocal8Bit().data();
+    stream << QByteArray( "\",\n  \"data\": [ " );
+    for ( int i = 0; i < params.size(); ++i )
+    {
+      stream << QByteArray( "\"" );
+      stream << params[i].toLocal8Bit().data();
+      stream << QByteArray( "\"" );
+      if ( i + 1 < params.size() )
+        stream << QByteArray( ", " );
+    }
+    stream << QByteArray( " ]\n}\n" );
+    */
+    QString msg;
+    msg += "{\"msgtype\": \"";
+    msg += typnam;
+    msg +=  QByteArray( "\",\"data\": [" );
+    for ( int i = 0; i < params.size(); ++i )
+    {
+      msg += "\"";
+      msg += params[i];
+      msg += "\"";
+      if ( i + 1 < params.size() )
+        msg += ",";
+    }
+    msg += " ]}";
+    stream << msg.toLocal8Bit().data();
+}
 };
 
 class PROJECTEXPLORER_EXPORT IEvaluator : public QObject

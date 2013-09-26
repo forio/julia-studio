@@ -51,6 +51,7 @@ void LocalTcpEvaluator::eval( const QFileInfo* file_info )
 
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_EVAL;
+  msg.typnam = QString( EVAL_name );
   msg.params.push_back(command);
 
   eval(msg);
@@ -154,6 +155,7 @@ void LocalTcpEvaluator::setWorkingDir(const QString &working_directory)
 
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_DIR;
+  msg.typnam = QString( DIR_name );
   msg.params.push_back(curr_working_dir);
 
   eval(msg);
@@ -220,21 +222,24 @@ void LocalTcpEvaluator::onSocketOutput()
 {
   int bytes_available = socket->bytesAvailable();
 
+  /*
   if (curr_msg_size == -1 && bytes_available < sizeof(qint32))
     return;
-
+  */
   QDataStream stream(socket);
   stream.setVersion(QDataStream::Qt_4_0);
   stream.setByteOrder(QDataStream::LittleEndian);
 
+  /*
   if (curr_msg_size == -1)
     stream >> curr_msg_size;
 
   if (curr_msg_size > socket->bytesAvailable())
     return;
+  */
 
   ProjectExplorer::EvaluatorMessage msg;
-  msg.from(stream);
+  msg.from( stream, bytes_available );
 
   emit output(&msg);
   busy = false;
@@ -258,6 +263,7 @@ void LocalTcpEvaluator::onSocketConnected()
   {
     ProjectExplorer::EvaluatorMessage msg;
     msg.type = JM_DIR;
+    msg.typnam = QString( DIR_name );
     msg.params.push_back(curr_working_dir);
 
     eval(msg);
@@ -321,8 +327,8 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
   process->setProcessEnvironment(environment);
 #endif
 
-  QString juliaengine_path = Core::ICore::resourcePath() + QLatin1String("/juliaengine");
-  args.append(juliaengine_path + "/main.jl");
+  QString juliaengine_path = Core::ICore::resourcePath() + QLatin1String("/Console");
+  args.append(juliaengine_path + "/Console.jl");
 
   process->setWorkingDirectory(juliaengine_path);
   process->start( process_string, args, QProcess::ReadWrite );
@@ -358,7 +364,8 @@ void LocalTcpEvaluator::connectToJulia(unsigned port)
 
 void LocalTcpEvaluator::onChangeDirResult(const ProjectExplorer::EvaluatorMessage *msg)
 {
-  if (msg->type != JM_OUTPUT_DIR)
+  //if (msg->type != JM_OUTPUT_DIR)
+  if ( msg->typnam != OUTPUT_DIR_name )
     return;
 
   //emit ready();
