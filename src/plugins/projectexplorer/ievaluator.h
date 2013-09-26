@@ -103,41 +103,20 @@ public:
     stream.setVersion(QDataStream::Qt_4_0);
     stream.setByteOrder(QDataStream::LittleEndian);
 
-    /*
-    stream << type;
-    stream << static_cast<qint8>(params.size());
-
-    // when qt streams a char* it does so as the size and then the data
-    for (int i = 0; i < params.size(); ++i)
-    {
-      QByteArray mangled_param = params[i].toLocal8Bit();
-      stream << mangled_param.data();
-      //stream << mangled_param.toStdString().c_str();
-    }
-
-    */
-    /*
-    stream << QByteArray( "{\n  \"type\": \"" );
-    stream << typnam.toLocal8Bit().data();
-    stream << QByteArray( "\",\n  \"data\": [ " );
-    for ( int i = 0; i < params.size(); ++i )
-    {
-      stream << QByteArray( "\"" );
-      stream << params[i].toLocal8Bit().data();
-      stream << QByteArray( "\"" );
-      if ( i + 1 < params.size() )
-        stream << QByteArray( ", " );
-    }
-    stream << QByteArray( " ]\n}\n" );
-    */
     QString msg;
     msg += "{\"msgtype\": \"";
     msg += typnam;
-    msg +=  QByteArray( "\",\"data\": [" );
+    msg +=  "\",\"data\": [";
     for ( int i = 0; i < params.size(); ++i )
     {
       msg += "\"";
-      msg += params[i];
+      QString parstr = params[i];
+      int k;
+      while( ( k = parstr.indexOf( QChar::SpecialCharacter::ParagraphSeparator ) ) >= 0 )
+      {
+        parstr.remove( k, 1 );
+      }
+      msg += parstr;
       msg += "\"";
       if ( i + 1 < params.size() )
         msg += ",";
