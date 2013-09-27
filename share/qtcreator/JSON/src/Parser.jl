@@ -265,7 +265,9 @@ module Parser
         elseif c == 't'
           write(b, '\t')
         else
-          _error("Unrecognized escaped character: " * string(c), str, s, e)
+          write(b, '\\')
+          write(b, c)
+          #_error("Unrecognized escaped character: " * string(c), str, s, e)
         end
       elseif c == '"'
         found_end = true

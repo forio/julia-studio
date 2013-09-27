@@ -1,6 +1,0 @@
-[submodule "share/qtcreator/JSON.jl"]
-	path = share/qtcreator/JSON.jl
-	url = https://github.com/JuliaLang/JSON.jl.git
-[submodule "share/qtcreator/Juliet.jl"]
-	path = share/qtcreator/Juliet.jl
-	url = https://github.com/forio/Juliet.jl.git
