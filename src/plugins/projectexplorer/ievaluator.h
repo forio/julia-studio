@@ -116,6 +116,14 @@ public:
       {
         parstr.remove( k, 1 );
       }
+      QRegExp rx("[\\\\\"]");
+      k = -1;
+      while ( ( k = parstr.lastIndexOf( rx, k ) ) != -1 )
+      {
+        parstr.insert( k--, '\\' );
+        if ( k == -1 )
+          break;
+      }
       msg += parstr;
       msg += "\"";
       if ( i + 1 < params.size() )
