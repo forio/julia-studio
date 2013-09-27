@@ -11,10 +11,25 @@ function showout( io, x )
   writemime( io, MIME"text/plain"(), x )
 end
 
+function isspaced( s )
+  i = 1
+  spaced = true
+  while spaced && i <= endof( s )
+    c = s[i]
+    spaced = c == ' ' || c == '\t' || c == '\n' || c=='\r'
+    i += 1
+  end
+  return spaced
+end
+
 ### Events ###########################
 function on_eval_msg(console::ConsoleLogicSystem, cid, code)
   event_system = get_system(Event.EventSystem)
 
+  if isspaced( code )
+    Event.new_event( event_system, "networkOut", cid, "output-eval", "" )
+    return
+  end
   try
     parsed_expr = parse(code)
     result = @eval $parsed_expr
