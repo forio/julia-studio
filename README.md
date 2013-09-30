@@ -9,9 +9,8 @@ based on Qt Creator and the Qt framework.
 ## Supported Platforms
 The binary packages support the following platforms:
 
-Windows 7, Windows XP SP2, Windows Vista
-(K)Ubuntu Linux 8.04 (32-bit) or later
-Mac OS 10.6 or later
+Windows 7, Windows XP SP2, Windows Vista, (K)Ubuntu Linux 8.04 (32-bit) or later, 
+ and Mac OS 10.6 or later
 
 Building the sources requires Qt 4.8.0 or later.
 
