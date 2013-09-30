@@ -1,25 +1,21 @@
 ## Julia Studio
-[Julia Studio is a cross-platform IDE for the Julia language](http://forio.com/julia)
-based on Qt Creator and the Qt framework.
-
-![Screenshot of JuliaStudio running on Mac](http://i.imgur.com/mXa2ZQG.png)
-
-[Click here to download Julia Studio](http://forio.com/julia/downloads) for Mac, Windows, or Linux
+[Julia Studio](http://forio.com/julia) is a cross-platform IDE for the [Julia language](http://julialang.org/)
+based on Qt Creator and the Qt framework.  To download JuliaStudio binaries, visit [forio.com/julia/downloads](http://forio.com/julia/downloads) for Mac, Windows, or Linux.  
 
 ## Supported Platforms
 The binary packages support the following platforms:
 
-Windows 7, Windows XP SP2, Windows Vista
-(K)Ubuntu Linux 8.04 (32-bit) or later
-Mac OS 10.6 or later
+   * Mac OSX 10.6 or later
+   * Windows 7
+   * Windows XP SP2
+   * Windows Vista
+   * (K)Ubuntu Linux 8.04 (32-bit) or later
 
-Building the sources requires Qt 4.8.0 or later.
-
-
+![Screenshot of JuliaStudio running on Mac](http://i.imgur.com/mXa2ZQG.png)
 
 ## Compiling Julia Studio
 Prerequisites:
-   * Qt 4.8.0
+   * Qt 4.8.0 or later
    * On Windows:
      -  ActiveState Active Perl
      -  MinGW 4.4 or later, Visual Studio 2008 or later
