@@ -14,8 +14,8 @@ PackageController::PackageController(LocalTcpEvaluator* evaluator_, Console* con
   model = new PackageModel;
 
   connect(evaluator, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), SLOT(EvaluatorOutput(const ProjectExplorer::EvaluatorMessage*)));
-  //GetAvailable();
-  //GetRequired();
+  GetAvailable();
+  GetRequired();
 }
 
 void PackageController::OnConsoleReset()
@@ -35,6 +35,9 @@ void PackageController::OnNewPackageView(Core::NavigationView* view)
 
 void PackageController::GetAvailable()
 {
+#if defined(Q_OS_WIN)
+  return;
+#endif
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
   msg.typnam = QString( PACKAGE_name );
@@ -45,6 +48,9 @@ void PackageController::GetAvailable()
 
 void PackageController::GetRequired()
 {
+#if defined(Q_OS_WIN)
+  return;
+#endif
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
   msg.typnam = QString( PACKAGE_name );
