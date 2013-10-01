@@ -35,9 +35,6 @@ void PackageController::OnNewPackageView(Core::NavigationView* view)
 
 void PackageController::GetAvailable()
 {
-#if defined(Q_OS_WIN)
-  return;
-#endif
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
   msg.typnam = QString( PACKAGE_name );
@@ -48,13 +45,10 @@ void PackageController::GetAvailable()
 
 void PackageController::GetRequired()
 {
-#if defined(Q_OS_WIN)
-  return;
-#endif
   ProjectExplorer::EvaluatorMessage msg;
   msg.type = JM_PACKAGE;
   msg.typnam = QString( PACKAGE_name );
-  msg.params.push_back("required");
+  msg.params.push_back("installed");
 
   evaluator->eval(msg);
 }
@@ -131,6 +125,7 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
   if ( msg->typnam != OUTPUT_PACKAGE_name )
     return;
 
+  QString p0 = msg->params[0];
   if ( msg->params[0] == "available" )
   {
     busy = false;
@@ -141,7 +136,7 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
 
     model->insertRows(package_list, model->rowCount());
   }
-  else if ( msg->params[0] == "required" )
+  else if ( msg->params[0] == "installed" )
   {
     busy = false;
     model->invalidateAll();
@@ -152,7 +147,7 @@ void PackageController::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage 
 
     model->insertRows(package_list, model->rowCount());
   }
-  else if ( msg->params[0] == "error" )
+  else if ( msg->params[0] == "error" || msg->params[0] == "failed" )
   {
     busy = false;
   }

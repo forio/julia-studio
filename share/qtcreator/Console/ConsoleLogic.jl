@@ -64,21 +64,21 @@ function on_pkg_msg(console::ConsoleLogicSystem, cid, data )
   if isequal(command, "available")
     try
       packages = Pkg.available()
-      unshift!( command, packages )
+      unshift!( packages, command )
       
       Event.new_event( event_system, "networkOut", cid, "output-package", packages )
     catch
       Event.new_event( event_system, "networkOut", cid, "output-package", "failed" )
     end
 
-  elseif isequal(command, "required")
+  elseif isequal(command, "installed")
     try
-      package_map = Pkg.required()
+      package_map = Pkg.installed()
       packages = Array(ASCIIString, 0)
       for p in package_map
-        push!(packages, p.package)
+        push!(packages, p[1])
       end
-      unshift!( command, packages )
+      unshift!( packages, command )
 
       Event.new_event( event_system, "networkOut", cid, "output-package", packages )
     catch
