@@ -29,24 +29,6 @@ public:
 
   void from( QDataStream& stream, int nbytes )
   {
-    /*
-    stream >> type;
-
-    quint8 num_params;
-    stream >> num_params;
-    params.reserve(num_params);
-
-    quint32 param_size;
-    for (quint8 i = 0; i < num_params; ++i)
-    {
-      stream >> param_size;
-      char* buff = new char[param_size + 1];
-      buff[param_size] = 0;
-      stream.readRawData(buff, param_size);
-      params.push_back(QString::fromUtf8(buff, param_size));
-      delete buff;
-    }
-    */
     char* buff = new char[nbytes + 1];
     stream.readRawData( buff, nbytes );
     buff[nbytes] = 0;

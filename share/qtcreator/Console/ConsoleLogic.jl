@@ -11,6 +11,19 @@ function showout( io, x )
   writemime( io, MIME"text/plain"(), x )
 end
 
+function semicolended( s )
+  i = endof( s )
+  spaced = true
+  while spaced && i >= 1
+    c = s[i]
+    spaced = c == ' ' || c == '\t' || c == '\n' || c=='\r'
+    if spaced
+      i -= 1
+    end
+  end
+  return s[i] == ';'
+end
+
 function isspaced( s )
   i = 1
   spaced = true
@@ -34,7 +47,7 @@ function on_eval_msg(console::ConsoleLogicSystem, cid, code)
     parsed_expr = parse(code)
     result = @eval $parsed_expr
 
-    if isa(result, Nothing)
+    if isa(result, Nothing) || semicolended( code )
       Event.new_event( event_system, "networkOut", cid, "output-eval", "" )
     else
       Event.new_event( event_system, "networkOut", cid, "output-eval", sprint( showout, result ) )
