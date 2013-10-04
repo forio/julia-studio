@@ -1,6 +1,7 @@
 #include "juliaeditor.h"
 #include "juliaeditor_constants.h"
 #include "juliaeditorplugin.h"
+#include "juliaindenter.h"
 
 #include <coreplugin/mimedatabase.h>
 #include <coreplugin/icore.h>
@@ -87,6 +88,7 @@ JuliaEditorWidget::JuliaEditorWidget(QWidget *parent)
       //m_commentDefinition.setMultiLineStart(definition->multiLineCommentStart());
       //m_commentDefinition.setMultiLineEnd(definition->multiLineCommentEnd());
 
+      setIndenter(new JuliaIndenter);
       setCodeFoldingSupported(true);
   }
 }

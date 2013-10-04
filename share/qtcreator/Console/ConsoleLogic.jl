@@ -11,10 +11,6 @@ function showout( io, x )
   writemime( io, MIME"text/plain"(), x )
 end
 
-function semicolended( s )
-  rstrip( s )[end] == ';'
-end
-
 function isspaced( s )
   i = 1
   spaced = true
