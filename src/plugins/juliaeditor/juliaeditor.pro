@@ -126,3 +126,9 @@ HEADERS += \
 
 SOURCES += \
     packagecontroller.cpp
+
+HEADERS += \
+    juliaindenter.h
+
+SOURCES += \
+    juliaindenter.cpp

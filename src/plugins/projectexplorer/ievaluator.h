@@ -6,6 +6,7 @@
 #include <QString>
 #include <QDataStream>
 #include <QDebug>
+#include <QRegExp>
 
 #include "projectexplorer_export.h"
 #include "rapidjson/document.h"
@@ -94,7 +95,7 @@ public:
       msg += "\"";
       QString parstr = params[i];
       int k;
-      while( ( k = parstr.indexOf( QChar::SpecialCharacter::ParagraphSeparator ) ) >= 0 )
+      while( ( k = parstr.indexOf( QChar::ParagraphSeparator ) ) >= 0 )
       {
         parstr.remove( k, 1 );
       }
