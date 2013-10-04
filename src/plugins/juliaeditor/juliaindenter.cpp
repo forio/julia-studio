@@ -24,7 +24,11 @@ bool JuliaIndenter::isElectricLine(const QString &line) const
          trs.startsWith( QLatin1String( "quote" ) ) ||
          trs.startsWith( QLatin1String( "try" ) ) ||
          trs.startsWith( QLatin1String( "type" ) ) ||
-         trs.startsWith( QLatin1String( "while" ) );
+         trs.startsWith( QLatin1String( "while" ) ) ||
+         trs.startsWith( QLatin1String( "catch" ) ) ||
+         trs.startsWith( QLatin1String( "else" ) ) ||
+         trs.startsWith( QLatin1String( "elseif" ) ) ||
+         trs.startsWith( QLatin1String( "finally" ) );
 }
 
 void JuliaIndenter::indentBlock( QTextDocument *doc,
