@@ -67,6 +67,8 @@ public:
 
     static void findOnFileSystem(const QString &pathIn);
     static QString msgFindOnFileSystem();
+    bool hiddenFilesFilter() const;
+
 public slots:
     void setAutoSynchronization(bool sync);
     void toggleAutoSynchronization();
@@ -74,6 +76,7 @@ public slots:
 private slots:
     void setCurrentFile(const QString &filePath);
     void slotOpenItem(const QModelIndex &viewIndex);
+    void setHiddenFilesFilter(bool filter);
 
 protected:
     virtual void contextMenuEvent(QContextMenuEvent *ev);
@@ -87,6 +90,7 @@ private:
 
     QListView *m_listView;
     QFileSystemModel *m_fileSystemModel;
+    QAction *m_filterHiddenFilesAction;
     QSortFilterProxyModel *m_filterModel;
     QLabel *m_title;
     bool m_autoSync;
@@ -97,6 +101,7 @@ private:
     // TODO: We should refactor this class and submit a pull request
     IEvaluator* findEvaluatorFor( const QString& extension );
     // -----
+    friend class FolderNavigationWidgetFactory;
 };
 
 class FolderNavigationWidgetFactory : public Core::INavigationWidgetFactory

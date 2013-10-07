@@ -144,6 +144,7 @@ FolderNavigationWidget::FolderNavigationWidget(QWidget *parent)
     : QWidget(parent),
       m_listView(new QListView(this)),
       m_fileSystemModel(new FolderNavigationModel(this)),
+      m_filterHiddenFilesAction(new QAction(tr("Show Hidden Files"), this)),
       m_filterModel(new FolderNavigationRemovalFilter(this)),
       m_title(new QLabel(this)),
       m_autoSync(false)
@@ -156,8 +157,11 @@ FolderNavigationWidget::FolderNavigationWidget(QWidget *parent)
 #ifdef Q_OS_WIN // Symlinked directories can cause file watcher warnings on Win32.
     filters |= QDir::NoSymLinks;
 #endif
+    filters &= ~(QDir::Hidden);
     m_fileSystemModel->setFilter(filters);
     m_filterModel->setSourceModel(m_fileSystemModel);
+    m_filterHiddenFilesAction->setCheckable(true);
+    setHiddenFilesFilter(false);
     m_listView->setIconSize(QSize(16,16));
     m_listView->setModel(m_filterModel);
     m_listView->setFrameStyle(QFrame::NoFrame);
@@ -176,6 +180,7 @@ FolderNavigationWidget::FolderNavigationWidget(QWidget *parent)
     connect(m_listView, SIGNAL(activated(QModelIndex)),
             this, SLOT(slotOpenItem(QModelIndex)));
 
+    connect(m_filterHiddenFilesAction, SIGNAL(toggled(bool)), this, SLOT(setHiddenFilesFilter(bool)));
     setAutoSynchronization(true);
 }
 
@@ -338,6 +343,9 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
     // JULIA STUDIO -------
     QAction* actionJuliaRun = menu.addAction(tr("Run this file"));
     actionJuliaRun->setEnabled( hasCurrentItem && !m_fileSystemModel->isDir(current) );
+
+    QAction* actionJuliaDir = menu.addAction( tr( "Set as current directory" ) );
+    actionJuliaDir->setEnabled( hasCurrentItem && m_fileSystemModel->isDir(current) );
     // -------
 
     // Explorer & teminal
@@ -398,6 +406,14 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
 
       return;
     }
+    if (action == actionJuliaDir) {
+      QFileInfo file_info = m_fileSystemModel->fileInfo(current);
+      IEvaluator* evaluator = findEvaluatorFor( file_info.suffix() );
+
+      evaluator->eval( &file_info );
+
+      return;
+    }
     // -------
 
     Core::DocumentManager::executeOpenWithMenuAction(action);
@@ -421,6 +437,22 @@ void FolderNavigationWidget::findOnFileSystem(const QString &pathIn)
         return;
     fif->setDirectory(folder);
     Find::FindPlugin::instance()->openFindDialog(fif);
+}
+
+void FolderNavigationWidget::setHiddenFilesFilter(bool filter)
+{
+    QDir::Filters filters = m_fileSystemModel->filter();
+    if (filter)
+        filters |= QDir::Hidden;
+    else
+        filters &= ~(QDir::Hidden);
+    m_fileSystemModel->setFilter(filters);
+    m_filterHiddenFilesAction->setChecked(filter);
+}
+
+bool FolderNavigationWidget::hiddenFilesFilter() const
+{
+    return m_filterHiddenFilesAction->isChecked();
 }
 
 // --------------------FolderNavigationWidgetFactory
@@ -457,13 +489,21 @@ Core::NavigationView FolderNavigationWidgetFactory::createWidget()
     Core::NavigationView n;
     FolderNavigationWidget *ptw = new FolderNavigationWidget;
     n.widget = ptw;
+    QToolButton *filter = new QToolButton;
+    filter->setIcon(QIcon(QLatin1String(Core::Constants::ICON_FILTER)));
+    filter->setToolTip(tr("Filter Files"));
+    filter->setPopupMode(QToolButton::InstantPopup);
+    filter->setProperty("noArrow", true);
+    QMenu *filterMenu = new QMenu(filter);
+    filterMenu->addAction(ptw->m_filterHiddenFilesAction);
+    filter->setMenu(filterMenu);
     QToolButton *toggleSync = new QToolButton;
     toggleSync->setIcon(QIcon(QLatin1String(Core::Constants::ICON_LINK)));
     toggleSync->setCheckable(true);
     toggleSync->setChecked(ptw->autoSynchronization());
     toggleSync->setToolTip(tr("Synchronize with Editor"));
     connect(toggleSync, SIGNAL(clicked(bool)), ptw, SLOT(toggleAutoSynchronization()));
-    n.dockToolBarWidgets << toggleSync;
+    n.dockToolBarWidgets << filter << toggleSync;
     return n;
 }
 
