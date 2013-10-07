@@ -221,7 +221,8 @@ void FolderNavigationWidget::setCurrentFile(const QString &filePath)
             pathOpened = setCurrentDirectory(fi.absolutePath());
     }
     if (!pathOpened)  // Default to home.
-        setCurrentDirectory(Utils::PathChooser::homePath());
+        //setCurrentDirectory(Utils::PathChooser::homePath());
+        setCurrentDirectory( Core::DocumentManager::fileDialogLastVisitedDirectory() );
 
     // Select the current file.
     if (pathOpened) {
@@ -343,9 +344,6 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
     // JULIA STUDIO -------
     QAction* actionJuliaRun = menu.addAction(tr("Run this file"));
     actionJuliaRun->setEnabled( hasCurrentItem && !m_fileSystemModel->isDir(current) );
-
-    QAction* actionJuliaDir = menu.addAction( tr( "Set as current directory" ) );
-    actionJuliaDir->setEnabled( hasCurrentItem && m_fileSystemModel->isDir(current) );
     // -------
 
     // Explorer & teminal
@@ -399,14 +397,6 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
     }
     // JULIA STUDIO -------
     if (action == actionJuliaRun) {
-      QFileInfo file_info = m_fileSystemModel->fileInfo(current);
-      IEvaluator* evaluator = findEvaluatorFor( file_info.suffix() );
-
-      evaluator->eval( &file_info );
-
-      return;
-    }
-    if (action == actionJuliaDir) {
       QFileInfo file_info = m_fileSystemModel->fileInfo(current);
       IEvaluator* evaluator = findEvaluatorFor( file_info.suffix() );
 

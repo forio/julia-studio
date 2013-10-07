@@ -97,6 +97,7 @@ static const char editorsKeyC[] = "EditorIds";
 static const char directoryGroupC[] = "Directories";
 static const char projectDirectoryKeyC[] = "Projects";
 static const char useProjectDirectoryKeyC[] = "UseProjectsDirectory";
+static const char lastVisitedDirectoryKeyC[] = "LastVisited";
 
 
 namespace Core {
@@ -1165,6 +1166,7 @@ void DocumentManager::saveSettings()
     s->beginGroup(QLatin1String(directoryGroupC));
     s->setValue(QLatin1String(projectDirectoryKeyC), d->m_projectsDirectory);
     s->setValue(QLatin1String(useProjectDirectoryKeyC), d->m_useProjectsDirectory);
+    s->setValue(QLatin1String(lastVisitedDirectoryKeyC), d->m_lastVisitedDirectory);
     s->endGroup();
 }
 
@@ -1197,6 +1199,13 @@ void readSettings()
     }
     d->m_useProjectsDirectory = s->value(QLatin1String(useProjectDirectoryKeyC),
                                          d->m_useProjectsDirectory).toBool();
+    const QString settingsLastVisitedDir = s->value(QLatin1String(lastVisitedDirectoryKeyC),
+                                                QString()).toString();
+    if (!settingsLastVisitedDir.isEmpty() && QFileInfo(settingsLastVisitedDir).isDir()) {
+        d->m_lastVisitedDirectory = settingsLastVisitedDir;
+    } else {
+        d->m_lastVisitedDirectory = Utils::PathChooser::homePath();
+    }
     s->endGroup();
 }
 
