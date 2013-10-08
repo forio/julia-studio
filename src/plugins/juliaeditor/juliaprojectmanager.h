@@ -16,6 +16,8 @@ public:
   virtual QString mimeType() const  { return "text/julia"; }
   virtual ProjectExplorer::Project* openProject(const QString &fileName, QString *errorString = 0)
   {
+    Q_UNUSED( fileName );
+    Q_UNUSED( errorString );
     return new JuliaDummyProject();
   }
 

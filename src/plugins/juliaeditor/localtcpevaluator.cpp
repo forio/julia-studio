@@ -287,6 +287,7 @@ void LocalTcpEvaluator::continueOrReady()
 
 void LocalTcpEvaluator::exit(int exit_code)
 {
+  Q_UNUSED( exit_code );
   emit finished( this );
 }
 

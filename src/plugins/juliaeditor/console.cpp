@@ -94,13 +94,15 @@ void Console::BeginCommand()
 void Console::DisplayMsg(const ProjectExplorer::EvaluatorMessage* msg)
 {
   if ( msg->typnam != OUTPUT_EVAL_name &&
+       msg->typnam != OUTPUT_EVAL_SILENT_name &&
        msg->typnam != OUTPUT_ERROR_name )
   {
     return;
   }
 
-  QString output( msg->params[0] + "\n" );
-
+  QString output( msg->params[0] );
+  if ( msg->typnam != OUTPUT_EVAL_SILENT_name )
+    output += "\n";
 #if 0 //defined(Q_OS_WIN)
     output.remove( QRegExp("\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]") );
 

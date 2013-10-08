@@ -48,6 +48,8 @@
 #include <utils/pathchooser.h>
 #include <utils/qtcassert.h>
 
+#include "juliaeditor/juliamsg.h"
+
 #include <QDebug>
 #include <QSize>
 #include <QFileSystemModel>
@@ -344,6 +346,9 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
     // JULIA STUDIO -------
     QAction* actionJuliaRun = menu.addAction(tr("Run this file"));
     actionJuliaRun->setEnabled( hasCurrentItem && !m_fileSystemModel->isDir(current) );
+
+    QAction* actionJuliaDir = menu.addAction(tr("Set as current (cd)"));
+    actionJuliaDir->setEnabled( hasCurrentItem && m_fileSystemModel->isDir(current) );
     // -------
 
     // Explorer & teminal
@@ -402,6 +407,17 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
 
       evaluator->eval( &file_info );
 
+      return;
+    }
+    if ( action == actionJuliaDir )
+    {
+      QFileInfo file_info = m_fileSystemModel->fileInfo(current);
+      ProjectExplorer::EvaluatorMessage msg;
+      msg.typnam = QString( EVAL_SILENT_name );
+      QString command = QString( "cd(\"" ) + file_info.absoluteFilePath() + QString( "\")" );
+      msg.params.push_back( command );
+      IEvaluator* evaluator = findEvaluatorFor( QString("") );
+      evaluator->eval( msg );
       return;
     }
     // -------

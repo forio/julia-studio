@@ -34,6 +34,18 @@ function on_eval_msg(console::ConsoleLogicSystem, cid, code)
   end
 end
 
+function on_eval_silent_msg(console::ConsoleLogicSystem, cid, code)
+  event_system = get_system(Event.EventSystem)
+  try
+    parsed_expr = parse(code)
+    result = @eval $parsed_expr
+    Event.new_event( event_system, "networkOut", cid, "output-eval-silent", "" )
+
+  catch error
+    Event.new_event(event_system, "networkOut", cid, "output-error", sprint( showerror, error ) )
+  end
+end
+
 function on_dir_msg(console::ConsoleLogicSystem, cid, dir)
   if !isdir(dir)
     error("cannot change directory to $dir")
@@ -117,6 +129,8 @@ end
 function handle_input( console::ConsoleLogicSystem, cid, msgtype, data )
   if msgtype == "eval"
     on_eval_msg( console, cid, data[1] )
+  elseif msgtype == "eval-silent"
+    on_eval_silent_msg( console, cid, data[1] )
   elseif msgtype == "dir"
     on_dir_msg( console, cid, data[1] )
   elseif msgtype == "package"
