@@ -113,6 +113,8 @@ public:
         msg += ",";
     }
     msg += " ]}";
+    if ( msg.size() == 90 )
+      msg += " ";
     stream << msg.toLocal8Bit().data();
 }
 };
