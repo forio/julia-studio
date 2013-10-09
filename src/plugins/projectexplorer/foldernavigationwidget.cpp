@@ -63,6 +63,7 @@
 #include <QMenu>
 #include <QFileDialog>
 #include <QContextMenuEvent>
+#include <QClipBoard>
 
 // JULIA STUDIO -------
 #include "ievaluator.h"
@@ -349,6 +350,9 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
 
     QAction* actionJuliaDir = menu.addAction(tr("Set as current (cd)"));
     actionJuliaDir->setEnabled( hasCurrentItem && m_fileSystemModel->isDir(current) );
+
+    QAction* actionJuliaPathCopy = menu.addAction(tr("Copy absolute path"));
+    actionJuliaPathCopy->setEnabled( hasCurrentItem );
     // -------
 
     // Explorer & teminal
@@ -418,6 +422,12 @@ void FolderNavigationWidget::contextMenuEvent(QContextMenuEvent *ev)
       msg.params.push_back( command );
       IEvaluator* evaluator = findEvaluatorFor( QString("") );
       evaluator->eval( msg );
+      return;
+    }
+    if ( action == actionJuliaPathCopy )
+    {
+      QString abspath = m_fileSystemModel->fileInfo(current).absoluteFilePath();
+      QApplication::clipboard()->setText( abspath );
       return;
     }
     // -------
