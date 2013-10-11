@@ -86,10 +86,11 @@ public:
     Core::FeatureSet requiredFeatures;
     Core::IWizard::WizardFlags flags;
     QString descriptionImage;
+    bool extended;
 };
 
 BaseFileWizardParameterData::BaseFileWizardParameterData(IWizard::WizardKind k) :
-    kind(k)
+    kind(k), extended(true)
 {
 }
 
@@ -250,6 +251,16 @@ void BaseFileWizardParameters::setDescriptionImage(const QString &path)
 {
     m_d->descriptionImage = path;
 }
+
+  bool BaseFileWizardParameters::extended() const
+  {
+    return m_d->extended;
+  }
+
+  void BaseFileWizardParameters::setExtended(const bool extended)
+  {
+    m_d->extended = extended;
+  }
 
 /*!
     \class Core::Internal::WizardEventLoop
@@ -487,7 +498,8 @@ void BaseFileWizard::runWizard(const QString &path, QWidget *parent, const QStri
         const bool accepted = wr == WizardEventLoop::Accepted;
         const bool firstExtensionPageHit = wr == WizardEventLoop::PageChanged
                                            && wizard->page(wizard->currentId()) == firstExtensionPage;
-        const bool needGenerateFiles = firstExtensionPageHit || (accepted && allExtensionPages.empty());
+        const bool needGenerateFiles = !baseFileWizardParameters().extended() ||
+                                        firstExtensionPageHit || (accepted && allExtensionPages.empty());
         if (needGenerateFiles) {
             QString errorMessage;
             files = generateFiles(wizard.data(), &errorMessage);
@@ -821,8 +833,12 @@ QWizard *StandardFileWizard::createWizardDialog(QWidget *parent,
     standardWizardDialog->setWindowTitle(tr("New %1").arg(displayName()));
     setupWizard(standardWizardDialog);
     standardWizardDialog->setPath(wizardDialogParameters.defaultPath());
-    foreach (QWizardPage *p, wizardDialogParameters.extensionPages())
-        BaseFileWizard::applyExtensionPageShortTitle(standardWizardDialog, standardWizardDialog->addPage(p));
+
+    if ( baseFileWizardParameters().extended() )
+    {
+      foreach (QWizardPage *p, wizardDialogParameters.extensionPages())
+          BaseFileWizard::applyExtensionPageShortTitle(standardWizardDialog, standardWizardDialog->addPage(p));
+    }
     return standardWizardDialog;
 }
 

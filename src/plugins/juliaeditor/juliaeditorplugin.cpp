@@ -106,6 +106,7 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   JuliaWizardParameters.setDescription(tr("Creates a Julia file."));
   JuliaWizardParameters.setDisplayName(tr("Julia File"));
   JuliaWizardParameters.setId(QLatin1String("Julia.Julia"));
+  JuliaWizardParameters.setExtended(false);
   addAutoReleasedObject(new JuliaFileWizard(JuliaWizardParameters, core));
 
   // ------- */

@@ -927,22 +927,32 @@ void MainWindow::showNewItemDialog(const QString &title,
     // dialog if there is only one.
     IWizard *wizard = 0;
     QString selectedPlatform;
-    switch (wizards.size()) {
-    case 0:
-        break;
-    case 1:
-        wizard = wizards.front();
-        break;
-    default: {
-        NewDialog dlg(this);
-        dlg.setWizards(wizards);
-        dlg.setWindowTitle(title);
-        wizard = dlg.showDialog();
-        selectedPlatform = dlg.selectedPlatform();
+    for ( int i = 0; i < wizards.size(); i++ )
+    {
+      QString c = wizards[i]->category();
+      if ( c == "Julia" )
+        wizard = wizards[i];
     }
-        break;
+    if ( !wizard )
+    {
+      switch (wizards.size())
+      {
+      case 0:
+          break;
+      case 1:
+          wizard = wizards.front();
+          break;
+      default:
+        {
+          NewDialog dlg(this);
+          dlg.setWizards(wizards);
+          dlg.setWindowTitle(title);
+          wizard = dlg.showDialog();
+          selectedPlatform = dlg.selectedPlatform();
+        }
+          break;
+      }
     }
-
     if (!wizard)
         return;
 
