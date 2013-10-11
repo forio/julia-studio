@@ -99,6 +99,8 @@ public:
     QString descriptionImage() const;
     void setDescriptionImage(const QString &path);
 
+    bool extended() const;
+    void setExtended(const bool extended);
 private:
     QSharedDataPointer<BaseFileWizardParameterData> m_d;
 };
