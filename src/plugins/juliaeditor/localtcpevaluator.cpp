@@ -303,7 +303,7 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
 
   QDir julia_dir(Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
 
-  process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("bin/julia-release-basic"));
+  process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("bin/julia-basic"));
 
 #if defined(Q_OS_WIN)
   process_string = "\"" + QDir::toNativeSeparators(julia_dir.absoluteFilePath("julia.bat")) + "\"";
