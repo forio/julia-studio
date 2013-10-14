@@ -42,6 +42,9 @@
 
 #if defined(QT_NO_WEBKIT)
 #include <QTextBrowser>
+#elif QT_VERSION >= 0x050000
+#include <QtWebKitWidgets/QWebPage>
+#include <QtWebKitWidgets/QWebView>
 #else
 #include <QWebPage>
 #include <QWebView>

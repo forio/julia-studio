@@ -2,8 +2,13 @@
 #define PACKAGEVIEW_H
 
 #include <QAbstractItemView>
+#if QT_VERSION >= 0x050000
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QTreeView>
+#else
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QTreeView>
+#endif
 #include <QStyledItemDelegate>
 
 #include <coreplugin/inavigationwidgetfactory.h>

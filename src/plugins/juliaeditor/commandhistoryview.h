@@ -7,8 +7,13 @@
 
 #include <QWidget>
 #include <QStyledItemDelegate>
+#if QT_VERSION >= 0x050000
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QTreeView>
+#else
 #include <QtGui/QGridLayout>
 #include <QtGui/QTreeView>
+#endif
 #include <QWeakPointer>
 
 
