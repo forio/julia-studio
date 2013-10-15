@@ -7,7 +7,11 @@
 #include <coreplugin/idocument.h>
 #include <coreplugin/coreconstants.h>
 
+#if QT_VERSION >= 0x050000
+#include <QtWebKitWidgets/QWebView>
+#else
 #include <QWebView>
+#endif
 
 namespace HtmlViewerPlugin {
 

@@ -90,7 +90,11 @@
 #if !defined(QT_NO_WEBKIT)
 #include <QWebElement>
 #include <QWebElementCollection>
+#if QT_VERSION >= 0x050000
+#include <QtWebKitWidgets/QWebFrame>
+#else
 #include <QWebFrame>
+#endif
 #include <QWebHistory>
 #endif
 

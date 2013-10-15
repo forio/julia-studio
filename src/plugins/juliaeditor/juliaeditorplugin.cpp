@@ -31,10 +31,17 @@
 #include <projectexplorer/projectexplorer.h>
 #include <projectexplorer/session.h>
 
+#if QT_VERSION >= 0x050000
+#include <QtWidgets/QAction>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
+#else
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
+#endif
 
 #include <QtCore/QtPlugin>
 #include <QCoreApplication>

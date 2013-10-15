@@ -43,7 +43,11 @@
 #include <QString>
 #include <QStringBuilder>
 #include <QTimer>
+#if QT_VERSION >= 0x050000
+#include <QtWebKitWidgets/QWebFrame>
+#else
 #include <QWebFrame>
+#endif
 
 #include <QApplication>
 #include <QDesktopServices>
