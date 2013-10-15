@@ -50,6 +50,7 @@
 
 #include "juliaeditor/juliamsg.h"
 
+#include <QApplication>
 #include <QDebug>
 #include <QSize>
 #include <QFileSystemModel>
