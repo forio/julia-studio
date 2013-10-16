@@ -256,6 +256,10 @@ void Console::keyPressEvent( QKeyEvent* e )
       insertLineBelow();
       return;
     }
+    else
+    {
+      handled = false;
+    }
   }
   else
   {
