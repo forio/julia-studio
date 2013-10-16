@@ -222,7 +222,7 @@ void Console::keyPressEvent( QKeyEvent* e )
       cursor.movePosition(QTextCursor::End);
       setTextCursor(cursor);
     }
-    else
+    else if ( e->text() != "" )
     {
       handled = false;
     }
@@ -266,6 +266,8 @@ void Console::keyPressEvent( QKeyEvent* e )
     handled = false;
   }
   // -----
+  if ( handled )
+    return;
 
   // handle all console keys -----
   switch ( e->key() )
