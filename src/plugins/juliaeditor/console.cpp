@@ -222,9 +222,9 @@ void Console::keyPressEvent( QKeyEvent* e )
       cursor.movePosition(QTextCursor::End);
       setTextCursor(cursor);
     }
-    else if ( e->text() != "" )
+    else
     {
-      handled = false;
+      handled = e->text() == "";
     }
   }
   else if ( e->modifiers() & Qt::MetaModifier )
@@ -236,9 +236,8 @@ void Console::keyPressEvent( QKeyEvent* e )
       QTextCursor cursor = textCursor();
       cursor.setPosition( begin_command_pos );
       setTextCursor( cursor );
-      return;
     }
-    if ( e->key() == Qt::Key_E ||
+    else if ( e->key() == Qt::Key_E ||
          e->matches(QKeySequence::MoveToEndOfLine) ||
          e->matches(QKeySequence::MoveToEndOfBlock) ||
          e->matches(QKeySequence::MoveToEndOfDocument) )
@@ -246,19 +245,17 @@ void Console::keyPressEvent( QKeyEvent* e )
       QTextCursor cursor = textCursor();
       cursor.movePosition(QTextCursor::End);
       setTextCursor(cursor);
-      return;
+    }
+    else
+    {
+      handled = e->text() == "";
     }
   }
   else if ( e->modifiers() & Qt::ShiftModifier )
   {
-    if ( e->key() == Qt::Key_Return )
+    if ( handled = e->key() == Qt::Key_Return )
     {
       insertLineBelow();
-      return;
-    }
-    else
-    {
-      handled = false;
     }
   }
   else
@@ -309,11 +306,8 @@ void Console::keyPressEvent( QKeyEvent* e )
     break;
   }
   // -----
-  if ( !handled )
-  {
-    // if we got here, just treat it like a normal key press
-    TextEditor::BaseTextEditorWidget::keyPressEvent( e );
-  }
+  // if we got here, just treat it like a normal key press
+  TextEditor::BaseTextEditorWidget::keyPressEvent( e );
 }
 
 // ----------------------------------------------------------------------------
