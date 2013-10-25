@@ -64,7 +64,7 @@
 #include <QMenu>
 #include <QFileDialog>
 #include <QContextMenuEvent>
-#include <QClipBoard>
+#include <QClipboard>
 
 // JULIA STUDIO -------
 #include "ievaluator.h"
