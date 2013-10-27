@@ -1,5 +1,5 @@
 
-require("../Juliet/src/Juliet.jl")
+require("../juliet/src/Juliet.jl")
 include("ConsoleLogic.jl")
 
 import Juliet
