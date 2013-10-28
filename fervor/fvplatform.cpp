@@ -1,6 +1,7 @@
 #include "fvplatform.h"
 #include <QtGlobal>
 #include <QDebug>
+#include <QSysInfo>
 
 FvPlatform::FvPlatform(QObject *parent) :
 	QObject(parent)
@@ -98,6 +99,14 @@ bool FvPlatform::CurrentlyRunningOnPlatform(QString platform)
 
 	// Defined on MAC OS (synonym for Darwin).
 #ifdef Q_OS_MAC
+    switch(QSysInfo::MacintoshVersion) {
+        case QSysInfo::MV_10_6:
+            if (platform == "Q_OS_MAC_10_6")
+                return true;
+
+            break;
+    }
+
 	if (platform == "Q_OS_MAC") {
 		return true;
 	}
