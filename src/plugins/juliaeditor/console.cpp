@@ -189,6 +189,7 @@ void Console::SetPrompt( const QString& new_prompt )
 void Console::keyPressEvent( QKeyEvent* e )
 {
   // handle all key sequences -----
+  bool handled = true;
   if ( e->modifiers() & Qt::ControlModifier )
   {
     if ( e->matches( QKeySequence::Cut) )
@@ -221,7 +222,10 @@ void Console::keyPressEvent( QKeyEvent* e )
       cursor.movePosition(QTextCursor::End);
       setTextCursor(cursor);
     }
-    return;
+    else
+    {
+      handled = e->text() == "";
+    }
   }
   else if ( e->modifiers() & Qt::MetaModifier )
   {
@@ -232,27 +236,35 @@ void Console::keyPressEvent( QKeyEvent* e )
       QTextCursor cursor = textCursor();
       cursor.setPosition( begin_command_pos );
       setTextCursor( cursor );
-      return;
     }
-    if ( e->key() == Qt::Key_E ||
+    else if ( e->key() == Qt::Key_E ||
          e->matches(QKeySequence::MoveToEndOfLine) ||
          e->matches(QKeySequence::MoveToEndOfBlock) ||
          e->matches(QKeySequence::MoveToEndOfDocument) )
     {
-     QTextCursor cursor = textCursor();
-     cursor.movePosition(QTextCursor::End);
-     setTextCursor(cursor);
+      QTextCursor cursor = textCursor();
+      cursor.movePosition(QTextCursor::End);
+      setTextCursor(cursor);
+    }
+    else
+    {
+      handled = e->text() == "";
     }
   }
   else if ( e->modifiers() & Qt::ShiftModifier )
   {
-    if ( e->key() == Qt::Key_Return )
+    if ( handled = e->key() == Qt::Key_Return )
     {
       insertLineBelow();
-      return;
     }
   }
+  else
+  {
+    handled = false;
+  }
   // -----
+  if ( handled )
+    return;
 
   // handle all console keys -----
   switch ( e->key() )
@@ -294,7 +306,6 @@ void Console::keyPressEvent( QKeyEvent* e )
     break;
   }
   // -----
-
   // if we got here, just treat it like a normal key press
   TextEditor::BaseTextEditorWidget::keyPressEvent( e );
 }

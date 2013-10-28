@@ -207,7 +207,12 @@ bool FvPlatform::CurrentlyRunningOnPlatform(QString platform)
 	}
 #endif
 
-	// Defined on all supported versions of Windows.
+#ifdef Q_OS_WIN64
+	if (platform == "Q_OS_WIN64") {
+		return true;
+	}
+#endif
+
 #ifdef Q_OS_WIN32
 	if (platform == "Q_OS_WIN32") {
 		return true;
