@@ -98,6 +98,7 @@ public:
       while( ( k = parstr.indexOf( QChar::ParagraphSeparator ) ) >= 0 )
       {
         parstr.remove( k, 1 );
+        parstr.insert( k, " " );
       }
       QRegExp rx("[\\\\\"]");
       k = -1;
