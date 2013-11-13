@@ -16,11 +16,11 @@ The binary packages support the following platforms:
 ## Compiling Julia Studio
 Prerequisites:
    * Qt 4.8.0 or later
-   * On Windows:
-     -  ActiveState Active Perl
-     -  MinGW 4.4 or later, Visual Studio 2008 or later
-     -  jom
-     The Qt SDK provides you with most of the required software.
+   * The Qt SDK provides you with most of the required software.
+   * On Windows
+      *  ActiveState Active Perl
+      *  MinGW 4.4 or later, Visual Studio 2008 or later
+      *  jom
    * On Mac: XCode 2.5 or later, compiling on 10.4 requires setting the
      environment variable QTC_TIGER_COMPAT before running qmake
 
