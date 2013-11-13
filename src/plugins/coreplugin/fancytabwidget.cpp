@@ -98,7 +98,9 @@ FancyTabBar::FancyTabBar(QWidget *parent)
 
 FancyTabBar::~FancyTabBar()
 {
-    delete style();
+    QStyle* fs = style();
+    if ( fs != QApplication::style() )
+      delete fs;
 }
 
 QSize FancyTabBar::tabSizeHint(bool minimum) const
