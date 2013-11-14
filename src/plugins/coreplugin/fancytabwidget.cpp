@@ -33,7 +33,7 @@
 #include <utils/styledbar.h>
 
 #include <QDebug>
-
+#include <QApplication>
 #include <QColorDialog>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
