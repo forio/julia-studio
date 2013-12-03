@@ -435,7 +435,7 @@ void QStyleItem::initStyleOption()
             if (activeControl() != "end")
                 widget()->resize(200, height());
         }
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         else widget()->resize(width(), height());
 #endif
 
@@ -594,7 +594,7 @@ int QStyleItem::pixelMetric(const QString &metric)
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 , widget());
     else if (metric == "tabbaseoverlap")
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         // On windows the tabbar paintmargin extends the overlap by one pixels
         return 1 + qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 , widget());
 #else
@@ -805,7 +805,7 @@ void QStyleItem::setElementType(const QString &str)
         visible = true;
         m_itemType = Edit;
     } else if (str == "spinbox") {
-#ifndef Q_WS_WIN // Vista spinbox is currently not working due to grabwidget
+#ifndef Q_OS_WIN // Vista spinbox is currently not working due to grabwidget
         m_dummywidget = new QSpinBox();
         visible = true;
 #endif

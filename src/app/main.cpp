@@ -311,6 +311,10 @@ int main(int argc, char **argv)
     QtSystemExceptionHandler systemExceptionHandler;
 #endif
 
+#if QT_VERSION >= 0x050100
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
+
     // Manually determine -settingspath command line option
     // We can't use the regular way of the plugin manager, because that needs to parse pluginspecs
     // but the settings path can influence which plugins are enabled
@@ -360,7 +364,11 @@ int main(int argc, char **argv)
     const QString &creatorTrPath = QCoreApplication::applicationDirPath()
             + QLatin1String(SHARE_PATH "/translations");
     foreach (QString locale, uiLanguages) {
+#if (QT_VERSION >= 0x050000)
+        locale = QLocale(locale).name();
+#else
         locale.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
+#endif
         if (translator.load(QLatin1String("qtcreator_") + locale, creatorTrPath)) {
             const QString &qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
             const QString &qtTrFile = QLatin1String("qt_") + locale;
@@ -463,7 +471,7 @@ int main(int argc, char **argv)
 #endif
 
     if (app.isRunning() && (pid != -1 || foundAppOptions.contains(QLatin1String(CLIENT_OPTION)))) {
-        if (app.sendMessage(PluginManager::serializedArguments(), 5000 /*timeout*/, pid))
+       if (app.sendMessage(PluginManager::serializedArguments(), 5000 /*timeout*/, pid))
             return 0;
 
         // Message could not be send, maybe it was in the process of quitting
@@ -500,7 +508,12 @@ int main(int argc, char **argv)
 
     QObject::connect(&app, SIGNAL(fileOpenRequest(QString)), coreplugin->plugin(),
                      SLOT(fileOpenRequest(QString)));
-
+#if (QT_VERSION >= 0x050000)
+    // quit when last window (relevant window, see WA_QuitOnClose) is closed
+    // this should actually be the default, but doesn't work in Qt 5
+    // QTBUG-31569
+    QObject::connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
+#endif
     // shutdown plugin manager on the exit
     QObject::connect(&app, SIGNAL(aboutToQuit()), &pluginManager, SLOT(shutdown()));
 

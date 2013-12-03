@@ -24,7 +24,9 @@ using namespace JuliaPlugin;
 LocalTcpEvaluator::LocalTcpEvaluator(QObject *parent) :
   ProjectExplorer::IEvaluator(parent), process(NULL), socket(NULL), busy(false), curr_msg_size(-1)
 {
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+#if QT_VERSION < 0x050100
+  QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+#endif
   connect( this, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), this, SLOT(onChangeDirResult(const ProjectExplorer::EvaluatorMessage*)));
   connect( this, SIGNAL(output(const ProjectExplorer::EvaluatorMessage*)), this, SLOT(onPlot(const ProjectExplorer::EvaluatorMessage*)));
 }

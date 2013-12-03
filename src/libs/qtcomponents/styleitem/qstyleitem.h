@@ -162,7 +162,7 @@ public:
     void setStep(int step) { if (m_step != step) { m_step = step; emit stepChanged(); }}
     void setPaintMargins(int value) {
     Q_UNUSED(value)
-#ifdef Q_WS_WIN //only vista style needs this hack
+#ifdef Q_OS_WIN //only vista style needs this hack
         if (m_paintMargins!= value) {m_paintMargins = value;}
 #endif
     }
