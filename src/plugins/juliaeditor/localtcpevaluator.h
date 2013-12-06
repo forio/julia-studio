@@ -41,7 +41,8 @@ signals:
   void output( const QString& msg );
   
 private slots:
-  void onProcessOutput();
+  void onProcessStdout();
+  void onProcessStderr();
   void onProcessError( QProcess::ProcessError error_ );
   void onProcessStarted();
 
@@ -73,6 +74,7 @@ private:
   QString curr_working_dir;
   QString plot_view_filename;
   
+  void ProcessOutput( QByteArray output_bytes );
 };
 
 }

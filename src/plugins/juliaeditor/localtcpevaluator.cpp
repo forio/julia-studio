@@ -78,7 +78,9 @@ void LocalTcpEvaluator::reset()
 {
   if (process) {
     disconnect( process, SIGNAL( error(QProcess::ProcessError) ), this, SLOT( onProcessError(QProcess::ProcessError) ) );
-    disconnect( process, SIGNAL( readyRead() ), this, SLOT( onProcessOutput() ) );
+    //disconnect( process, SIGNAL( readyRead() ), this, SLOT( onProcessOutput() ) );
+    disconnect( process, SIGNAL( readyReadStandardOutput () ), this, SLOT( onProcessStdout() ) );
+    disconnect( process, SIGNAL( readyReadStandardError () ), this, SLOT( onProcessStderr() ) );
     disconnect( process, SIGNAL( finished(int) ), this, SLOT( exit(int) ) );
     disconnect( process, SIGNAL( started()), this, SLOT(onProcessStarted()) );
   }
@@ -163,9 +165,19 @@ void LocalTcpEvaluator::setWorkingDir(const QString &working_directory)
   eval(msg);
 }
 
-void LocalTcpEvaluator::onProcessOutput()
+void LocalTcpEvaluator::onProcessStdout()
 {
-  QByteArray output_bytes = process->readAll();
+  ProcessOutput( process->readAllStandardOutput() );
+}
+
+void LocalTcpEvaluator::onProcessStderr()
+{
+  ProcessOutput( process->readAllStandardError() );
+}
+
+void LocalTcpEvaluator::ProcessOutput( QByteArray output_bytes )
+{
+  //QByteArray output_bytes = process->readAll();
 
   QRegExp connection_msg("PORT:");
   int index = connection_msg.indexIn(output_bytes);
@@ -296,10 +308,12 @@ void LocalTcpEvaluator::exit(int exit_code)
 void LocalTcpEvaluator::startJuliaProcess(QStringList args)
 {
   process = new QProcess(this);
-  process->setProcessChannelMode(QProcess::MergedChannels);
+  process->setProcessChannelMode(QProcess::SeparateChannels);
 
   connect( process, SIGNAL( error(QProcess::ProcessError) ), SLOT( onProcessError(QProcess::ProcessError) ) );
-  connect( process, SIGNAL( readyRead() ), SLOT( onProcessOutput() ) );
+  //connect( process, SIGNAL( readyRead() ), SLOT( onProcessOutput() ) );
+  connect( process, SIGNAL( readyReadStandardOutput () ), SLOT( onProcessStdout() ) );
+  connect( process, SIGNAL( readyReadStandardError () ), SLOT( onProcessStderr() ) );
   connect( process, SIGNAL( finished(int) ), SLOT( exit(int) ) );
   connect( process, SIGNAL( started()), SLOT(onProcessStarted()) );
 
@@ -341,7 +355,8 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
 void LocalTcpEvaluator::prepareJulia()
 {
   process = new QProcess(this);
-  process->setProcessChannelMode(QProcess::MergedChannels);
+  //process->setProcessChannelMode(QProcess::MergedChannels);
+  process->setProcessChannelMode(QProcess::SeparateChannels);
 
   connect( process, SIGNAL( error(QProcess::ProcessError) ), SLOT( onProcessError(QProcess::ProcessError) ) );
   connect( process, SIGNAL( finished(int) ), SLOT( reset() ) );
