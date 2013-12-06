@@ -2,6 +2,9 @@
 QT += core gui qml quick network v8
 contains (QT_CONFIG, webkit) {
     QT += webkit
+    qt:greaterThan(QT_MAJOR_VERSION, 4) {
+        QT += webkitwidgets
+    }
 }
 
 QT += core-private qml-private quick-private gui-private script-private v8-private

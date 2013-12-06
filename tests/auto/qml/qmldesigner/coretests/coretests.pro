@@ -14,6 +14,9 @@ unix: QMAKE_LFLAGS += \'-Wl,-rpath,$${IDE_LIBRARY_PATH}\' \'-Wl,-rpath,$${IDE_PL
 QT += script \
     network \
     webkit
+qt:greaterThan(QT_MAJOR_VERSION, 4) {
+    QT += webkitwidgets
+}
 
 # DEFINES+=QTCREATOR_UTILS_STATIC_LIB QML_BUILD_STATIC_LIB
 DEFINES+=QTCREATORDIR=\\\"$$IDE_BUILD_TREE\\\"

@@ -4,7 +4,9 @@
 # may offer an updated version of it.
 
 QT += webkit
-
+qt:greaterThan(QT_MAJOR_VERSION, 4) {
+    QT += webkitwidgets
+}
 SOURCES += $$PWD/html5applicationviewer.cpp
 HEADERS += $$PWD/html5applicationviewer.h
 INCLUDEPATH += $$PWD

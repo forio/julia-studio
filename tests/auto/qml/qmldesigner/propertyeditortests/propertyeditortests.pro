@@ -1,5 +1,8 @@
 TEMPLATE = app
 QT += script declarative webkit
+qt:greaterThan(QT_MAJOR_VERSION, 4) {
+    QT += webkitwidgets
+}
 CONFIG += qtestlib testcase
 CONFIG += console
 CONFIG -= app_bundle

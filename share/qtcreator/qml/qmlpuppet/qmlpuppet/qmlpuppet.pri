@@ -2,10 +2,10 @@ QT += core gui network declarative
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += declarative-private core-private widgets-private gui-private script-private
 
-greaterThan(QT_MAJOR_VERSION, 4) {
-} else {
-    contains (QT_CONFIG, webkit) {
-        QT += webkit
+contains (QT_CONFIG, webkit) {
+    QT += webkit
+    qt:greaterThan(QT_MAJOR_VERSION, 4) {
+         QT += webkitwidgets
     }
 }
 

@@ -2,6 +2,9 @@ TARGET = HtmlViewer
 TEMPLATE = lib
 
 QT += webkit
+qt:greaterThan(QT_MAJOR_VERSION, 4) {
+    QT += webkitwidgets
+}
 
 DEFINES += HTMLVIEWER_LIBRARY
 

@@ -43,6 +43,9 @@ wince* {
     }
     contains(QT_CONFIG, webkit) {
         QT += webkit
+        qt:greaterThan(QT_MAJOR_VERSION, 4) {
+            QT += webkitwidgets
+        }
     }
 }
 maemo5 {
