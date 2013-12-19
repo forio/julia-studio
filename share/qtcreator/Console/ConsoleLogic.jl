@@ -30,7 +30,7 @@ function on_eval_msg(console::ConsoleLogicSystem, cid, code)
     end
 
   catch error
-    Event.new_event(event_system, "networkOut", cid, "output-error", sprint( showerror, error ) )
+    Event.new_event(event_system, "networkOut", cid, "output-error", string( "ERROR: ", sprint( showerror, error, catch_backtrace() ) ) )
   end
 end
 
@@ -42,7 +42,7 @@ function on_eval_silent_msg(console::ConsoleLogicSystem, cid, code)
     Event.new_event( event_system, "networkOut", cid, "output-eval-silent", "" )
 
   catch error
-    Event.new_event(event_system, "networkOut", cid, "output-error", sprint( showerror, error ) )
+    Event.new_event(event_system, "networkOut", cid, "output-error", string( "ERROR: ", sprint( showerror, error, catch_backtrace() ) ) )
   end
 end
 
