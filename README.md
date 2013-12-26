@@ -21,8 +21,6 @@ Prerequisites:
       *  ActiveState Active Perl
       *  MinGW 4.4 or later, Visual Studio 2008 or later
       *  jom
-   * On Mac: XCode 2.5 or later, compiling on 10.4 requires setting the
-     environment variable QTC_TIGER_COMPAT before running qmake
 
 You can build Julia Studio with
 
