@@ -35,11 +35,11 @@ by Forio
 
 The current version of Julia Studio is 0.4.4. 
 
-Review the [Release Notes](http://forio.com/products/julia-studio/download.html#release-notes) for specific changes since the previous version of Julia Studio.
+Review the [Release Notes](http://forio.com/products/julia-studio/download/#release-notes) for specific changes since the previous version of Julia Studio.
 
 <a name="downloading-and-installing"></a>
 ####Downloading and installing
-You can download Julia Studio from Forio: [forio.com/julia/downloads](http://forio.com/julia/downloads/). There are current versions for Windows (32bit Win7+, 64bit Win7+), Mac (OSX 10.6, OSX 10.7+), and Linux (Ubuntu 12.04+). To get started, select the appropriate package and follow the on-screen prompts.
+You can download Julia Studio from Forio: [forio.com/products/julia-studio/download](http://forio.com/products/julia-studio/download). There are current versions for Windows (32bit Win7+, 64bit Win7+), Mac (OSX 10.6, OSX 10.7+), and Linux (Ubuntu 12.04+). To get started, select the appropriate package and follow the on-screen prompts.
 
 Julia Studio installs itself (IDE application), Julia, and Julia packages. By default:
 
@@ -88,7 +88,7 @@ Julia packages are installed in `~/.julia/`. If you have uninstalled and reinsta
 
 <a name="using-a-different-version-of-julia"></a>
 ####Using a different version of Julia
-[Julia Studio 0.4.4](http://forio.com/julia/downloads/) comes with Julia v0.2 (as released [here](http://julialang.org/downloads/)).
+[Julia Studio 0.4.4](http://forio.com/products/julia-studio/download/) comes with Julia v0.2 (as released [here](http://julialang.org/downloads/)).
 
 **To use a different version of Julia with Julia Studio:**
 
@@ -391,5 +391,5 @@ For help with the Julia language:
 
 * Browse the [official documentation](http://docs.julialang.org), including the excellent [Julia Manual](http://docs.julialang.org/en/release-0.2/manual/)
 * Search or submit a question to the friendly [julia-users mailing list](https://groups.google.com/forum/?fromgroups=#!forum/julia-users)
-* Try the [Forio tutorials](http://forio.com/julia/tutorials-list)
+* Try the [Forio tutorials](http://forio.com/products/julia-studio/tutorials/)
 
