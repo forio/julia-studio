@@ -6,8 +6,8 @@ sudo apt-get update
 sudo apt-get --yes --force-yes upgrade
 
 #get install julia
-sudo add-apt-repository ppa:staticfloat/juliareleases
-sudo add-apt-repository ppa:staticfloat/julia-deps
+sudo add-apt-repository --yes ppa:staticfloat/juliareleases
+sudo add-apt-repository --yes ppa:staticfloat/julia-deps
 sudo apt-get update
 sudo apt-get --yes --force-yes install julia
 
