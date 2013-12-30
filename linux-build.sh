@@ -3,20 +3,20 @@ startpath=`pwd`
 
 #update your system like a good penguin
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get --yes --force-yes upgrade
 
 #get install julia
 sudo add-apt-repository ppa:staticfloat/juliareleases
 sudo add-apt-repository ppa:staticfloat/julia-deps
 sudo apt-get update
-sudo apt-get install julia
+sudo apt-get --yes --force-yes install julia
 
 #move into master dir
 mkdir julia-studio
 cd julia-studio
 
 #install build prerequisites
-sudo apt-get install vim libgl1-nvidia-glx mesa-common-dev mesa-commonlibglu1-mesa-dev build-essential 
+sudo apt-get --yes --force-yes install vim libgl1-nvidia-glx mesa-common-dev mesa-commonlibglu1-mesa-dev build-essential 
 
 
 
