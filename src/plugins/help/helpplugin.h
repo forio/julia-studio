@@ -116,8 +116,11 @@ private slots:
     void slotAboutToShowBackMenu();
     void slotAboutToShowNextMenu();
     void slotOpenActionUrl(QAction *action);
-    void slotOpenSupportPage();
-    void slotReportBug();
+
+    void slotOnLineHome();
+    void slotManual();
+    void slotJuliaDocs();
+    void slotFeedback();
 
     void openFindToolBar();
     void onSideBarVisibilityChanged();
