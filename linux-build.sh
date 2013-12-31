@@ -1,4 +1,6 @@
-#script and/or instructions for building Julia Studio on Linux 64.  Developed on Ubuntu 12.04.3 and 13.10.3.  YMMV on other platforms.
+#Script and/or instructions for building Julia Studio on Linux 64.  Developed for Ubuntu 12.04.3 and 13.10.3 (so far).  YMMV on other platforms.
+#This script is a work in progress.  The Qt installation currently requires some GUI action.
+
 startpath=`pwd`
 
 #update your system like a good penguin
@@ -9,21 +11,33 @@ sudo apt-get --yes --force-yes upgrade
 sudo add-apt-repository --yes ppa:staticfloat/juliareleases
 sudo add-apt-repository --yes ppa:staticfloat/julia-deps
 sudo apt-get update
-sudo apt-get --yes --force-yes install julia
+sudo apt-get --yes --force-yes install julia 
 
 #move into master dir
 mkdir julia-studio
 cd julia-studio
 
 #install build prerequisites
-sudo apt-get --yes --force-yes install vim libgl1-nvidia-glx mesa-common-dev mesa-commonlibglu1-mesa-dev build-essential 
+sudo apt-get --yes --force-yes install vim mesa-common-dev build-essential wget
+#12.04
+sudo apt-get --yes --force-yes install vim mesa-common-dev build-essential wget
+sudo apt-get --yes --force-yes install libglu1-mesa-dev
+
+#13.10
+sudo apt-get --yes --force-yes install vim libgl1-nvidia-glx mesa-commonlibglu1-mesa-dev 
 
 
 
 #get specific version of qt
-curl http://master.qt-project.org/archive/qt/5.1/5.1.0/qt-linux-opensource-5.1.0-x86_64-offline.run > qt-linux-opensource-5.1.0-x86_64-offline.run
+#64-bit
+wget http://download.qt-project.org/archive/qt/5.1/5.1.0/qt-linux-opensource-5.1.0-x86_64-offline.run
+#32-bit
+#wget http://download.qt-project.org/archive/qt/5.1/5.1.0/qt-linux-opensource-5.1.0-x86-offline.run 
 chmod +x qt-linux-opensource-5.1.0-x86_64-offline.run 
 ./qt-linux-opensource-5.1.0-x86_64-offline.run 
+
+#the qt installer has a GUI...can't seem to get around that...
+exit
 
 #set up qt
 sudo mkdir /etc/xdg/qtchooser
@@ -31,9 +45,10 @@ sudo mkdir /etc/xdg/qtchooser
 cd Qt5.1.0/5.1.0/gcc_64
 qtbase=`pwd`
 
-sudo echo "$qtbase/bin" >  /etc/xdg/qtchooser/default.conf
-sudo echo "$qtbase/lib" >> /etc/xdg/qtchooser/default.conf
 
+echo "$qtbase/bin" >  default.conf
+echo "$qtbase/lib" >> default.conf
+sudo mv default.conf /etc/xdg/qtchooser/
 
 #get julia studio source
 cd $startpath/julia-studio
