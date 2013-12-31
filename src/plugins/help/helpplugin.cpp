@@ -100,8 +100,8 @@
 
 using namespace Help::Internal;
 
-const char SB_INDEX[] = QT_TRANSLATE_NOOP("Help::Internal::HelpPlugin", "Index");
-const char SB_CONTENTS[] = QT_TRANSLATE_NOOP("Help::Internal::HelpPlugin", "Contents");
+//const char SB_INDEX[] = QT_TRANSLATE_NOOP("Help::Internal::HelpPlugin", "Index");
+//const char SB_CONTENTS[] = QT_TRANSLATE_NOOP("Help::Internal::HelpPlugin", "Contents");
 const char SB_BOOKMARKS[] = QT_TRANSLATE_NOOP("Help::Internal::HelpPlugin", "Bookmarks");
 const char SB_SEARCH[] = QT_TRANSLATE_NOOP("Help::Internal::HelpPlugin", "Search");
 
@@ -240,6 +240,7 @@ bool HelpPlugin::initialize(const QStringList &arguments, QString *error)
     connect(action, SIGNAL(triggered()), this, SLOT(addBookmark()));
 
     // Add Contents, Index, and Context menu items and a separator to the Help menu
+/*
     action = new QAction(QIcon::fromTheme(QLatin1String("help-contents")),
         tr(SB_CONTENTS), this);
     cmd = Core::ActionManager::registerAction(action, Core::Id("Help.Contents"), globalcontext);
@@ -264,15 +265,34 @@ bool HelpPlugin::initialize(const QStringList &arguments, QString *error)
         Core::ActionManager::actionContainer(Core::Constants::M_HELP)->addAction(cmd, Core::Constants::G_HELP_HELP);
     }
 
-    action = new QAction(tr("Technical Support"), this);
-    cmd = Core::ActionManager::registerAction(action, Core::Id("Help.TechSupport"), globalcontext);
+*/
+    action = new QAction(tr("On Line"), this);
+    cmd = Core::ActionManager::registerAction(action, Core::Id("Help.OnLine"), globalcontext);
     Core::ActionManager::actionContainer(Core::Constants::M_HELP)->addAction(cmd, Core::Constants::G_HELP_HELP);
-    connect(action, SIGNAL(triggered()), this, SLOT(slotOpenSupportPage()));
+    connect(action, SIGNAL(triggered()), this, SLOT(slotOnLineHome()));
 
-    action = new QAction(tr("Report Bug..."), this);
-    cmd = Core::ActionManager::registerAction(action, Core::Id("Help.ReportBug"), globalcontext);
+    action = new QAction(tr("Manual"), this);
+    cmd = Core::ActionManager::registerAction(action, Core::Id("Help.Manual"), globalcontext);
     Core::ActionManager::actionContainer(Core::Constants::M_HELP)->addAction(cmd, Core::Constants::G_HELP_HELP);
-    connect(action, SIGNAL(triggered()), this, SLOT(slotReportBug()));
+    connect(action, SIGNAL(triggered()), this, SLOT(slotManual()));
+
+    action = new QAction(tr("Julia Docs"), this);
+    cmd = Core::ActionManager::registerAction(action, Core::Id("Help.JuliaDocs"), globalcontext);
+    Core::ActionManager::actionContainer(Core::Constants::M_HELP)->addAction(cmd, Core::Constants::G_HELP_HELP);
+    connect(action, SIGNAL(triggered()), this, SLOT(slotJuliaDocs()));
+
+    if (!Utils::HostOsInfo::isMacHost()) {
+        action = new QAction(this);
+        action->setSeparator(true);
+        cmd = Core::ActionManager::registerAction(action, Core::Id("Help.Separator"), globalcontext);
+        Core::ActionManager::actionContainer(Core::Constants::M_HELP)->addAction(cmd, Core::Constants::G_HELP_HELP);
+    }
+
+/*
+    action = new QAction(tr("Feedback"), this);
+    cmd = Core::ActionManager::registerAction(action, Core::Id("Help.Feedback"), globalcontext);
+    Core::ActionManager::actionContainer(Core::Constants::M_HELP)->addAction(cmd, Core::Constants::G_HELP_HELP);
+    connect(action, SIGNAL(triggered()), this, SLOT(slotFeedback()));
 
     if (!Utils::HostOsInfo::isMacHost()) {
         action = new QAction(this);
@@ -280,6 +300,7 @@ bool HelpPlugin::initialize(const QStringList &arguments, QString *error)
         cmd = Core::ActionManager::registerAction(action, Core::Id("Help.Separator2"), globalcontext);
         Core::ActionManager::actionContainer(Core::Constants::M_HELP)->addAction(cmd, Core::Constants::G_HELP_HELP);
     }
+*/
 
     action = new QAction(this);
     Core::ActionManager::registerAction(action, Core::Constants::PRINT, modecontext);
@@ -445,7 +466,10 @@ void HelpPlugin::setupUi()
 {
     // side bar widgets and shortcuts
     Core::Context modecontext(Constants::C_MODE_HELP);
-
+    QShortcut *shortcut;
+    QMap<QString, Core::Command*> shortcutMap;
+    Core::Command* cmd;
+/*
     IndexWindow *indexWindow = new IndexWindow();
     indexWindow->setWindowTitle(tr(SB_INDEX));
     m_indexItem = new Core::SideBarItem(indexWindow, QLatin1String(SB_INDEX));
@@ -455,15 +479,15 @@ void HelpPlugin::setupUi()
     connect(indexWindow, SIGNAL(linksActivated(QMap<QString,QUrl>,QString)),
         m_centralWidget, SLOT(showTopicChooser(QMap<QString,QUrl>,QString)));
 
-    QMap<QString, Core::Command*> shortcutMap;
-    QShortcut *shortcut = new QShortcut(m_splitter);
+    shortcut = new QShortcut(m_splitter);
     shortcut->setWhatsThis(tr("Activate Index in Help mode"));
-    Core::Command* cmd = Core::ActionManager::registerShortcut(shortcut,
+    cmd = Core::ActionManager::registerShortcut(shortcut,
         Core::Id("Help.IndexShortcut"), modecontext);
     cmd->setDefaultKeySequence(QKeySequence(Core::UseMacShortcuts ? tr("Meta+I") : tr("Ctrl+Shift+I")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(activateIndex()));
     shortcutMap.insert(QLatin1String(SB_INDEX), cmd);
-
+*/
+/*
     ContentWindow *contentWindow = new ContentWindow();
     contentWindow->setWindowTitle(tr(SB_CONTENTS));
     m_contentItem = new Core::SideBarItem(contentWindow, SB_CONTENTS);
@@ -477,6 +501,7 @@ void HelpPlugin::setupUi()
     cmd->setDefaultKeySequence(QKeySequence(Core::UseMacShortcuts ? tr("Meta+Shift+C") : tr("Ctrl+Shift+C")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(activateContents()));
     shortcutMap.insert(QLatin1String(SB_CONTENTS), cmd);
+*/
 
     SearchWidget *searchWidget = new SearchWidget();
     searchWidget->setWindowTitle(tr(SB_SEARCH));
@@ -995,8 +1020,14 @@ void HelpPlugin::activateIndex()
 
 void HelpPlugin::activateContents()
 {
-    activateHelpMode();
-    m_sideBar->activateItem(m_contentItem);
+   // activateHelpMode();
+   // m_sideBar->activateItem(m_contentItem);
+
+
+   // QDesktopServices::openUrl(QUrl("http://forio.com/products/julia-studio/"));
+
+   QString dir = QLatin1String("file:///")+QDir::currentPath()+QLatin1String("/../docs/Julia_Studio_Help.pdf");
+   QDesktopServices::openUrl(QUrl(dir));
 }
 
 void HelpPlugin::activateSearch()
@@ -1246,14 +1277,25 @@ void HelpPlugin::slotOpenActionUrl(QAction *action)
 #endif
 }
 
-void HelpPlugin::slotOpenSupportPage()
+void HelpPlugin::slotOnLineHome()
 {
-    switchToHelpMode(QUrl("http://forio.com/julia/support"));
+  QDesktopServices::openUrl( QUrl( "http://forio.com/products/julia-studio/" ) );
 }
 
-void HelpPlugin::slotReportBug()
+void HelpPlugin::slotManual()
 {
-    QDesktopServices::openUrl(QUrl("http://forio.com/julia/feedback"));
+   QString dir = QLatin1String( "file:///" ) + QDir::currentPath() + QLatin1String( "/../docs/Julia_Studio_Help.pdf" );
+   QDesktopServices::openUrl( QUrl( dir ) );
+}
+
+void HelpPlugin::slotJuliaDocs()
+{
+  QDesktopServices::openUrl( QUrl( "http://docs.julialang.org/en/release-0.2/" ) );
+}
+
+void HelpPlugin::slotFeedback()
+{
+  QDesktopServices::openUrl( QUrl( "http://forio.com/products/julia-studio/support" ) );
 }
 
 void HelpPlugin::openFindToolBar()
