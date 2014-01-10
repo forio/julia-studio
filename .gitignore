@@ -28,6 +28,7 @@ moc_*.cpp
 ui_*.h
 qrc_*.cpp
 Thumbs.db
+.qmake.stash
 
 # qtcreator generated files
 *.pro.user*
