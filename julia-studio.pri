@@ -1,4 +1,4 @@
-!isEmpty(QTCREATOR_PRI_INCLUDED):error("qtcreator.pri already included")
+!isEmpty(QTCREATOR_PRI_INCLUDED):error("julia-studio.pri already included")
 QTCREATOR_PRI_INCLUDED = 1
 
 QTCREATOR_VERSION = 2.6.81
@@ -176,7 +176,7 @@ unix {
     UI_DIR = $${OUT_PWD}/.uic
 }
 
-win32-msvc* { 
+win32-msvc* {
     #Don't warn about sprintf, fopen etc being 'unsafe'
     DEFINES += _CRT_SECURE_NO_WARNINGS
 }

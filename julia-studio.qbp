@@ -10,9 +10,9 @@ Project {
     moduleSearchPaths: "qbs"
 
     references: [
-        "lib/qtcreator/qtcomponents/qtcomponents.qbs",
+        "lib/julia-studio/qtcomponents/qtcomponents.qbs",
         "share/share.qbs",
-        "share/qtcreator/translations/translations.qbs",
+        "share/julia-studio/translations/translations.qbs",
         "src/libs/aggregation/aggregation.qbs",
         "src/libs/cplusplus/cplusplus.qbs",
         "src/libs/extensionsystem/extensionsystem.qbs",
@@ -138,12 +138,12 @@ Project {
     }
 
     Product {
-        name: "qtcreator"
+        name: "julia-studio"
         type: ["application", "installed_content"]
         destination: "bin"
         consoleApplication: qbs.debugInformation
 
-        cpp.rpaths: ["$ORIGIN/../lib/qtcreator"]
+        cpp.rpaths: ["$ORIGIN/../lib/julia-studio"]
         cpp.defines: Defaults.defines(qbs)
         cpp.linkerFlags: {
             if (qbs.buildVariant == "release" && (qbs.toolchain == "gcc" || qbs.toolchain == "mingw"))
@@ -177,7 +177,7 @@ Project {
 
         Group {
             condition: qbs.targetOS == "linux" || qbs.targetOS == "macx"
-            files: "bin/qtcreator.sh"
+            files: "bin/julia-studio.sh"
             fileTags: "install"
             qbs.installDir: "bin"
         }
