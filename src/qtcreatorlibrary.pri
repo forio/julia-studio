@@ -1,4 +1,4 @@
-include(../qtcreator.pri)
+include(../julia-studio.pri)
 
 # use precompiled header for libraries by default
 isEmpty(PRECOMPILED_HEADER):PRECOMPILED_HEADER = $$PWD/shared/qtcreator_pch.h
@@ -21,7 +21,7 @@ contains(QT_CONFIG, reduce_exports):CONFIG += hide_symbols
     win32 {
         target.path = $$QTC_PREFIX/bin
     } else {
-        target.path = $$QTC_PREFIX/$$IDE_LIBRARY_BASENAME/qtcreator
+        target.path = $$QTC_PREFIX/$$IDE_LIBRARY_BASENAME/julia-studio
     }
     INSTALLS += target
 }
