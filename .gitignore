@@ -39,6 +39,7 @@ app_version.h
 src/plugins/coreplugin/ide_version.h
 share/qtcreator/externaltools
 phony.c
+src/plugins/*/*.json
 
 # xemacs temporary files
 *.flc
