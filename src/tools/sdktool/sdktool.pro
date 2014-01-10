@@ -1,4 +1,4 @@
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 include(../../rpath.pri)
 include(../../libs/utils/utils.pri)
 
@@ -40,7 +40,7 @@ HEADERS += \
 
 DESTDIR=$$IDE_LIBEXEC_PATH
 macx:DEFINES += "DATA_PATH=\"\\\".\\\"\""
-else:DEFINES += "DATA_PATH=\"\\\"../share/qtcreator\\\"\""
+else:DEFINES += "DATA_PATH=\"\\\"../share/julia-studio\\\"\""
 
 target.path  = $$QTC_PREFIX/bin # FIXME: libexec, more or less
 INSTALLS += target

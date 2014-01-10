@@ -37,7 +37,7 @@ Thumbs.db
 src/app/Info.plist
 app_version.h
 src/plugins/coreplugin/ide_version.h
-share/qtcreator/externaltools
+share/julia-studio/externaltools
 phony.c
 src/plugins/*/*.json
 
@@ -67,8 +67,8 @@ src/plugins/*/*.json
 *.Release
 
 # translation related:
-share/qtcreator/translations/*_tr.h
-share/qtcreator/translations/qtcreator_untranslated.ts
+share/julia-studio/translations/*_tr.h
+share/julia-studio/translations/qtcreator_untranslated.ts
 
 # Directories to ignore
 # ---------------------
@@ -91,16 +91,15 @@ dist/gdb/staging
 ipch
 tmp
 # ignore both a directory as well as a symlink
-share/qtcreator/QtProject/
-share/qtcreator/QtProject
+share/julia-studio/QtProject/
+share/julia-studio/QtProject
 
 # Binaries
 # --------
 bin/*.dll
-bin/qtcreator
+bin/JuliaStudio*
 bin/qtcreator_process_stub*
 bin/qtcreator_ctrlc_stub*
-bin/qtcreator.exe
 bin/qmlpuppet
 bin/qmlpuppet.exe
 bin/qml2puppet

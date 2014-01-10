@@ -1,4 +1,4 @@
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 
 TEMPLATE = app
 TARGET = phony_target3
@@ -52,6 +52,6 @@ DATA_FILE_PATTERNS = \
 
 !macx {
     qmlfiles.files = $$PWD/*.qml $$PWD/qmldir $$PWD/images $$PWD/custom
-    qmlfiles.path = $$QTC_PREFIX/$${IDE_LIBRARY_BASENAME}/qtcreator/qtcomponents
+    qmlfiles.path = $$QTC_PREFIX/$${IDE_LIBRARY_BASENAME}/julia-studio/qtcomponents
     INSTALLS += qmlfiles
 }

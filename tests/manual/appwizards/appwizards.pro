@@ -1,5 +1,5 @@
 CREATORSOURCEDIR = ../../../
-include ($$CREATORSOURCEDIR/qtcreator.pri)
+include ($$CREATORSOURCEDIR/julia-studio.pri)
 
 DEFINES += \
     CREATORLESSTEST

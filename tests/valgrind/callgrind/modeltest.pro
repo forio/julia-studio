@@ -1,4 +1,4 @@
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 include(../../auto/qttestrpath.pri)
 include($$IDE_SOURCE_TREE/src/plugins/valgrind/valgrind_test.pri)
 include($$IDE_SOURCE_TREE/src/libs/languageutils/languageutils.pri)

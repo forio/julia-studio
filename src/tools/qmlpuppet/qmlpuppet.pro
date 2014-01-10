@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 include(../../private_headers.pri)
 
 greaterThan(QT_MAJOR_VERSION, 4) {

@@ -136,10 +136,10 @@ macx {
 } else {
     contains(TEMPLATE, vc.*):vcproj = 1
     IDE_APP_TARGET   = JuliaStudio
-    IDE_LIBRARY_PATH = $$IDE_BUILD_TREE/$$IDE_LIBRARY_BASENAME/qtcreator
+    IDE_LIBRARY_PATH = $$IDE_BUILD_TREE/$$IDE_LIBRARY_BASENAME/julia-studio
     IDE_PLUGIN_PATH  = $$IDE_LIBRARY_PATH/plugins
     IDE_LIBEXEC_PATH = $$IDE_APP_PATH # FIXME
-    IDE_DATA_PATH    = $$IDE_BUILD_TREE/share/qtcreator
+    IDE_DATA_PATH    = $$IDE_BUILD_TREE/share/julia-studio
     IDE_DOC_PATH     = $$IDE_BUILD_TREE/share/doc/qtcreator
     IDE_BIN_PATH     = $$IDE_APP_PATH
     !isEqual(IDE_SOURCE_TREE, $$IDE_BUILD_TREE):copydata = 1

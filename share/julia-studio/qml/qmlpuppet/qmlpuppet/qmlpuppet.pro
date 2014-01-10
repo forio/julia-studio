@@ -9,4 +9,4 @@ build_all:!build_pass {
     CONFIG += release
 }
 
-include(../../../../../share/qtcreator/qml/qmlpuppet/qmlpuppet/qmlpuppet.pri)
+include(../../../../../share/julia-studio/qml/qmlpuppet/qmlpuppet/qmlpuppet.pri)

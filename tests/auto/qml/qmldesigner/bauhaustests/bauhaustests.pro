@@ -1,4 +1,4 @@
-include(../../../../../qtcreator.pri)
+include(../../../../../julia-studio.pri)
 #include(../../../../../src/plugins/qmldesigner/config.pri)
 CONFIG += qtestlib testcase
 

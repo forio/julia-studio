@@ -2,7 +2,7 @@ QT = core gui
 macx:CONFIG -= app_bundle
 TARGET = cplusplus0
 
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 include(../../../src/libs/cplusplus/cplusplus.pri)
 
 # Input

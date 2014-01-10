@@ -5,7 +5,7 @@ HEADERS += plugin2.h
 
 OTHER_FILES = $$PWD/plugin.spec
 
-include(../../../../../../qtcreator.pri)
+include(../../../../../../julia-studio.pri)
 include(../../../../../../src/libs/extensionsystem/extensionsystem.pri)
 include(../../../../qttestrpath.pri)
 

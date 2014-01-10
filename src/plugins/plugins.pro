@@ -43,7 +43,7 @@ isEmpty(IDE_PACKAGE_MODE) {
 }
 !macx:SUBDIRS += plugin_clearcase
 
-include(../../qtcreator.pri)
+include(../../julia-studio.pri)
 
 plugin_coreplugin.subdir = coreplugin
 

@@ -4,7 +4,7 @@ include($$IDE_SOURCE_TREE/src/libs/utils/utils.pri)
 
 DEBUGGERDIR = $$IDE_SOURCE_TREE/src/plugins/debugger
 UTILSDIR    = $$IDE_SOURCE_TREE/src/libs/utils
-MACROSDIR   = $$IDE_SOURCE_TREE/share/qtcreator/dumper
+MACROSDIR   = $$IDE_SOURCE_TREE/share/julia-studio/dumper
 
 SOURCES += \
     $$DEBUGGERDIR/gdb/gdbmi.cpp \

@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET=cpaster
 
-include(../../../../qtcreator.pri)
+include(../../../../julia-studio.pri)
 include(../../../rpath.pri)
 include(../../../plugins/coreplugin/coreplugin.pri)
 
