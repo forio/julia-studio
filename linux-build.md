@@ -39,16 +39,20 @@ chmod +x qt-linux-opensource-5.1.0-x86_64-offline.run
 #the qt installer has a GUI...can't seem to get around that...
 exit
 
-#set up qt
-sudo mkdir /etc/xdg/qtchooser
+## Set up Qt
+
 #get path to qt cc_64
 cd Qt5.1.0/5.1.0/gcc_64
 qtbase=`pwd`
 
+##if multiple qts are present, this let's us choose wiht out changing path
+#sudo mkdir /etc/xdg/qtchooser
+#echo "$qtbase/bin" >  default.conf
+#echo "$qtbase/lib" >> default.conf
+#sudo mv default.conf /etc/xdg/qtchooser/
 
-echo "$qtbase/bin" >  default.conf
-echo "$qtbase/lib" >> default.conf
-sudo mv default.conf /etc/xdg/qtchooser/
+##if not Qt install just append to path
+export PATH=$PATH:$qtbase/bin
 
 #get julia studio source
 cd $startpath/julia-studio
