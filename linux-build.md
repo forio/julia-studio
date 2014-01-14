@@ -85,4 +85,4 @@ This document is a work in progress and subject to change as we develope Julia S
 # To Do
  * move Qt install to PPA once Qt is updated to newer version that is accessible from a PPA
  * move creation of julia-basic symbolic link to make file
- * determin wiht authority what mesa packages are required for what version
+ * determine with authority what mesa packages are required for what version
