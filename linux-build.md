@@ -19,7 +19,7 @@ sudo apt-get update
 sudo apt-get --yes --force-yes install julia 
 ```
 
-We need some other requiements to build Julia Stuio.  These may be platform dependant. 
+We need some other requiements to build Julia Studio.  These may be platform dependant. 
 ```bash
 #install build prerequisites
 sudo apt-get --yes --force-yes install vim mesa-common-dev build-essential wget
@@ -40,11 +40,11 @@ wget http://download.qt-project.org/archive/qt/5.1/5.1.0/qt-linux-opensource-5.1
 chmod +x qt-linux-opensource-5.1.0-x86_64-offline.run 
 ./qt-linux-opensource-5.1.0-x86_64-offline.run 
 ```
-...run through the installation with default settings, although there is not reason to run Qt Creator.
+...run through the installation with default settings, although there is no reason to run Qt Creator.
 
 If you do have Qt installed, this will force Qt to use.  Don't do this if you don't need/want to.  It will impact other Qt-based environments.
 ```bash
-##if multiple qts are present, this let's us choose wiht out changing path
+##if multiple qts are present, this let's us choose without changing path
 sudo mkdir /etc/xdg/qtchooser
 echo "$qtbase/bin" >  default.conf
 echo "$qtbase/lib" >> default.conf
@@ -71,7 +71,7 @@ qmake -r
 make
 ```
 
-Julia Studio looks for a link to the Julia binary in its bin directory, along side teh Julia Studio binary.  The below will create a symbolic link to the PPA installed Julia binary.  Feel free to point this at another version of Julia if desired.  
+Julia Studio looks for a link to the Julia binary in its bin directory, along side the Julia Studio binary.  The below will create a symbolic link to the PPA installed Julia binary.  Feel free to point this at another version of Julia if desired.  
 
 ```bash
 cd bin/
