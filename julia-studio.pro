@@ -1,4 +1,4 @@
-include(qtcreator.pri)
+include(julia-studio.pri)
 
 #version check qt
 !minQtVersion(4, 8, 0) {
@@ -11,12 +11,12 @@ include(doc/doc.pri)
 TEMPLATE  = subdirs
 CONFIG   += ordered
 
-SUBDIRS = src share lib/qtcreator/qtcomponents
+SUBDIRS = src share lib/julia-studio/qtcomponents
 unix:!macx:!isEmpty(copydata):SUBDIRS += bin
 
 OTHER_FILES += dist/copyright_template.txt \
     $$files(dist/changes-*) \
-    qtcreator.qbp \
+    julia-studio.qbp \
     qbs/pluginspec/pluginspec.qbs
 
 macx: PLATFORM = "mac"

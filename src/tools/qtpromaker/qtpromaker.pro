@@ -1,6 +1,6 @@
 QT        -= gui
 
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 
 TEMPLATE  = app
 TARGET    = qtpromaker

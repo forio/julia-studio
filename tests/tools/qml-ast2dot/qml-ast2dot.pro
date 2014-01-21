@@ -1,5 +1,5 @@
 QT = core gui
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 macx:CONFIG -= app_bundle
 TARGET = qml-ast2dot
 

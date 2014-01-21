@@ -1,4 +1,4 @@
-include(../qtcreator.pri)
+include(../julia-studio.pri)
 
 # use gui precompiled header for plugins by default
 isEmpty(PRECOMPILED_HEADER):PRECOMPILED_HEADER = $$PWD/shared/qtcreator_gui_pch.h
@@ -13,14 +13,14 @@ isEmpty(USE_USER_DESTDIR) {
     DESTDIR = $$IDE_PLUGIN_PATH/$$PROVIDER
 } else {
     win32 {
-        DESTDIRAPPNAME = "qtcreator"
+        DESTDIRAPPNAME = "julia-studio"
         DESTDIRBASE = "$$(LOCALAPPDATA)"
         isEmpty(DESTDIRBASE):DESTDIRBASE="$$(USERPROFILE)\Local Settings\Application Data"
     } else:macx {
         DESTDIRAPPNAME = "Qt Creator"
         DESTDIRBASE = "$$(HOME)/Library/Application Support"
     } else:unix {
-        DESTDIRAPPNAME = "qtcreator"
+        DESTDIRAPPNAME = "julia-studio"
         DESTDIRBASE = "$$(XDG_DATA_HOME)"
         isEmpty(DESTDIRBASE):DESTDIRBASE = "$$(HOME)/.local/share/data"
     }
@@ -109,9 +109,9 @@ CONFIG += plugin plugin_with_soname
 linux*:QMAKE_LFLAGS += $$QMAKE_LFLAGS_NOUNDEF
 
 !macx {
-    target.path = $$QTC_PREFIX/$$IDE_LIBRARY_BASENAME/qtcreator/plugins/$$PROVIDER
+    target.path = $$QTC_PREFIX/$$IDE_LIBRARY_BASENAME/julia-studio/plugins/$$PROVIDER
     pluginspec.files += $${TARGET}.pluginspec
-    pluginspec.path = $$QTC_PREFIX/$$IDE_LIBRARY_BASENAME/qtcreator/plugins/$$PROVIDER
+    pluginspec.path = $$QTC_PREFIX/$$IDE_LIBRARY_BASENAME/julia-studio/plugins/$$PROVIDER
     INSTALLS += target pluginspec
 }
 

@@ -18,10 +18,10 @@ linux-*||win32 {
   QTC_LIBS=$$dirname(OUT_PWD)
   QTC_LIBS=$$dirname(QTC_LIBS)
   QTC_LIBS=$$dirname(QTC_LIBS)
-  QTC_LIBS=$$QTC_LIBS/$$IDE_LIBRARY_BASENAME/qtcreator
+  QTC_LIBS=$$QTC_LIBS/$$IDE_LIBRARY_BASENAME/julia-studio
 }
 
-linux-*{  
+linux-*{
   QMAKE_RPATHDIR *= $$QTC_LIBS
 }
 

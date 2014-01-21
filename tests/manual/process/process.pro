@@ -8,7 +8,7 @@
 QT       += core
 QT       += gui
 
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 include($$IDE_SOURCE_TREE/src/libs/utils/utils.pri)
 
 # -- Add creator 'utils' lib

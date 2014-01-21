@@ -1,4 +1,4 @@
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 
 LANGUAGES = cs de fr ja pl ru sl zh_CN
 # *don't* re-enable these without a prior rework
@@ -26,10 +26,10 @@ EXTERNALTOOLS_TR_H = $$OUT_PWD/externaltools_tr.h
 for(dir, $$list($$files($$IDE_SOURCE_TREE/src/plugins/*))):MIMETYPES_FILES += $$files($$dir/*.mimetypes.xml)
 MIMETYPES_FILES = \"$$join(MIMETYPES_FILES, |)\"
 
-for(dir, $$list($$files($$IDE_SOURCE_TREE/share/qtcreator/templates/wizards/*))):CUSTOMWIZARD_FILES += $$files($$dir/wizard.xml)
+for(dir, $$list($$files($$IDE_SOURCE_TREE/share/julia-studio/templates/wizards/*))):CUSTOMWIZARD_FILES += $$files($$dir/wizard.xml)
 CUSTOMWIZARD_FILES = \"$$join(CUSTOMWIZARD_FILES, |)\"
 
-for(file, $$list($$files($$IDE_SOURCE_TREE/src/share/qtcreator/externaltools/*))):EXTERNALTOOLS_FILES += $$files($$file)
+for(file, $$list($$files($$IDE_SOURCE_TREE/src/share/julia-studio/externaltools/*))):EXTERNALTOOLS_FILES += $$files($$file)
 EXTERNALTOOLS_FILES = \"$$join(EXTERNALTOOLS_FILES, |)\"
 
 extract.commands += \
@@ -47,8 +47,8 @@ plugin_sources -= src/plugins/plugins.pro \
     src/plugins/qtestlib \
     src/plugins/snippets \
     src/plugins/regexp
-sources = src/app src/libs $$plugin_sources src/shared share/qtcreator/qmldesigner \
-          share/qtcreator/welcomescreen share/qtcreator/welcomescreen/widgets
+sources = src/app src/libs $$plugin_sources src/shared share/julia-studio/qmldesigner \
+          share/qtcreator/welcomescreen share/julia-studio/welcomescreen/widgets
 
 files = $$files($$PWD/*_??.ts) $$PWD/qtcreator_untranslated.ts
 for(file, files) {
@@ -70,16 +70,16 @@ QMAKE_EXTRA_TARGETS += check-ts
 isEqual(QMAKE_DIR_SEP, /) {
     commit-ts.commands = \
         cd $$wd; \
-        for f in `git diff-files --name-only share/qtcreator/translations/*_??.ts`; do \
+        for f in `git diff-files --name-only share/julia-studio/translations/*_??.ts`; do \
             $$LCONVERT -locations none -i \$\$f -o \$\$f; \
         done; \
-        git add share/qtcreator/translations/*_??.ts && git commit
+        git add share/julia-studio/translations/*_??.ts && git commit
 } else {
     commit-ts.commands = \
         cd $$wd && \
-        for /f usebackq %%f in (`git diff-files --name-only share/qtcreator/translations/*_??.ts`) do \
+        for /f usebackq %%f in (`git diff-files --name-only share/julia-studio/translations/*_??.ts`) do \
             $$LCONVERT -locations none -i %%f -o %%f $$escape_expand(\\n\\t) \
-        cd $$wd && git add share/qtcreator/translations/*_??.ts && git commit
+        cd $$wd && git add share/julia-studio/translations/*_??.ts && git commit
 }
 QMAKE_EXTRA_TARGETS += commit-ts
 
@@ -120,6 +120,6 @@ isEmpty(vcproj) {
 }
 
 qmfiles.files = $$prependAll(LANGUAGES, $$OUT_PWD/qtcreator_,.qm)
-qmfiles.path = $$QTC_PREFIX/share/qtcreator/translations
+qmfiles.path = $$QTC_PREFIX/share/julia-studio/translations
 qmfiles.CONFIG += no_check_exist
 INSTALLS += qmfiles

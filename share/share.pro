@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-SUBDIRS = qtcreator/static.pro \
-          qtcreator/translations
+SUBDIRS = julia-studio/static.pro \
+          julia-studio/translations
 OTHER_FILES += share.qbs \
     ../src/share/share.qbs

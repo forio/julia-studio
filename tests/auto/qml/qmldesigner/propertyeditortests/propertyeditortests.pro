@@ -7,7 +7,7 @@ CONFIG += qtestlib testcase
 CONFIG += console
 CONFIG -= app_bundle
 
-include(../../../../../qtcreator.pri)
+include(../../../../../julia-studio.pri)
 include($$IDE_SOURCE_TREE/src/plugins/qmldesigner/config.pri)
 
 include($$IDE_SOURCE_TREE/src/plugins/qmldesigner/designercore/designercore.pri)

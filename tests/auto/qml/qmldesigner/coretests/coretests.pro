@@ -24,7 +24,7 @@ DEFINES+=QT_CREATOR QTCREATOR_TEST
 
 INCLUDEPATH += $$IDE_SOURCE_TREE/src/plugins/qmldesigner/designercore/include
 INCLUDEPATH += $$IDE_SOURCE_TREE/src/plugins/qmldesigner/designercore
-INCLUDEPATH += $$IDE_SOURCE_TREE//share/qtcreator/qml/qmlpuppet
+INCLUDEPATH += $$IDE_SOURCE_TREE//share/julia-studio/qml/qmlpuppet
 INCLUDEPATH += $$IDE_SOURCE_TREE/src/plugins/qmldesigner
 
 

@@ -30,6 +30,6 @@ fi
 
 bindir=`dirname "$me"`
 libdir=`cd "$bindir/../lib" ; pwd`
-LD_LIBRARY_PATH=$libdir:$libdir/qtcreator${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+LD_LIBRARY_PATH=$libdir:$libdir/julia-studio${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 export LD_LIBRARY_PATH
-exec "$bindir/qtcreator" ${1+"$@"}
+exec "$bindir/JuliaStudio" ${1+"$@"}

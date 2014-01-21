@@ -2,9 +2,9 @@ TARGET = qml2puppet
 
 TEMPLATE = app
 
-include(../../../../qtcreator.pri)
+include(../../../../julia-studio.pri)
 
 DESTDIR = $$IDE_BIN_PATH
 include(../../../rpath.pri)
 
-include(../../../../share/qtcreator/qml/qmlpuppet/qml2puppet/qml2puppet.pri)
+include(../../../../share/julia-studio/qml/qmlpuppet/qml2puppet/qml2puppet.pri)

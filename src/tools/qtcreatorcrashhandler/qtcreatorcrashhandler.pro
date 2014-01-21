@@ -1,4 +1,4 @@
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 
 TARGET = qtcreator_crash_handler
 DESTDIR = $$IDE_BIN_PATH

@@ -3,7 +3,7 @@
 CONFIG    -= qt
 CONFIG    += console warn_on
 
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 
 TEMPLATE  = app
 TARGET    = qtcreator_ctrlc_stub

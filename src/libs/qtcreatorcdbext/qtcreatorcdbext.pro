@@ -1,7 +1,7 @@
 # Build the Qt Creator CDB extension
 TEMPLATE = lib
 
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 include(cdb_detect.pri)
 
 

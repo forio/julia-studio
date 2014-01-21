@@ -1,4 +1,4 @@
-include(../../qtcreator.pri)
+include(../../julia-studio.pri)
 
 TEMPLATE = app
 TARGET = phony_target

@@ -1,4 +1,4 @@
-TARGET = qmlpuppet
+TARGET = qml2puppet
 
 TEMPLATE = app
 
@@ -9,4 +9,4 @@ build_all:!build_pass {
     CONFIG += release
 }
 
-include(../../../../../share/qtcreator/qml/qmlpuppet/qmlpuppet/qmlpuppet.pri)
+include(../../../../../share/julia-studio/qml/qmlpuppet/qml2puppet/qml2puppet.pri)

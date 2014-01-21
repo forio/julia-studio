@@ -5,7 +5,7 @@ HEADERS += testplugin.h testplugin_global.h
 
 OTHER_FILES += testplugin.xml
 
-include(../../../../../qtcreator.pri)
+include(../../../../../julia-studio.pri)
 include(../../../../../src/libs/extensionsystem/extensionsystem.pri)
 include(../../../qttestrpath.pri)
 

@@ -1,7 +1,7 @@
 CONFIG          += warn_on console use_c_linker static
 CONFIG          -= qt app_bundle
 
-include(../../../qtcreator.pri)
+include(../../../julia-studio.pri)
 
 # Switch to statically linked CRT. Note: There will be only one
 # global state of the CRT, reconsider if other DLLs are required!

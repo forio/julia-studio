@@ -3,7 +3,7 @@ CONFIG += qt plugin
 QT += script declarative
 
 TARGET  = styleplugin
-include(../../../../qtcreator.pri)
+include(../../../../julia-studio.pri)
 DESTDIR = $$IDE_LIBRARY_PATH/qtcomponents/plugin
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
@@ -28,6 +28,6 @@ SOURCES += qtmenu.cpp \
            qwheelarea.cpp
 
 !macx {
-    target.path = $$QTC_PREFIX/$${IDE_LIBRARY_BASENAME}/qtcreator/qtcomponents/plugin
+    target.path = $$QTC_PREFIX/$${IDE_LIBRARY_BASENAME}/julia-studio/qtcomponents/plugin
     INSTALLS += target
 }
