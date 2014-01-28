@@ -2,6 +2,8 @@
 #include "juliaeditor_constants.h"
 #include "juliaeditorplugin.h"
 #include "juliaindenter.h"
+#include "juliaautocompleter.h"
+#include "juliacompletionassist.h"
 
 #include <coreplugin/mimedatabase.h>
 #include <coreplugin/icore.h>
@@ -75,6 +77,7 @@ JuliaEditorWidget::JuliaEditorWidget(QWidget *parent)
   : TextEditor::BaseTextEditorWidget( parent )
 {
   setParenthesesMatchingEnabled( true );
+  setAutoCompleter( new JuliaCompleter() );
   TextEditor::Internal::Highlighter* highlighter = new TextEditor::Internal::Highlighter();
   baseTextDocument()->setSyntaxHighlighter( highlighter );
 
@@ -138,4 +141,17 @@ TextEditor::BaseTextEditor *JuliaEditorWidget::createEditor()
   return new JuliaEditor(this);
 }
 
+TextEditor::IAssistInterface *JuliaEditorWidget::createAssistInterface(
+    TextEditor::AssistKind kind,
+    TextEditor::AssistReason reason) const
+{
+  if ( kind == TextEditor::Completion )
+      return new JuliaCompletionAssistInterface(document(),
+                                                position(),
+                                                editor()->document(),
+                                                reason);
+  return BaseTextEditorWidget::createAssistInterface(kind, reason);
 }
+
+}
+

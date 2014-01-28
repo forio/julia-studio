@@ -47,6 +47,9 @@ public:
 
   virtual void unCommentSelection();
 
+  TextEditor::IAssistInterface *createAssistInterface(TextEditor::AssistKind assistKind,
+                                                      TextEditor::AssistReason reason) const;
+
 protected:
   TextEditor::BaseTextEditor* createEditor();
 
