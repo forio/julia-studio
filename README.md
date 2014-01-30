@@ -15,7 +15,7 @@ The binary packages support the following platforms:
 
 ## Compiling Julia Studio
 Prerequisites:
-   * Qt 4.8.0 or later
+   * Qt 5.1.0 or later
    * The Qt SDK provides you with most of the required software.
    * On Windows
       *  ActiveState Active Perl
