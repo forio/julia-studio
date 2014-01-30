@@ -35,7 +35,7 @@ make
 ```
 Note: Installation ("make install") is not needed. It is however possible, using
 ```
-    make install INSTALL_ROOT=$INSTALL_DIRECTORY
+make install INSTALL_ROOT=$INSTALL_DIRECTORY
 ```
 
 #### Windows
