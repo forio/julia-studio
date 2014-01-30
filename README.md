@@ -3,7 +3,7 @@
 based on [Qt Creator](http://qt.gitorious.org/qt-creator) and the [Qt framework](http://qt.gitorious.org/qt).
 
 ## Supported Platforms
-[Binary packages](forio.com/products/julia-studio/download) are available for the following platforms:
+[Binary packages](http://forio.com/products/julia-studio/download) are available for the following platforms:
 
    * Mac OSX 10.6 or later
    * Windows XP SP2 or later
