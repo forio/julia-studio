@@ -9,7 +9,7 @@ based on [Qt Creator](http://qt.gitorious.org/qt-creator) and the [Qt framework]
    * Windows XP SP2 or later
    * (K)Ubuntu Linux 12.04 or later
 
-  Julia Studio binaries for Windows and Mac install The Julia programming language.  Linux users will need to install Julia separately.
+Julia Studio binaries for Windows and Mac install The Julia programming language.  Linux users will need to install Julia separately.
 
 ![Screenshot of JuliaStudio running on Mac](http://i.imgur.com/mXa2ZQG.png)
 
