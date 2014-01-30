@@ -1,7 +1,7 @@
 <a name="logo"/>
 <div align="center">
 <a href="http://forio.com/products/julia-studio/" target="_blank">
-<img src="https://github.com/forio/julia-studio/tree/master/src/plugins/juliaeditor/images/js-by-forio.png" alt="Julia Logo" width="525" height="128"></img>
+<img src="http://github.com/forio/julia-studio/blob/master/src/plugins/juliaeditor/images/js-by-forio.png?raw=true" alt="Julia Logo" width="525" height="128"></img>
 </a>
 </div>
 
