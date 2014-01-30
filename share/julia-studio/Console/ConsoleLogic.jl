@@ -11,6 +11,49 @@ function showout( io, x )
   writemime( io, MIME"text/plain"(), x )
 end
 
+function parse_lines( str::String )
+  lines = split( str, "\n")
+  parsed_exprs = {}
+  curr_str = ""
+
+  for i = 1:length(lines)
+    curr_str = string(curr_str, lines[i], "\n")
+    ex = Base.parse_input_line(curr_str)
+
+    if ex == nothing
+      continue
+
+    elseif isa(ex, Expr)
+
+      if ex.head == :error
+        return {ex}
+      elseif ex.head == :continue
+        continue
+      end
+
+    end
+
+    curr_str = ""
+    push!(parsed_exprs, ex)
+  end
+
+  return parsed_exprs
+end
+
+function execute_in_session( code )
+    try
+        parsed_exprs = parse_lines( code )
+        r = nothing
+        for e in parsed_exprs
+            r = eval(Main, e)
+        end
+        return r
+
+    catch error
+        return error
+    end
+end
+
 ### Events ###########################
 function on_eval_msg(console::ConsoleLogicSystem, cid, code)
   event_system = get_system(Event.EventSystem)
@@ -20,8 +63,7 @@ function on_eval_msg(console::ConsoleLogicSystem, cid, code)
     return
   end
   try
-    parsed_expr = parse(code)
-    result = @eval $parsed_expr
+    result = execute_in_session( code )
 
     if isa( result, Nothing ) || rstrip( code )[end] == ';'
       Event.new_event( event_system, "networkOut", cid, "output-eval", "" )
@@ -37,8 +79,7 @@ end
 function on_eval_silent_msg(console::ConsoleLogicSystem, cid, code)
   event_system = get_system(Event.EventSystem)
   try
-    parsed_expr = parse(code)
-    result = @eval $parsed_expr
+    execute_in_session( code )
     Event.new_event( event_system, "networkOut", cid, "output-eval-silent", "" )
 
   catch error

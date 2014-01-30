@@ -98,7 +98,8 @@ public:
       while( ( k = parstr.indexOf( QChar::ParagraphSeparator ) ) >= 0 )
       {
         parstr.remove( k, 1 );
-        parstr.insert( k, " " );
+        //parstr.insert( k, " " );
+        parstr.insert( k, "\n" );
       }
       QRegExp rx("[\\\\\"]");
       k = -1;
@@ -116,8 +117,8 @@ public:
     msg += " ]}";
     if ( msg.size() == 90 )
       msg += " ";
-    stream << msg.toLocal8Bit().data();
-}
+    stream << msg.toUtf8().data();
+  }
 };
 
 class PROJECTEXPLORER_EXPORT IEvaluator : public QObject
