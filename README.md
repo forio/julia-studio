@@ -1,15 +1,15 @@
 ## Julia Studio
-[Julia Studio](http://forio.com/julia) is a cross-platform IDE for the [Julia language](http://julialang.org/)
-based on Qt Creator and the Qt framework.  To download JuliaStudio binaries, visit [forio.com/julia/downloads](http://forio.com/julia/downloads) for Mac, Windows, or Linux.  Julia Studio binaries for Windows and Mac install The Julia programming language.  Linux users will need to install Julia seperately.
+[Julia Studio](http://forio.com/products/julia-studio/) is a cross-platform IDE for the [Julia language](http://julialang.org/)
+based on [Qt Creator](http://qt.gitorious.org/qt-creator) and the [Qt framework](http://qt.gitorious.org/qt).
 
 ## Supported Platforms
-The binary packages support the following platforms:
+[Binary packages](forio.com/products/julia-studio/download) are available for the following platforms:
 
    * Mac OSX 10.6 or later
-   * Windows 7
-   * Windows XP SP2
-   * Windows Vista
-   * (K)Ubuntu Linux 8.04 (32-bit) or later
+   * Windows XP SP2 or later
+   * (K)Ubuntu Linux 12.04 or later
+
+  Julia Studio binaries for Windows and Mac install The Julia programming language.  Linux users will need to install Julia separately.
 
 ![Screenshot of JuliaStudio running on Mac](http://i.imgur.com/mXa2ZQG.png)
 
@@ -92,7 +92,7 @@ SDK (release builds of Qt using MinGW and Visual C++ 2008).
          set QTDIR=<working_directory>\qt
          set PATH=%QTDIR%\bin;<path_to_mingw>\bin;<working_directory>\creator\bin;%PATH%
          set QMAKESPEC=win32-g++
-         
+
   For the Visual C++ compilers, call the .bat file that sets up the
   environment for the compiler (provided by the Windows SDK or the
   compiler):
