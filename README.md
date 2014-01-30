@@ -1,3 +1,10 @@
+<a name="logo"/>
+<div align="center">
+<a href="http://forio.com/products/julia-studio/" target="_blank">
+<img src="https://github.com/forio/julia-studio/tree/master/src/plugins/juliaeditor/images/js-by-forio.png" alt="Julia Logo" width="525" height="128"></img>
+</a>
+</div>
+
 ## Julia Studio
 [Julia Studio](http://forio.com/products/julia-studio/) is a cross-platform IDE for the [Julia language](http://julialang.org/)
 based on [Qt Creator](http://qt.gitorious.org/qt-creator) and the [Qt framework](http://qt.gitorious.org/qt).
