@@ -487,7 +487,7 @@ QString ICore::userInterfaceLanguage()
 #ifdef Q_OS_MAC
 #  define SHARE_PATH "/../Resources"
 #else
-#  define SHARE_PATH "/../share/qtcreator"
+#  define SHARE_PATH "/../share/julia-studio"
 #endif
 
 QString ICore::resourcePath()
