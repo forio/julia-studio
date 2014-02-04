@@ -201,7 +201,7 @@ static inline QStringList getPluginPaths()
     QString pluginPath = rootDirPath;
     pluginPath += QLatin1Char('/');
     pluginPath += QLatin1String(IDE_LIBRARY_BASENAME);
-    pluginPath += QLatin1String("/qtcreator/plugins");
+    pluginPath += QLatin1String("/julia-studio/plugins");
     rc.push_back(pluginPath);
 #else
     // 2) "PlugIns" (OS X)
@@ -281,7 +281,7 @@ static inline QSettings *userSettings()
 #ifdef Q_OS_MAC
 #  define SHARE_PATH "/../Resources"
 #else
-#  define SHARE_PATH "/../share/qtcreator"
+#  define SHARE_PATH "/../share/julia-studio"
 #endif
 
 int main(int argc, char **argv)
