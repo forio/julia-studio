@@ -56,7 +56,10 @@ sudo mv default.conf /etc/xdg/qtchooser/
 
 Now we need to get our build environment to use this version of Qt.  (Note: only tested on Qt-less systems so far.)
 ```bash
+#64-bit
 cd Qt5.1.0/5.1.0/gcc_64
+#32-bit
+#cd Qt5.1.0/5.1.0/gcc
 qtbase=`pwd`
 export PATH=$PATH:$qtbase/bin
 cd ../../../
