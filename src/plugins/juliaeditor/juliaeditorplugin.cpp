@@ -13,6 +13,7 @@
 #include "juliafilewizard.h"
 #include "commandhistoryview.h"
 #include "packagecontroller.h"
+#include "juliacompletionassist.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -91,6 +92,8 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   //addAutoReleasedObject( project_manager );
   //addAutoReleasedObject(new JuliaRunConfigurationFactory());
   //addAutoReleasedObject(new JuliaRunControlFactory());
+
+  addAutoReleasedObject(new JuliaCompletionAssistProvider);
 
   JuliaEditorFactory* editor_factory = new JuliaEditorFactory(this);
   connect( editor_factory, SIGNAL(newEditor(JuliaEditorWidget*)), SLOT(initEditor(JuliaEditorWidget*)) );
