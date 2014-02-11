@@ -762,6 +762,11 @@ public:
         : m_provider(static_cast<const FakeVimCompletionAssistProvider *>(provider))
     {}
 
+    TextEditor::ProposalCarrier *getCarrier(const IAssistInterface *interface)
+    {
+      return NULL;
+    }
+
     IAssistProposal *perform(const IAssistInterface *interface)
     {
         const QString &needle = m_provider->needle();

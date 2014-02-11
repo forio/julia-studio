@@ -386,6 +386,12 @@ bool Console::Handle_KeyLeft()
 }
 
 // ----------------------------------------------------------------------------
+int Console::homePosition()
+{
+  return begin_command_pos;
+}
+
+// ----------------------------------------------------------------------------
 bool Console::Handle_KeyHome()
 {
   QTextCursor cursor = textCursor();

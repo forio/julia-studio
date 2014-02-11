@@ -93,8 +93,6 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   //addAutoReleasedObject(new JuliaRunConfigurationFactory());
   //addAutoReleasedObject(new JuliaRunControlFactory());
 
-  addAutoReleasedObject(new JuliaCompletionAssistProvider);
-
   JuliaEditorFactory* editor_factory = new JuliaEditorFactory(this);
   connect( editor_factory, SIGNAL(newEditor(JuliaEditorWidget*)), SLOT(initEditor(JuliaEditorWidget*)) );
   addAutoReleasedObject( editor_factory );
@@ -148,6 +146,8 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   addAutoReleasedObject(evaluator);
   ExtensionSystem::PluginManager::addObject(console_pane);
   // ------- */
+
+  addAutoReleasedObject(new JuliaCompletionAssistProvider(evaluator));
 
   // Navigation Menus -------
   addAutoReleasedObject( new CommandHistoryViewFactory( console_pane->getConsoleHandle() ) );

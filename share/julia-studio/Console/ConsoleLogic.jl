@@ -4,6 +4,8 @@ module ConsoleLogic
 using Juliet
 import Juliet.Event
 
+using REPLCompletions
+
 type ConsoleLogicSystem <: System
 end
 
@@ -162,6 +164,13 @@ function on_pkg_msg(console::ConsoleLogicSystem, cid, data )
   end
 end
 
+function on_complete_msg(console::ConsoleLogicSystem, cid, prefix)
+  event_system = get_system(Event.EventSystem)
+  
+  result, range = completions( prefix, length( prefix ) )
+  Event.new_event( event_system, "networkOut", cid, "output-complete", [ [ string( range.start ), string( range.len ) ], result ] )
+end
+
 ### Juliet interface ###########################
 function load(core::JulietCore)
   return ConsoleLogicSystem()
@@ -176,6 +185,8 @@ function handle_input( console::ConsoleLogicSystem, cid, msgtype, data )
     on_dir_msg( console, cid, data[1] )
   elseif msgtype == "package"
     on_pkg_msg( console, cid, data )
+  elseif msgtype == "complete"
+    on_complete_msg( console, cid, data[1] )
   end
 end
 

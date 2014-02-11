@@ -87,6 +87,11 @@ private:
 class ClipboardAssistProcessor: public IAssistProcessor
 {
 public:
+    ProposalCarrier *getCarrier(const IAssistInterface *interface)
+    {
+      return NULL;
+    }
+
     IAssistProposal *perform(const IAssistInterface *interface)
     {
         if (!interface)

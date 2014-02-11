@@ -4660,6 +4660,28 @@ void BaseTextEditorWidget::indentOrUnindent(bool doIndent)
     setTextCursor(cursor);
 }
 
+int BaseTextEditorWidget::homePosition()
+{
+    QTextCursor cursor = textCursor();
+
+    const int initpos = cursor.position();
+    int pos = cursor.block().position();
+    QChar character = characterAt(pos);
+    const QLatin1Char tab = QLatin1Char('\t');
+
+    while (character == tab || character.category() == QChar::Separator_Space) {
+        ++pos;
+        if (pos == initpos)
+            break;
+        character = characterAt(pos);
+    }
+
+    // Go to the start of the block when we're already at the start of the text
+    if (pos == initpos)
+        pos = cursor.block().position();
+    return pos;
+}
+
 void BaseTextEditorWidget::handleHomeKey(bool anchor)
 {
     QTextCursor cursor = textCursor();

@@ -34,6 +34,8 @@
 
 namespace TextEditor {
 
+class BaseTextEditorWidget;
+
 class TEXTEDITOR_EXPORT CompletionAssistProvider : public IAssistProvider
 {
     Q_OBJECT
@@ -43,9 +45,11 @@ public:
     virtual ~CompletionAssistProvider();
 
     virtual bool isAsynchronous() const;
+    virtual bool returnsCarrier() const;
     virtual int activationCharSequenceLength() const;
     virtual bool isActivationCharSequence(const QString &sequence) const;
     virtual bool isContinuationChar(const QChar &c) const;
+    virtual void setWidget( BaseTextEditorWidget* p_widget );
 };
 
 } // TextEditor

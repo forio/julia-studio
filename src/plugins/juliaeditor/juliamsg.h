@@ -12,12 +12,14 @@ const quint8 JM_NULL = 0;
 const quint8 JM_EVAL = 1;
 const quint8 JM_PACKAGE = 2;
 const quint8 JM_DIR = 3;
+const quint8 JM_COMPLETE = 4;
 
-char const * const NULL_name =        "null";
-char const * const EVAL_name =        "eval";
-char const * const EVAL_SILENT_name = "eval-silent";
-char const * const PACKAGE_name =     "package";
-char const * const DIR_name     =     "dir";
+char const * const NULL_name =         "null";
+char const * const EVAL_name =         "eval";
+char const * const EVAL_SILENT_name =  "eval-silent";
+char const * const PACKAGE_name =      "package";
+char const * const DIR_name     =      "dir";
+char const * const COMPLETE_name     = "complete";
 
 const quint8 JM_OUTPUT_ERROR = 128;
 const quint8 JM_OUTPUT_EVAL = 129;
@@ -31,6 +33,7 @@ char const * const OUTPUT_EVAL_SILENT_name = "output-eval-silent";
 char const * const OUTPUT_PACKAGE_name =     "output-package";
 char const * const OUTPUT_DIR_name =         "output-dir";
 char const * const OUTPUT_PLOT_name =        "output-plot";
+char const * const OUTPUT_COMPLETE_name =    "output-complete";
 // -----------------------------------------
 
 #if 0

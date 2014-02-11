@@ -48,6 +48,11 @@ QuickFixAssistProcessor::QuickFixAssistProcessor()
 QuickFixAssistProcessor::~QuickFixAssistProcessor()
 {}
 
+TextEditor::ProposalCarrier *QuickFixAssistProcessor::getCarrier( const IAssistInterface *interface )
+{
+  return NULL;
+}
+
 IAssistProposal *QuickFixAssistProcessor::perform(const IAssistInterface *interface)
 {
     if (!interface)

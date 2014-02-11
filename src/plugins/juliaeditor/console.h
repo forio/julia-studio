@@ -39,6 +39,8 @@ public:
 
   TextEditor::BaseTextEditor* createEditor();
 
+  virtual int homePosition();
+
 signals:
   void NewCommand( const ProjectExplorer::EvaluatorMessage& msg );
   void Reseting( bool preserve_history = true );

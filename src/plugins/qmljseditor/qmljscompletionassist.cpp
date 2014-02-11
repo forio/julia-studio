@@ -521,6 +521,11 @@ IAssistProposal *QmlJSCompletionAssistProcessor::createHintProposal(
     return proposal;
 }
 
+TextEditor::ProposalCarrier *QmlJSCompletionAssistProcessor::getCarrier(const IAssistInterface *interface)
+{
+  return NULL;
+}
+
 IAssistProposal *QmlJSCompletionAssistProcessor::perform(const IAssistInterface *assistInterface)
 {
     m_interface.reset(static_cast<const QmlJSCompletionAssistInterface *>(assistInterface));
