@@ -670,6 +670,11 @@ CppCompletionAssistProcessor::CppCompletionAssistProcessor()
 CppCompletionAssistProcessor::~CppCompletionAssistProcessor()
 {}
 
+TextEditor::ProposalCarrier *CppCompletionAssistProcessor::getCarrier(const IAssistInterface *interface)
+{
+  return NULL;
+}
+
 IAssistProposal * CppCompletionAssistProcessor::perform(const IAssistInterface *interface)
 {
     m_interface.reset(static_cast<const CppCompletionAssistInterface *>(interface));

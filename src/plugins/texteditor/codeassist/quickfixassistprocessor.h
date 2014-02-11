@@ -41,6 +41,7 @@ public:
     virtual ~QuickFixAssistProcessor();
 
     virtual const IAssistProvider *provider() const = 0;
+    virtual ProposalCarrier *getCarrier(const IAssistInterface *interface);
     virtual IAssistProposal *perform(const IAssistInterface *interface);
 };
 

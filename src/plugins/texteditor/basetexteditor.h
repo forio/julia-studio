@@ -159,6 +159,8 @@ public:
 
     QChar characterAt(int pos) const;
 
+    virtual int homePosition();
+
     void print(QPrinter *);
 
     void setSuggestedFileName(const QString &suggestedFileName);
@@ -635,6 +637,7 @@ public:
     QString textAt(int pos, int length) const;
     inline QChar characterAt(int pos) const { return e->characterAt(pos); }
 
+    inline int homePosition() const { return e->homePosition(); }
     inline ITextMarkable *markableInterface() { return e->markableInterface(); }
 
     QString contextHelpId() const; // from IContext

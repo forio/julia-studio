@@ -32,10 +32,12 @@
 #include "quickfixassistprovider.h"
 #include "iassistprocessor.h"
 #include "iassistproposal.h"
+#include "iassistproposalmodel.h"
 #include "iassistproposalwidget.h"
 #include "iassistinterface.h"
 #include "iassistproposalitem.h"
 #include "runner.h"
+#include "ProposalCarrier.h"
 
 #include <texteditor/basetexteditor.h>
 #include <texteditor/texteditorsettings.h>
@@ -102,7 +104,9 @@ public:
 
 private slots:
     void finalizeRequest();
+    void finalizeCarrier();
     void proposalComputed();
+    void proposalCarried();
     void processProposalItem(IAssistProposalItem *proposalItem);
     void handlePrefixExpansion(const QString &newPrefix);
     void finalizeProposal();
@@ -115,6 +119,7 @@ private:
     QList<CompletionAssistProvider *> m_completionProviders;
     QList<QuickFixAssistProvider *> m_quickFixProviders;
     Internal::ProcessorRunner *m_requestRunner;
+    ProposalCarrier *m_proposalCarrier;
     CompletionAssistProvider *m_requestProvider;
     AssistKind m_assistKind;
     IAssistProposalWidget *m_proposalWidget;
@@ -233,6 +238,9 @@ void CodeAssistantPrivate::requestProposal(AssistReason reason,
             return;
     }
 
+    if (kind == Completion)
+        (static_cast<CompletionAssistProvider *>(provider))->setWidget( m_textEditor->editorWidget() );
+
     m_assistKind = kind;
     IAssistProcessor *processor = provider->createProcessor();
     IAssistInterface *assistInterface =
@@ -255,6 +263,17 @@ void CodeAssistantPrivate::requestProposal(AssistReason reason,
             m_requestRunner->start();
             return;
         }
+        else if ( completionProvider->returnsCarrier() )
+        {
+          m_proposalCarrier = processor->getCarrier( assistInterface );
+          if ( m_proposalCarrier )
+          {
+            connect( m_proposalCarrier, SIGNAL( ready() ), this, SLOT( proposalCarried() ) );
+            connect( m_proposalCarrier, SIGNAL( ready() ), this, SLOT( finalizeCarrier() ) );
+            m_proposalCarrier->start();
+          }
+          return;
+        }
     }
 
     IAssistProposal *newProposal = processor->perform(assistInterface);
@@ -267,6 +286,16 @@ void CodeAssistantPrivate::cancelCurrentRequest()
     m_requestRunner->setDiscardProposal(true);
     disconnect(m_requestRunner, SIGNAL(finished()), this, SLOT(proposalComputed()));
     invalidateCurrentRequestData();
+}
+
+void CodeAssistantPrivate::proposalCarried()
+{
+  if ( m_proposalCarrier != sender() )
+    return;
+  IAssistProposal *newProposal = m_proposalCarrier->proposal();
+  AssistReason reason = m_proposalCarrier->reason();
+  invalidateCurrentRequestData();
+  displayProposal(newProposal, reason);
 }
 
 void CodeAssistantPrivate::proposalComputed()
@@ -284,7 +313,7 @@ void CodeAssistantPrivate::proposalComputed()
 
 void CodeAssistantPrivate::displayProposal(IAssistProposal *newProposal, AssistReason reason)
 {
-    if (!newProposal)
+    if (!newProposal || newProposal->model()->size() == 0 )
         return;
 
     QScopedPointer<IAssistProposal> proposalCandidate(newProposal);
@@ -345,6 +374,12 @@ void CodeAssistantPrivate::finalizeRequest()
         delete runner;
 }
 
+void CodeAssistantPrivate::finalizeCarrier()
+{
+  if ( ProposalCarrier *carrier = qobject_cast<ProposalCarrier *>(sender()) )
+    delete carrier;
+}
+
 void CodeAssistantPrivate::finalizeProposal()
 {
     m_proposal.reset();
@@ -367,6 +402,7 @@ void CodeAssistantPrivate::invalidateCurrentRequestData()
 {
     m_requestRunner = 0;
     m_requestProvider = 0;
+    m_proposalCarrier = 0;
 }
 
 CompletionAssistProvider *CodeAssistantPrivate::identifyActivationSequence()

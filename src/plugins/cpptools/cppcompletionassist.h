@@ -81,6 +81,7 @@ public:
     CppCompletionAssistProcessor();
     virtual ~CppCompletionAssistProcessor();
 
+    virtual TextEditor::ProposalCarrier *getCarrier(const TextEditor::IAssistInterface *interface);
     virtual TextEditor::IAssistProposal *perform(const TextEditor::IAssistInterface *interface);
 
 private:

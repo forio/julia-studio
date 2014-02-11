@@ -44,6 +44,11 @@ bool CompletionAssistProvider::isAsynchronous() const
     return true;
 }
 
+bool CompletionAssistProvider::returnsCarrier() const
+{
+    return false;
+}
+
 int CompletionAssistProvider::activationCharSequenceLength() const
 {
     return 0;
@@ -59,3 +64,8 @@ bool CompletionAssistProvider::isContinuationChar(const QChar &c) const
 {
     return c.isLetterOrNumber() || c == QLatin1Char('_');
 }
+
+void CompletionAssistProvider::setWidget( BaseTextEditorWidget* p_widget )
+{
+}
+

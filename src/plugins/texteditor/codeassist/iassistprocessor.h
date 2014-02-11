@@ -40,6 +40,8 @@ class IAssistProvider;
 class IAssistInterface;
 class IAssistProposal;
 
+class ProposalCarrier;
+
 class TEXTEDITOR_EXPORT IAssistProcessor
 {
 public:
@@ -47,6 +49,7 @@ public:
     virtual ~IAssistProcessor();
 
     virtual IAssistProposal *perform(const IAssistInterface *interface) = 0;
+    virtual ProposalCarrier *getCarrier(const IAssistInterface *interface) = 0;
 };
 
 } // TextEditor

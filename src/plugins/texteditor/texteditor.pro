@@ -95,6 +95,7 @@ SOURCES += texteditorplugin.cpp \
     codeassist/iassistproposalitem.cpp \
     convenience.cpp \
     codeassist/runner.cpp \
+    codeassist/ProposalCarrier.cpp \
     codeassist/completionassistprovider.cpp \
     codeassist/igenericproposalmodel.cpp \
     codeassist/quickfixassistprovider.cpp \
@@ -213,6 +214,7 @@ HEADERS += texteditorplugin.h \
     convenience.h \
     codeassist/assistenums.h \
     codeassist/runner.h \
+    codeassist/ProposalCarrier.h \
     codeassist/completionassistprovider.h \
     codeassist/igenericproposalmodel.h \
     codeassist/quickfixassistprovider.h \

@@ -77,6 +77,7 @@ public:
     virtual QString selectedText() const = 0;
     virtual QString textAt(int pos, int length) const = 0;
     virtual QChar characterAt(int pos) const = 0;
+    virtual int homePosition() const = 0;
 
     /*! Removes \a length characters to the right of the cursor. */
     virtual void remove(int length) = 0;

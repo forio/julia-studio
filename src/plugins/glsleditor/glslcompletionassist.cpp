@@ -215,6 +215,11 @@ GLSLCompletionAssistProcessor::GLSLCompletionAssistProcessor()
 GLSLCompletionAssistProcessor::~GLSLCompletionAssistProcessor()
 {}
 
+TextEditor::ProposalCarrier *GLSLCompletionAssistProcessor::getCarrier(const IAssistInterface *interface)
+{
+  return NULL;
+}
+
 IAssistProposal *GLSLCompletionAssistProcessor::perform(const IAssistInterface *interface)
 {
     m_interface.reset(static_cast<const GLSLCompletionAssistInterface *>(interface));
