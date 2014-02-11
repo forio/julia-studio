@@ -132,3 +132,11 @@ HEADERS += \
 
 SOURCES += \
     juliaindenter.cpp
+
+HEADERS += \
+    juliaautocompleter.h \
+    juliacompletionassist.h
+
+SOURCES += \
+    juliaautocompleter.cpp \
+    juliacompletionassist.cpp
