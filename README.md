@@ -18,7 +18,7 @@ based on [Qt Creator](http://qt.gitorious.org/qt-creator) and the [Qt framework]
 
 Julia Studio binaries for Windows and Mac install the Julia programming language.  Linux users will need to [install Julia](http://julialang.org/downloads/) separately.
 
-![Screenshot of JuliaStudio running on Mac](http://i.imgur.com/mXa2ZQG.png)
+![Screenshot of JuliaStudio running on Mac](http://forio.com/img/julia-studio@2x.png)
 
 ## Compiling Julia Studio
 
