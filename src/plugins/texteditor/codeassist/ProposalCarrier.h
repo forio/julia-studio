@@ -1,6 +1,8 @@
 #ifndef PROPOSALCARRIER_H
 #define PROPOSALCARRIER_H
 
+#include <QObject>
+
 #include "iassistproposal.h"
 #include "assistenums.h"
 
