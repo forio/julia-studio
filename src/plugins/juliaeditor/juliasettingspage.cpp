@@ -23,18 +23,9 @@ void JuliaSettings::ToSettings(QSettings *settings) const
   settings->endGroup();
 }
 
-void JuliaSettings::FromSettings(QSettings *settings)
+QString JuliaSettings::DefaultPath()
 {
-  settings->beginGroup(QLatin1String(Constants::JULIA_SETTINGS_GROUP));
-
   QString default_path = QApplication::applicationDirPath();
-  QString default_name;
-
-#if defined(Q_OS_WIN)
-  default_name = QString( "julia-basic.exe" );
-#else
-  default_name = QString( "julia-basic" );
-#endif
 
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   QDir dir( default_path );
@@ -49,8 +40,28 @@ void JuliaSettings::FromSettings(QSettings *settings)
   default_path = dir.absolutePath();
 #endif
 
-  path_to_binaries = settings->value(QLatin1String("path_to_binaries"), default_path.toLatin1()).toString();
-  executable_name = settings->value(QLatin1String("executable_name"), default_name.toLatin1()).toString();
+  return default_path;
+}
+
+QString JuliaSettings::DefaultName()
+{
+  QString default_name;
+
+#if defined(Q_OS_WIN)
+  default_name = QString( "julia-basic.exe" );
+#else
+  default_name = QString( "julia-basic" );
+#endif
+
+  return default_name;
+}
+
+void JuliaSettings::FromSettings(QSettings *settings)
+{
+  settings->beginGroup(QLatin1String(Constants::JULIA_SETTINGS_GROUP));
+
+  path_to_binaries = settings->value( QLatin1String( "path_to_binaries"), DefaultPath().toLatin1()).toString();
+  executable_name = settings->value( QLatin1String( "executable_name"), DefaultName().toLatin1()).toString();
   settings->endGroup();
 }
 
@@ -59,25 +70,24 @@ const QString &JuliaSettings::GetPathToBinaries() const
   return path_to_binaries;
 }
 
-void JuliaSettings::SetPathToBinaries(const QString &path)
-{
-  if (path_to_binaries != path) {
-    path_to_binaries = path;
-    emit PathToBinariesChanged(path_to_binaries, executable_name);
-  }
-}
-
 const QString &JuliaSettings::GetExecutableName() const
 {
   return executable_name;
 }
 
-void JuliaSettings::SetExecutableName(const QString &name)
+void JuliaSettings::SetExecutablePathName( const QString& path, const QString& name )
 {
-  if (executable_name != name) {
+  if ( path != path_to_binaries || name != executable_name )
+  {
+    path_to_binaries = path;
     executable_name = name;
-    emit PathToBinariesChanged(path_to_binaries, executable_name);
+    emit PathToBinariesChanged( path_to_binaries, executable_name );
   }
+}
+
+void JuliaSettings::OnConsolePathReset()
+{
+  SetExecutablePathName( DefaultPath(), DefaultName() );
 }
 
 // JuliaSettingsWidget *******
@@ -103,8 +113,7 @@ void JuliaSettingsWidget::ApplySettings() const
   QString name = fullPath.section('/', -1);
   QString path = fullPath.left( slpos );
 
-  settings->SetPathToBinaries( path );
-  settings->SetExecutableName( name );
+  settings->SetExecutablePathName( path, name );
 }
 
 void JuliaSettingsWidget::SetSettings(const JuliaSettings &settings)

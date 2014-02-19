@@ -26,17 +26,22 @@ public:
   void FromSettings(QSettings* settings );
 
   const QString& GetPathToBinaries() const;
-  void SetPathToBinaries( const QString& path );
 
   const QString& GetExecutableName() const;
-  void SetExecutableName( const QString& name );
+  void SetExecutablePathName( const QString& path, const QString& name );
 
 signals:
   void PathToBinariesChanged( const QString& new_path, const QString& new_executable );
 
+public slots:
+  void OnConsolePathReset();
+
+
 private:
   QString path_to_binaries;
   QString executable_name;
+  QString DefaultPath();
+  QString DefaultName();
 };
 
 

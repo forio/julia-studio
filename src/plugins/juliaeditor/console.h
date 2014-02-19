@@ -44,6 +44,7 @@ public:
 signals:
   void NewCommand( const ProjectExplorer::EvaluatorMessage& msg );
   void Resetting( bool preserve_history = true );
+  void PathResetting();
   void Ready( Console* console );
   void SetCommandFromHistory( const QModelIndex& index );
 

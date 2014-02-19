@@ -156,6 +156,7 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   PackageViewFactory* package_view_factory = new PackageViewFactory;
   connect( package_view_factory, SIGNAL(createdWidget(Core::NavigationView*)), package_controller, SLOT(OnNewPackageView(Core::NavigationView*) ) );
   connect( console, SIGNAL(Resetting()), package_controller, SLOT(OnConsoleReset() ) );
+  connect( console, SIGNAL(PathResetting()), Singleton<JuliaSettings>::GetInstance(), SLOT( OnConsolePathReset() ) );
 
   addAutoReleasedObject(package_controller);
   addAutoReleasedObject(package_view_factory);
