@@ -15,6 +15,7 @@ JuliaConsolePane::JuliaConsolePane(QObject *parent) :
   TextEditor::TextEditorSettings::instance()->initializeEditor( console.data() );
   console->setLineNumbersVisible( false );
 
+
   reset_button = new QToolButton(console.data());
   reset_button->setAutoRaise(true);
 
@@ -27,6 +28,15 @@ JuliaConsolePane::JuliaConsolePane(QObject *parent) :
   reset_action->setText("Reset");
   connect(reset_action, SIGNAL(triggered()), console.data(), SLOT(Reset()));
   reset_button->setDefaultAction(reset_action);
+
+  reset_jpath_button = new QToolButton(console.data());
+  reset_jpath_button->setAutoRaise(true);
+
+  QAction* reset_jpath_action = new QAction(reset_jpath_button);
+  reset_jpath_action->setToolTip(tr("Reset Julia path"));
+  reset_jpath_action->setText("Reset Julia Path");
+  connect(reset_jpath_action, SIGNAL(triggered()), console.data(), SLOT(Reset_jpath()));
+  reset_jpath_button->setDefaultAction(reset_jpath_action);
 }
 
 JuliaConsolePane::~JuliaConsolePane()
@@ -46,7 +56,8 @@ Console *JuliaConsolePane::outputWidget(QWidget *parent)
 
 QList<QWidget *> JuliaConsolePane::toolBarWidgets() const
 {
-  return QList<QWidget*>() << reset_button;
+  
+  return QList<QWidget*>() << reset_button << reset_jpath_button;
 }
 
 QString JuliaConsolePane::displayName() const

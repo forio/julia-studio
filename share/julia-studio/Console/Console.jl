@@ -1,3 +1,6 @@
+if !haskey( Pkg.installed(), "REPLCompletions" )
+  Pkg.add("REPLCompletions" )
+end
 
 require("../juliet/src/Juliet.jl")
 include("ConsoleLogic.jl")

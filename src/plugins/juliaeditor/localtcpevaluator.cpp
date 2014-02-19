@@ -103,19 +103,6 @@ void LocalTcpEvaluator::reset()
   curr_msg_size = -1;
   work_queue.clear();
 
-#if defined(Q_OS_WIN)
-  // test for sys.ji
-  QDir sysimg(Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
-  if (sysimg.cd("lib/julia"))
-  {
-    if (!sysimg.exists("sys.ji"))
-    {
-      prepareJulia();
-      return;
-    }
-  }
-#endif
-
   startJuliaProcess();
 }
 
@@ -318,12 +305,11 @@ void LocalTcpEvaluator::startJuliaProcess(QStringList args)
   connect( process, SIGNAL( started()), SLOT(onProcessStarted()) );
 
   QDir julia_dir(Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
+  QString julia_name( Singleton<JuliaSettings>::GetInstance()->GetExecutableName() );
 
-  process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath("bin/julia-basic"));
+  process_string = QDir::toNativeSeparators(julia_dir.absoluteFilePath(julia_name));
 
 #if defined(Q_OS_WIN)
-  process_string = "\"" + QDir::toNativeSeparators(julia_dir.absoluteFilePath("julia.bat")) + "\"";
-
   // set up context for julia (only for windows)
   QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
 

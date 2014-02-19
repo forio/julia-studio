@@ -43,7 +43,7 @@ public:
 
 signals:
   void NewCommand( const ProjectExplorer::EvaluatorMessage& msg );
-  void Reseting( bool preserve_history = true );
+  void Resetting( bool preserve_history = true );
   void Ready( Console* console );
   void SetCommandFromHistory( const QModelIndex& index );
 
@@ -52,6 +52,7 @@ public slots:
   void DisplayMsg( const ProjectExplorer::EvaluatorMessage* msg );
   void DisplayMsg( const QString& msg );
   void Reset( bool preserve_history = true );
+  void Reset_jpath();
   void SetBusy(const QString& message = QString());
 
   void WindowsHack( const QString& command );

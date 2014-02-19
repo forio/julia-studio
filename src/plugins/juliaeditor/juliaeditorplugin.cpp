@@ -132,8 +132,8 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
 
   evaluator->startup();
 
-  connect( console, SIGNAL( Reseting(bool) ), evaluator, SLOT( reset() ) );
-  connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&)), console, SLOT(Reset()) );
+  connect( console, SIGNAL( Resetting(bool) ), evaluator, SLOT( reset() ) );
+  connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&,const QString&)), console, SLOT(Reset()) );
   connect( editor_manager, SIGNAL(currentEditorChanged(Core::IEditor*)), SLOT(currEditorChanged(Core::IEditor*)) );
   connect(ProjectExplorer::ProjectExplorerPlugin::instance()->session(), SIGNAL(sessionLoaded(QString)), this, SLOT(sessionLoaded()));
 
@@ -154,8 +154,8 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
 
   PackageController* package_controller = new PackageController(evaluator, console);
   PackageViewFactory* package_view_factory = new PackageViewFactory;
-  connect(package_view_factory, SIGNAL(createdWidget(Core::NavigationView*)), package_controller, SLOT(OnNewPackageView(Core::NavigationView*)));
-  connect(console, SIGNAL(Reseting()), package_controller, SLOT(OnConsoleReset()));
+  connect( package_view_factory, SIGNAL(createdWidget(Core::NavigationView*)), package_controller, SLOT(OnNewPackageView(Core::NavigationView*) ) );
+  connect( console, SIGNAL(Resetting()), package_controller, SLOT(OnConsoleReset() ) );
 
   addAutoReleasedObject(package_controller);
   addAutoReleasedObject(package_view_factory);

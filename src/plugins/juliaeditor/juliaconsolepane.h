@@ -54,6 +54,7 @@ private:
   QSharedPointer<Console> console;
 
   QToolButton* reset_button;
+  QToolButton* reset_jpath_button;
 };
 
 }

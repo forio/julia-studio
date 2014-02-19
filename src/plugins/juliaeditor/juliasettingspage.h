@@ -28,11 +28,15 @@ public:
   const QString& GetPathToBinaries() const;
   void SetPathToBinaries( const QString& path );
 
+  const QString& GetExecutableName() const;
+  void SetExecutableName( const QString& name );
+
 signals:
-  void PathToBinariesChanged( const QString& new_path );
+  void PathToBinariesChanged( const QString& new_path, const QString& new_executable );
 
 private:
   QString path_to_binaries;
+  QString executable_name;
 };
 
 
