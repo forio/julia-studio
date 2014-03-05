@@ -56,6 +56,29 @@ function execute_in_session( code )
     end
 end
 
+function getobjects()
+  objs = Array( ASCIIString, 0 )
+  for m in sort( names( Main ) )
+    if isdefined( Main, m )
+      Md = eval( Main, m )
+      if typeof( Md ) == Module && Md != Base && Md != Core && Md != Juliet
+        sm = string( m )
+        for n in sort( names( Md ) )
+          if isdefined( Md, n ) && typeof( eval( Md, n ) ) != Module
+            s = string( n )
+            if ( s != "network_sys" )
+              push!( objs, sm )
+              push!( objs, s )
+              push!( objs, summary( eval( Md, n ) ) )
+            end
+          end
+        end
+      end
+    end
+  end
+  return objs
+end
+
 ### Events ###########################
 function on_eval_msg(console::ConsoleLogicSystem, cid, code)
   event_system = get_system(Event.EventSystem)
@@ -164,11 +187,18 @@ function on_pkg_msg(console::ConsoleLogicSystem, cid, data )
   end
 end
 
-function on_complete_msg(console::ConsoleLogicSystem, cid, prefix)
+function on_complete_msg( console::ConsoleLogicSystem, cid, prefix )
   event_system = get_system(Event.EventSystem)
   
   result, range = completions( prefix, length( prefix ) )
   Event.new_event( event_system, "networkOut", cid, "output-complete", [ [ string( range.start ), string( range.len ) ], result ] )
+end
+
+function on_watch_msg( console::ConsoleLogicSystem, cid, modulename )
+  event_system = get_system(Event.EventSystem)
+
+  objs = getobjects()
+  Event.new_event( event_system, "networkOut", cid, "output-watch", objs )
 end
 
 ### Juliet interface ###########################
@@ -187,6 +217,8 @@ function handle_input( console::ConsoleLogicSystem, cid, msgtype, data )
     on_pkg_msg( console, cid, data )
   elseif msgtype == "complete"
     on_complete_msg( console, cid, data[1] )
+  elseif msgtype == "watch"
+    on_watch_msg( console, cid, data )
   end
 end
 

@@ -253,7 +253,6 @@ void JuliaProposalCarrier::addCompletion(const QString &text,
 void JuliaProposalCarrier::start()
 {
   ProjectExplorer::EvaluatorMessage msg;
-  msg.type = JM_COMPLETE;
   msg.typnam = QString( COMPLETE_name );
   msg.params.push_back( m_prefix );
   connect( m_evaluator, SIGNAL( output(const ProjectExplorer::EvaluatorMessage*) ), this, SLOT( receivecompletions( const ProjectExplorer::EvaluatorMessage* ) ) );

@@ -75,6 +75,3 @@ Core::NavigationView CommandHistoryViewFactory::createWidget()
   view.widget = new CommandHistoryView( console_handle );
   return view;
 }
-
-
-

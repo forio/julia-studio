@@ -14,6 +14,7 @@
 #include "commandhistoryview.h"
 #include "packagecontroller.h"
 #include "juliacompletionassist.h"
+#include "objectwatch.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -162,6 +163,12 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   addAutoReleasedObject(package_view_factory);
   // ------- */
 
+  ObjectWatchFactory* object_watch_factory = new ObjectWatchFactory( evaluator );
+
+  addAutoReleasedObject( object_watch_factory );
+
+
+  // ------- */
   Core::ActionManager *am = Core::ICore::instance()->actionManager();
 
   // Menu -------

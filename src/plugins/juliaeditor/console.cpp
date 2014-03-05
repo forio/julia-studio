@@ -332,7 +332,6 @@ bool Console::Handle_KeyReturn()
   // -----
 
   ProjectExplorer::EvaluatorMessage msg;
-  msg.type = JM_EVAL;
   msg.typnam = QString( EVAL_name );
   msg.params.push_back(command);
 

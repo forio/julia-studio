@@ -52,7 +52,6 @@ void LocalTcpEvaluator::eval( const QFileInfo* file_info )
 #endif
 
   ProjectExplorer::EvaluatorMessage msg;
-  msg.type = JM_EVAL;
   msg.typnam = QString( EVAL_name );
   msg.params.push_back(command);
 
@@ -145,7 +144,6 @@ void LocalTcpEvaluator::setWorkingDir(const QString &working_directory)
     return;
 
   ProjectExplorer::EvaluatorMessage msg;
-  msg.type = JM_DIR;
   msg.typnam = QString( DIR_name );
   msg.params.push_back(curr_working_dir);
 
@@ -263,7 +261,6 @@ void LocalTcpEvaluator::onSocketConnected()
   if (curr_working_dir.size())
   {
     ProjectExplorer::EvaluatorMessage msg;
-    msg.type = JM_DIR;
     msg.typnam = QString( DIR_name );
     msg.params.push_back(curr_working_dir);
 

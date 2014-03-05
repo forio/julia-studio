@@ -123,8 +123,6 @@ void JuliaSettingsWidget::SetSettings(const JuliaSettings &settings)
 
 void JuliaSettingsWidget::SelectJuliaBinaries()
 {
-  //QString dir = QFileDialog::getExistingDirectory(this, tr("Select Julia Folder"),
-  //                                                Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
   QString dir = QFileDialog::getOpenFileName(this, tr("Select Julia Executable"),
                                                   Singleton<JuliaSettings>::GetInstance()->GetPathToBinaries());
 

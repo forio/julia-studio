@@ -23,7 +23,6 @@ using namespace rapidjson;
 class PROJECTEXPLORER_EXPORT EvaluatorMessage
 {
 public:
-  quint8 type;
   QString typnam;
   QVector<QString> params;
 
