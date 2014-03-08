@@ -109,7 +109,7 @@ function on_pkg_msg(console::ConsoleLogicSystem, cid, data )
     try
       packages = Pkg.available()
       unshift!( packages, command )
-      
+
       Event.new_event( event_system, "networkOut", cid, "output-package", packages )
     catch
       Event.new_event( event_system, "networkOut", cid, "output-package", "failed" )
@@ -166,7 +166,7 @@ end
 
 function on_complete_msg(console::ConsoleLogicSystem, cid, prefix)
   event_system = get_system(Event.EventSystem)
-  
+
   result, range = completions( prefix, length( prefix ) )
   Event.new_event( event_system, "networkOut", cid, "output-complete", [ [ string( range.start ), string( range.len ) ], result ] )
 end
