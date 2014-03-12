@@ -29,7 +29,7 @@ function parse_lines( str::String )
 
       if ex.head == :error
         return {ex}
-      elseif ex.head == :continue
+      elseif ex.head === :incomplete
         continue
       end
 
