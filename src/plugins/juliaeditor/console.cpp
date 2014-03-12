@@ -152,7 +152,13 @@ void Console::Reset( bool preserve_history )
   remaining_bytes = 0;
 #endif
 
-  emit( Reseting( preserve_history ) );
+  emit( Resetting( preserve_history ) );
+}
+
+// ----------------------------------------------------------------------------
+void Console::Reset_jpath()
+{
+  emit( PathResetting() );
 }
 
 // ----------------------------------------------------------------------------
@@ -326,7 +332,6 @@ bool Console::Handle_KeyReturn()
   // -----
 
   ProjectExplorer::EvaluatorMessage msg;
-  msg.type = JM_EVAL;
   msg.typnam = QString( EVAL_name );
   msg.params.push_back(command);
 

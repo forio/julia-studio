@@ -29,14 +29,13 @@ void PackageController::OnNewPackageView(Core::NavigationView* view)
   package_view->SetPackageModel(model);
   connect(package_view->list_view, SIGNAL(doubleClicked(QModelIndex)), SLOT(TogglePackage(QModelIndex)));
 
-  QToolButton* update_buttong = view->dockToolBarWidgets.front();
-  connect(update_buttong, SIGNAL(clicked()), SLOT(UpdatePackages()));
+  QToolButton* update_button = view->dockToolBarWidgets.front();
+  connect(update_button, SIGNAL(clicked()), SLOT(UpdatePackages()));
 }
 
 void PackageController::GetAvailable()
 {
   ProjectExplorer::EvaluatorMessage msg;
-  msg.type = JM_PACKAGE;
   msg.typnam = QString( PACKAGE_name );
   msg.params.push_back("available");
 
@@ -46,7 +45,6 @@ void PackageController::GetAvailable()
 void PackageController::GetRequired()
 {
   ProjectExplorer::EvaluatorMessage msg;
-  msg.type = JM_PACKAGE;
   msg.typnam = QString( PACKAGE_name );
   msg.params.push_back("installed");
 
@@ -59,7 +57,6 @@ void PackageController::AddPackage(const QModelIndex &index)
     return;
 
   ProjectExplorer::EvaluatorMessage msg;
-  msg.type = JM_PACKAGE;
   msg.typnam = QString( PACKAGE_name );
   msg.params.push_back("add");
 
@@ -79,7 +76,6 @@ void PackageController::RemovePackage(const QModelIndex &index)
     return;
 
   ProjectExplorer::EvaluatorMessage msg;
-  msg.type = JM_PACKAGE;
   msg.typnam = QString( PACKAGE_name );
   msg.params.push_back("remove");
 
@@ -99,7 +95,6 @@ void PackageController::UpdatePackages()
     return;
 
   ProjectExplorer::EvaluatorMessage msg;
-  msg.type = JM_PACKAGE;
   msg.typnam = QString( PACKAGE_name );
   msg.params.push_back("update");
 
