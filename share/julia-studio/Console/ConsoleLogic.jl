@@ -56,7 +56,7 @@ function execute_in_session( code )
     end
 end
 
-function getobjects()
+function getobjects( Objects )
   objs = Array( ASCIIString, 0 )
   for m in sort( names( Main ) )
     if isdefined( Main, m )
@@ -64,12 +64,28 @@ function getobjects()
       if typeof( Md ) == Module && Md != Base && Md != Core && Md != Juliet
         sm = string( m )
         for n in sort( names( Md ) )
-          if isdefined( Md, n ) && typeof( eval( Md, n ) ) != Module
-            s = string( n )
-            if ( s != "network_sys" )
-              push!( objs, sm )
-              push!( objs, s )
-              push!( objs, summary( eval( Md, n ) ) )
+          if isdefined( Md, n )
+            v = eval( Md, n )
+            t = typeof( eval( Md, n ) )
+            if t != Module
+              s = string( n )
+              if ( s != "network_sys" )
+                if !Objects && ( t == Function || t == DataType )
+                  push!( objs, sm )
+                  push!( objs, s )
+                  push!( objs, summary( eval( Md, n ) ) )
+                  push!( objs, "" )
+                elseif Objects && !( t == Function || t == DataType )
+                  push!( objs, sm )
+                  push!( objs, s )
+                  push!( objs, summary( eval( Md, n ) ) )
+                  if ( t <: Number || t <: String )
+                    push!( objs, repr( v ) )
+                  else
+                    push!( objs, "" )
+                  end
+                end
+              end
             end
           end
         end
@@ -194,10 +210,12 @@ function on_complete_msg( console::ConsoleLogicSystem, cid, prefix )
   Event.new_event( event_system, "networkOut", cid, "output-complete", [ [ string( range.start ), string( range.len ) ], result ] )
 end
 
-function on_watch_msg( console::ConsoleLogicSystem, cid, modulename )
+function on_watch_msg( console::ConsoleLogicSystem, cid, command )
   event_system = get_system(Event.EventSystem)
 
-  objs = getobjects()
+  objs = getobjects( isequal( command, "Objects" ) )
+  unshift!( objs, command )
+  
   Event.new_event( event_system, "networkOut", cid, "output-watch", objs )
 end
 
@@ -218,7 +236,7 @@ function handle_input( console::ConsoleLogicSystem, cid, msgtype, data )
   elseif msgtype == "complete"
     on_complete_msg( console, cid, data[1] )
   elseif msgtype == "watch"
-    on_watch_msg( console, cid, data )
+    on_watch_msg( console, cid, data[1] )
   end
 end
 

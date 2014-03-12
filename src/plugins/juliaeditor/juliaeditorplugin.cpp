@@ -163,9 +163,11 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   addAutoReleasedObject(package_view_factory);
   // ------- */
 
-  ObjectWatchFactory* object_watch_factory = new ObjectWatchFactory( evaluator );
+  ObjectWatchFactory* object_watch_factory_F = new ObjectWatchFactory( evaluator, false );
+  ObjectWatchFactory* object_watch_factory_O = new ObjectWatchFactory( evaluator, true );
 
-  addAutoReleasedObject( object_watch_factory );
+  addAutoReleasedObject( object_watch_factory_F );
+  addAutoReleasedObject( object_watch_factory_O );
 
 
   // ------- */

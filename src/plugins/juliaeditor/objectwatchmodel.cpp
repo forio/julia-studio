@@ -2,7 +2,8 @@
 
 using namespace JuliaPlugin;
 
-ObjectWatchModel::ObjectWatchModel(QObject *parent) :
+ObjectWatchModel::ObjectWatchModel( bool pValues, QObject *parent) :
+  mValues( pValues ),
   QAbstractTableModel(parent)
 {}
 
@@ -13,7 +14,7 @@ int ObjectWatchModel::rowCount(const QModelIndex &parent) const
 
 int ObjectWatchModel::columnCount(const QModelIndex &parent) const
 {
-  return 3;
+  return mValues ? 4 : 3;
 }
 
 QVariant ObjectWatchModel::data(const QModelIndex &index, int role) const
@@ -30,6 +31,8 @@ QVariant ObjectWatchModel::data(const QModelIndex &index, int role) const
       return names.at(index.row()).name;
     else if ( c == 2 )
       return names.at(index.row()).type;
+    else if ( c == 3 )
+      return names.at(index.row()).value;
   }
   return QVariant();
 }
@@ -50,6 +53,8 @@ QVariant ObjectWatchModel::headerData(int section, Qt::Orientation orientation, 
       return tr( "Name" );
     case 2:
       return tr( "Type" );
+    case 3:
+      return tr( "Value" );
     default:
       return QVariant();
   }
@@ -60,9 +65,9 @@ void ObjectWatchModel::clear()
   names.clear();
 }
 
-void ObjectWatchModel::addobj( QString mod, QString name, QString type )
+void ObjectWatchModel::addobj( QString mod, QString name, QString type, QString value )
 {
-  names.append( ObjectWatchData( mod, name, type ) );
+  names.append( ObjectWatchData( mod, name, type, value ) );
 }
 
 void ObjectWatchModel::display()

@@ -8,11 +8,12 @@
 
 using namespace JuliaPlugin;
 
-ObjectWatch::ObjectWatch( LocalTcpEvaluator* pevaluator, QWidget *parent ) :
+ObjectWatch::ObjectWatch( LocalTcpEvaluator* pevaluator, bool pValues, QWidget *parent ) :
   QWidget(parent),
-  evaluator( pevaluator )
+  evaluator( pevaluator ),
+  mValues( pValues )
 {
-  setWindowTitle( "Objects" );
+  setWindowTitle( mValues ? "Objects" : "Functions" );
 
   // layout -----
   grid_layout = new QGridLayout(this);
@@ -22,7 +23,7 @@ ObjectWatch::ObjectWatch( LocalTcpEvaluator* pevaluator, QWidget *parent ) :
 
   // list customization -----
   list_view = new QTreeView(this);
-  model = new ObjectWatchModel();
+  model = new ObjectWatchModel( mValues );
   list_view->setModel( model );
 
   grid_layout->setSpacing(0);
@@ -35,15 +36,17 @@ ObjectWatch::ObjectWatch( LocalTcpEvaluator* pevaluator, QWidget *parent ) :
 
 void ObjectWatch::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage *msg)
 {
-  if ( msg->typnam == OUTPUT_WATCH_name )
+  if ( msg->typnam == OUTPUT_WATCH_name && 
+       ( ( msg->params[0] == "Objects" && mValues ) ||
+         ( msg->params[0] == "Functions" && !mValues ) ) )
   {
-    int sz = msg->params.size() / 3;
+    int sz = ( msg->params.size() - 1 ) / 4;
     model->clear();
-    int i = 0;
+    int i = 1;
     for ( int o = 0; o < sz; o++ )
     {
-      model->addobj( msg->params[i], msg->params[i+1], msg->params[i+2] );
-      i += 3;
+      model->addobj( msg->params[i], msg->params[i+1], msg->params[i+2], msg->params[i+3] );
+      i += 4;
     }
     model->display();
   }
@@ -51,15 +54,16 @@ void ObjectWatch::EvaluatorOutput(const ProjectExplorer::EvaluatorMessage *msg)
     GetObjects();
 }
 
-ObjectWatchFactory::ObjectWatchFactory( LocalTcpEvaluator* pevaluator ) :
-  evaluator( pevaluator )
+ObjectWatchFactory::ObjectWatchFactory( LocalTcpEvaluator* pevaluator, bool pValues ) :
+  evaluator( pevaluator ),
+  mValues( pValues )
 {
 }
 
 Core::NavigationView ObjectWatchFactory::createWidget()
 {
   Core::NavigationView view;
-  ObjectWatch* object_watch = new ObjectWatch( evaluator );
+  ObjectWatch* object_watch = new ObjectWatch( evaluator, mValues );
   view.widget = object_watch;
 
   //emit createdWidget(&view);
@@ -70,5 +74,6 @@ void ObjectWatch::GetObjects()
 {
   ProjectExplorer::EvaluatorMessage msg;
   msg.typnam = QString( WATCH_name );
+  msg.params.push_back( mValues ? "Objects" : "Functions" );
   evaluator->eval(msg);
 }

@@ -32,7 +32,7 @@ class ObjectWatch : public QWidget
   Q_OBJECT
 
 public:
-  explicit ObjectWatch( LocalTcpEvaluator* pevaluator, QWidget *parent = 0 );
+  explicit ObjectWatch( LocalTcpEvaluator* pevaluator, bool pValues, QWidget *parent = 0 );
 
 private slots:
   void EvaluatorOutput( const ProjectExplorer::EvaluatorMessage* msg );
@@ -47,6 +47,8 @@ private:
   void GetObjects();
 
   friend class ObjectWatchFactory;
+
+  bool mValues;
 };
 
 class ObjectWatchFactory: public Core::INavigationWidgetFactory
@@ -54,9 +56,10 @@ class ObjectWatchFactory: public Core::INavigationWidgetFactory
   Q_OBJECT
 
 public:
-  ObjectWatchFactory( LocalTcpEvaluator* pevaluator );
+  ObjectWatchFactory( LocalTcpEvaluator* pevaluator, bool pValues );
 
-  QString displayName() const  { return "Objects"; }
+  QString displayName() const  {
+   return mValues ? "Objects" : "Functions"; }
   Core::Id id() const  { return Core::Id( displayName() ); }
 
   int priority() const  { return 300; }
@@ -68,6 +71,7 @@ signals:
 
 private:
   LocalTcpEvaluator* evaluator;
+  bool mValues;
 };
 
 } //namespace JuliaPlugin
