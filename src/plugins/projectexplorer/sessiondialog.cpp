@@ -32,6 +32,7 @@
 
 #include <QInputDialog>
 #include <QValidator>
+#include <QLabel.h>
 
 using namespace ProjectExplorer;
 using namespace ProjectExplorer::Internal;
@@ -143,7 +144,7 @@ SessionDialog::SessionDialog(SessionManager *sessionManager, QWidget *parent)
     connect(m_ui.sessionList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(updateActions()));
 
-    m_ui.whatsASessionLabel->setOpenExternalLinks(true);
+    //m_ui.whatsASessionLabel->setOpenExternalLinks(true);
     addItems(true);
     markItems();
 }
