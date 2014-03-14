@@ -211,6 +211,13 @@ bool CppPlugin::initialize(const QStringList & /*arguments*/, QString *errorMess
     connect(m_findUsagesAction, SIGNAL(triggered()), this, SLOT(findUsages()));
     contextMenu->addAction(cmd);
 
+    m_openTypeHierarchyAction = new QAction(tr("Open Type Hierarchy"), this);
+    cmd = Core::ActionManager::registerAction(m_openTypeHierarchyAction, Constants::OPEN_TYPE_HIERARCHY, context);
+    cmd->setDefaultKeySequence(QKeySequence(Core::UseMacShortcuts ? tr("Meta+Shift+T") : tr("Ctrl+Shift+T")));
+    connect(m_openTypeHierarchyAction, SIGNAL(triggered()), this, SLOT(openTypeHierarchy()));
+    contextMenu->addAction(cmd);
+    //cppToolsMenu->addAction(cmd);
+
     // Refactoring sub-menu
     Core::Context globalContext(Core::Constants::C_GLOBAL);
     Core::Command *sep = contextMenu->addSeparator(globalContext);
@@ -225,6 +232,12 @@ bool CppPlugin::initialize(const QStringList & /*arguments*/, QString *errorMess
     cmd->setDefaultKeySequence(QKeySequence(tr("CTRL+SHIFT+R")));
     connect(m_renameSymbolUnderCursorAction, SIGNAL(triggered()),
             this, SLOT(renameSymbolUnderCursor()));
+
+    m_updateCodeModelAction = new QAction(tr("Update Code Model"), this);
+    cmd = Core::ActionManager::registerAction(m_updateCodeModelAction, Core::Id(Constants::UPDATE_CODEMODEL), globalContext);
+    CPlusPlus::CppModelManagerInterface *cppModelManager = CPlusPlus::CppModelManagerInterface::instance();
+    connect(m_updateCodeModelAction, SIGNAL(triggered()), cppModelManager, SLOT(updateModifiedSourceFiles()));
+    //cppToolsMenu->addAction(cmd);
 
     m_actionHandler = new TextEditor::TextEditorActionHandler(CppEditor::Constants::C_CPPEDITOR,
         TextEditor::TextEditorActionHandler::Format
