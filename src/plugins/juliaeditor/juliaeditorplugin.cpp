@@ -199,6 +199,11 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
   connect( Core::EditorManager::instance(), SIGNAL(editorsClosed(QList<Core::IEditor*>)), SLOT(updateLoadAction()) );
   updateLoadAction();
   menu->addAction(cmd);
+
+  cmd = am->command( ProjectExplorer::Constants::RUNSEL );
+  load_action = cmd->action();
+  connect( load_action, SIGNAL(triggered()), SLOT(evalSelection()) );
+  menu->addAction(cmd);
   // ------- */
   
   return true;
@@ -245,6 +250,21 @@ void JuliaEditorPlugin::evalCurrFile()
 
     console_pane->outputWidget()->SetBusy(file_info.baseName());
     evaluator->eval(&file_info);
+  }
+}
+
+void JuliaEditorPlugin::evalSelection()
+{
+  Core::IEditor* editor = Core::EditorManager::currentEditor();
+  if ( editor )
+  {
+    TextEditor::BaseTextEditor* btep = static_cast<TextEditor::BaseTextEditor*>(editor);
+    if ( btep )
+    {
+      QString seltext = btep->selectedText();
+      console_pane->outputWidget()->SetBusy("selection");
+      evaluator->eval( seltext );
+    }
   }
 }
 

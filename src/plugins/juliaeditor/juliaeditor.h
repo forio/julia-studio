@@ -25,6 +25,7 @@ public:
 
 public slots:
   void runThisFile();
+  void runSelection();
 
 signals:
 

@@ -22,6 +22,7 @@ public slots:
   virtual void startup();
 
   virtual void eval(const QFileInfo* file);
+  virtual void eval(const QString text);
   virtual void eval( const ProjectExplorer::EvaluatorMessage& msg );
 
   virtual void reset();

@@ -195,6 +195,7 @@ struct ProjectExplorerPluginPrivate {
     QAction *m_cleanActionContextMenu;
     QAction *m_cleanSessionAction;
     QAction *m_runAction;
+    QAction *m_runSelAction;
     QAction *m_runActionContextMenu;
     QAction *m_runWithoutDeployAction;
     QAction *m_cancelBuildAction;
@@ -458,6 +459,10 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     runMenu->menu()->setIcon(runIcon);
     runMenu->menu()->setTitle(tr("Run"));
     msubProjectContextMenu->addMenu(runMenu, ProjectExplorer::Constants::G_PROJECT_RUN);
+
+    QIcon runSelIcon = QIcon(QLatin1String(Constants::ICON_RUN_SEL));
+    runSelIcon.addFile(QLatin1String(Constants::ICON_RUN_SEL_SMALL));
+
 //*/
     mfolderContextMenu->appendGroup(Constants::G_FOLDER_FILES);
     mfolderContextMenu->appendGroup(Constants::G_FOLDER_OTHER);
@@ -646,6 +651,13 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
     cmd->setAttribute(Core::Command::CA_UpdateText);
     cmd->setDefaultKeySequence(Qt::Key_F5);
     Core::ModeManager::addAction(cmd->action(), Constants::P_ACTION_RUN);
+
+    // run selection action ~~~
+    d->m_runSelAction = new QAction(runSelIcon, tr("Run Selection"), this);
+    cmd = Core::ActionManager::registerAction(d->m_runSelAction, Constants::RUNSEL, globalcontext);
+    cmd->setAttribute(Core::Command::CA_UpdateText);
+    cmd->setDefaultKeySequence(Qt::Key_F6);
+    Core::ModeManager::addAction(cmd->action(), Constants::P_ACTION_RUN_SEL);
 
     // Run without deployment action
     d->m_runWithoutDeployAction = new QAction(tr("Run Without Deployment"), this);

@@ -295,6 +295,7 @@ QtcPlugin {
         "images/rebuild_small.png",
         "images/rightselection.png",
         "images/run.png",
+        "images/runsel.png",
         "images/run_small.png",
         "images/session.png",
         "images/stop.png",

@@ -36,6 +36,11 @@ JuliaEditor::JuliaEditor(TextEditor::BaseTextEditorWidget *widget)
   connect(action, SIGNAL(triggered()), SLOT(runThisFile()));
 
   toolBar()->addAction(action);
+
+  action = new QAction(QIcon(QLatin1String(ProjectExplorer::Constants::ICON_RUN_SEL)), "Run selection", this);
+  connect(action, SIGNAL(triggered()), SLOT(runSelection()));
+
+  toolBar()->addAction(action);
 }
 
 Core::IEditor *JuliaEditor::duplicate(QWidget *parent)
@@ -67,6 +72,13 @@ void JuliaEditor::runThisFile()
 {
     Core::EditorManager::activateEditor(this);
     Core::Command* cmd = Core::ActionManager::instance()->command(ProjectExplorer::Constants::RUN);
+    cmd->action()->trigger();
+}
+
+void JuliaEditor::runSelection()
+{
+    Core::EditorManager::activateEditor(this);
+    Core::Command* cmd = Core::ActionManager::instance()->command(ProjectExplorer::Constants::RUNSEL);
     cmd->action()->trigger();
 }
 
