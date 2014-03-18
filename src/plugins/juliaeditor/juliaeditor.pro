@@ -140,3 +140,11 @@ HEADERS += \
 SOURCES += \
     juliaautocompleter.cpp \
     juliacompletionassist.cpp
+
+HEADERS += \
+    objectwatch.h \
+    objectwatchmodel.h
+
+SOURCES += \
+    objectwatch.cpp \
+    objectwatchmodel.cpp

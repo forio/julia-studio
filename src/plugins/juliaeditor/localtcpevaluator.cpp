@@ -58,6 +58,14 @@ void LocalTcpEvaluator::eval( const QFileInfo* file_info )
   eval(msg);
 }
 
+void LocalTcpEvaluator::eval(const QString text)
+{
+  ProjectExplorer::EvaluatorMessage msg;
+  msg.typnam = QString( EVAL_name );
+  msg.params.push_back( text );
+  eval(msg);
+}
+
 void LocalTcpEvaluator::eval( const ProjectExplorer::EvaluatorMessage& msg )
 {
   if ( busy || !socket || socket->state() != QTcpSocket::ConnectedState )

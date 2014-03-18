@@ -64,6 +64,7 @@ const char CLEANCM[]              = "ProjectExplorer.CleanCM";
 const char CLEANSESSION[]         = "ProjectExplorer.CleanSession";
 const char CANCELBUILD[]          = "ProjectExplorer.CancelBuild";
 const char RUN[]                  = "ProjectExplorer.Run";
+const char RUNSEL[]               = "ProjectExplorer.RunSel";
 const char RUNWITHOUTDEPLOY[]     = "ProjectExplorer.RunWithoutDeploy";
 const char RUNCONTEXTMENU[]       = "ProjectExplorer.RunContextMenu";
 const char STOP[]                 = "ProjectExplorer.Stop";
@@ -86,6 +87,7 @@ const char SELECTTARGETQUICK[]    = "ProjectExplorer.SelectTargetQuick";
 
 // Action priorities
 const int  P_ACTION_RUN            = 100;
+const int  P_ACTION_RUN_SEL        = 100;
 const int  P_ACTION_BUILDPROJECT   = 80;
 
 // Context
@@ -156,6 +158,8 @@ const char ICON_CLEAN_SMALL[]     = ":/projectexplorer/images/clean_small.png";
 const char ICON_REBUILD[]         = ":/projectexplorer/images/rebuild.png";
 const char ICON_REBUILD_SMALL[]   = ":/projectexplorer/images/rebuild_small.png";
 const char ICON_RUN[]             = ":/projectexplorer/images/run.png";
+const char ICON_RUN_SEL[]         = ":/projectexplorer/images/runsel.png";
+const char ICON_RUN_SEL_SMALL[]   = ":/projectexplorer/images/runsel_small.png";
 const char ICON_RUN_SMALL[]       = ":/projectexplorer/images/run_small.png";
 const char ICON_DEBUG_SMALL[]     = ":/projectexplorer/images/debugger_start_small.png";
 const char ICON_STOP[]            = ":/projectexplorer/images/stop.png";

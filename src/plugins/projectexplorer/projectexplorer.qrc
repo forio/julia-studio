@@ -11,6 +11,8 @@
         <file>images/rebuild_small.png</file>
         <file>images/run.png</file>
         <file>images/run_small.png</file>
+        <file>images/runsel.png</file>
+        <file>images/runsel_small.png</file>
         <file>images/session.png</file>
         <file>images/stop.png</file>
         <file>images/targetbuildselected.png</file>
