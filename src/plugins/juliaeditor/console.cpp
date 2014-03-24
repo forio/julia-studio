@@ -412,19 +412,6 @@ QString Console::GetCurrCommand()
   command_cursor.setPosition( begin_command_pos );
   command_cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
   QString command = command_cursor.selectedText();
-  //command = command.toLocal8Bit();
-
-  //qDebug() << command;
-  //qDebug() << "-----";
-//#if 0 //defined(Q_OS_WIN)
-  //command.replace( "\u2029", "\n" );
-  //command.replace('\U0080fffd', '\n');
-  //qDebug() << command;
-  //qDebug() << "*******";
-  //command = command.toLocal8Bit();
-  //qDebug() << command;
-  //qDebug() << "^^^^^^^";
-//#endif
   return command;
 }
 
