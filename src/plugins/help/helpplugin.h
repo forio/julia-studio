@@ -120,6 +120,7 @@ private slots:
     void slotOnLineHome();
     void slotManual();
     void slotJuliaDocs();
+    void slotGithubIssues();
     void slotFeedback();
 
     void openFindToolBar();

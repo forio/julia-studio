@@ -281,6 +281,11 @@ bool HelpPlugin::initialize(const QStringList &arguments, QString *error)
     Core::ActionManager::actionContainer(Core::Constants::M_HELP)->addAction(cmd, Core::Constants::G_HELP_HELP);
     connect(action, SIGNAL(triggered()), this, SLOT(slotJuliaDocs()));
 
+    action = new QAction(tr("GitHub Issues"), this);
+    cmd = Core::ActionManager::registerAction(action, Core::Id("Help.GithubIssues"), globalcontext);
+    Core::ActionManager::actionContainer(Core::Constants::M_HELP)->addAction(cmd, Core::Constants::G_HELP_HELP);
+    connect(action, SIGNAL(triggered()), this, SLOT(slotGithubIssues()));
+
     if (!Utils::HostOsInfo::isMacHost()) {
         action = new QAction(this);
         action->setSeparator(true);
@@ -1291,6 +1296,11 @@ void HelpPlugin::slotManual()
 void HelpPlugin::slotJuliaDocs()
 {
   QDesktopServices::openUrl( QUrl( "http://docs.julialang.org/en/release-0.2/" ) );
+}
+
+void HelpPlugin::slotGithubIssues()
+{
+  QDesktopServices::openUrl( QUrl( "https://github.com/forio/julia-studio/issues?direction=desc&sort=updated&state=open" ) );
 }
 
 void HelpPlugin::slotFeedback()
