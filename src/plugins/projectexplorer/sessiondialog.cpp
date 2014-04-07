@@ -32,7 +32,7 @@
 
 #include <QInputDialog>
 #include <QValidator>
-#include <QLabel.h>
+#include <QLabel>
 
 using namespace ProjectExplorer;
 using namespace ProjectExplorer::Internal;
