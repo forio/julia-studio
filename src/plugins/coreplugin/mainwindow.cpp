@@ -49,6 +49,7 @@
 #include "mimedatabase.h"
 #include "newdialog.h"
 #include "outputpanemanager.h"
+#include "outputoutputpanemanager.h"
 #include "outputpane.h"
 #include "plugindialog.h"
 #include "progressmanager_p.h"
@@ -175,6 +176,7 @@ MainWindow::MainWindow() :
 {
     (void) new DocumentManager(this);
     OutputPaneManager::create();
+    OutputOutputPaneManager::create();
 
     Utils::HistoryCompleter::setSettings(m_settings);
 
@@ -367,6 +369,7 @@ void MainWindow::extensionsInitialized()
     m_editorManager->init();
     m_statusBarManager->extensionsInitalized();
     OutputPaneManager::instance()->init();
+    OutputOutputPaneManager::instance()->init();
     m_vcsManager->extensionsInitialized();
     m_navigationWidget->setFactories(ExtensionSystem::PluginManager::getObjects<INavigationWidgetFactory>());
 

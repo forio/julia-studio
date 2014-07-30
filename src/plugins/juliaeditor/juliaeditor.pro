@@ -46,8 +46,10 @@ FORMS += \
 SOURCES += juliaeditorplugin.cpp\
         juliaeditor.cpp\
         console.cpp\
+        outputconsole.cpp\
         localevaluator.cpp\
         juliaconsolepane.cpp\
+        juliaoutputconsolepane.cpp\
         juliasettingspage.cpp
 
 HEADERS += juliaeditorplugin.h\
@@ -55,8 +57,10 @@ HEADERS += juliaeditorplugin.h\
         juliaeditor_constants.h\
         juliaeditor.h\
         console.h\
+        outputconsole.h\
         localevaluator.h\
         juliaconsolepane.h\
+        juliaoutputconsolepane.h\
         juliasettingspage.h\
         singleton.h\
         creationpolicies.h\

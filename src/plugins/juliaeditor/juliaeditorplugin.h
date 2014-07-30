@@ -19,6 +19,7 @@ namespace JuliaPlugin {
 
 class LocalTcpEvaluator;
 class JuliaConsolePane;
+class JuliaOutputConsolePane;
 
 namespace Internal {
     
@@ -48,6 +49,7 @@ private:
 
   LocalTcpEvaluator* evaluator;
   JuliaConsolePane* console_pane;
+  JuliaOutputConsolePane* output_console_pane;
   QAction* load_action;
 };
 

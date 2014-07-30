@@ -34,10 +34,14 @@
 #include "minisplitter.h"
 #include "findplaceholder.h"
 #include "outputpane.h"
+#include "outputoutputpane.h"
 #include "navigationwidget.h"
 #include "rightpane.h"
 #include "ieditor.h"
 #include "idocument.h"
+#include "ioutputoutputpane.h"
+
+#include <extensionsystem/pluginmanager.h>
 
 #include <QLatin1String>
 #include <QHBoxLayout>
@@ -75,11 +79,17 @@ EditMode::EditMode() :
     MiniSplitter *splitter = new MiniSplitter;
     splitter->setOrientation(Qt::Vertical);
     splitter->insertWidget(0, rightPaneSplitter);
+
+    QWidget *outputOutputPane = new Core::OutputOutputPanePlaceHolder(this, splitter);
+    outputOutputPane->setObjectName(QLatin1String("EditModeOutputOutputPanePlaceHolder"));
+    splitter->insertWidget(1, outputOutputPane);
+
     QWidget *outputPane = new Core::OutputPanePlaceHolder(this, splitter);
     outputPane->setObjectName(QLatin1String("EditModeOutputPanePlaceHolder"));
-    splitter->insertWidget(1, outputPane);
-    splitter->setStretchFactor(0, 3);
+    splitter->insertWidget(2, outputPane);
+    splitter->setStretchFactor(0, 0);
     splitter->setStretchFactor(1, 0);
+    splitter->setStretchFactor(2, 0);
 
     m_splitter->insertWidget(0, new NavigationWidgetPlaceHolder(this));
     m_splitter->insertWidget(1, splitter);

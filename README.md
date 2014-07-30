@@ -24,7 +24,7 @@ Julia Studio binaries for Windows and Mac install the Julia programming language
 
 #### Prerequisites
 
-   * [Qt 5.1.0 or later](http://qt-project.org/downloads)
+   * [Qt 5.2.1 or later](http://qt-project.org/downloads)
    * [Julia 0.2 or later](http://julialang.org/downloads/)
 
 #### OSX

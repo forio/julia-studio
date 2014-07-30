@@ -8,6 +8,7 @@
 #include "juliadummyproject.h"
 #include "juliaprojectmanager.h"
 #include "juliaconsolepane.h"
+#include "juliaoutputconsolepane.h"
 #include "localevaluator.h"
 #include "localtcpevaluator.h"
 #include "juliafilewizard.h"
@@ -54,7 +55,7 @@ using namespace JuliaPlugin::Internal;
 // JuliaEditorPlugin *******
 
 JuliaEditorPlugin::JuliaEditorPlugin()
-  : action_handler(NULL), evaluator(NULL), console_pane(NULL), load_action(NULL)
+  : action_handler(NULL), evaluator(NULL), console_pane(NULL), output_console_pane(NULL), load_action(NULL)
 {}
 
 JuliaEditorPlugin::~JuliaEditorPlugin()
@@ -64,6 +65,9 @@ JuliaEditorPlugin::~JuliaEditorPlugin()
 
   if (console_pane)
     ExtensionSystem::PluginManager::removeObject(console_pane);
+
+  if (output_console_pane)
+    ExtensionSystem::PluginManager::removeObject(output_console_pane);
 
   delete action_handler;
 }
@@ -128,10 +132,9 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
 
   connect( evaluator, SIGNAL( ready() ), console, SLOT( BeginCommand() ) );
   connect( console, SIGNAL( NewCommand(ProjectExplorer::EvaluatorMessage) ), evaluator, SLOT( eval(const ProjectExplorer::EvaluatorMessage&) ) );
-  connect( evaluator, SIGNAL( output(const ProjectExplorer::EvaluatorMessage*) ), console, SLOT( DisplayMsg(const ProjectExplorer::EvaluatorMessage*) ) );
-  connect( evaluator, SIGNAL( output(const QString&) ), console, SLOT( DisplayMsg(const QString&) ) );
+  //connect( evaluator, SIGNAL( output(const ProjectExplorer::EvaluatorMessage*) ), console, SLOT( DisplayMsg(const ProjectExplorer::EvaluatorMessage*) ) );
+  //connect( evaluator, SIGNAL( output(const QString&) ), console, SLOT( DisplayMsg(const QString&) ) );
 
-  evaluator->startup();
 
   connect( console, SIGNAL( Resetting(bool) ), evaluator, SLOT( reset() ) );
   connect( Singleton<JuliaSettings>::GetInstance(), SIGNAL(PathToBinariesChanged(const QString&,const QString&)), console, SLOT(Reset()) );
@@ -144,8 +147,15 @@ bool JuliaEditorPlugin::initialize(const QStringList &arguments, QString *errorS
 //  else
 //    evaluator->setWorkingDir(QDir::currentPath());
 
-  addAutoReleasedObject(evaluator);
   ExtensionSystem::PluginManager::addObject(console_pane);
+
+  output_console_pane = new JuliaOutputConsolePane(this);
+  OutputConsole* outputconsole = output_console_pane->outputWidget();
+  connect( evaluator, SIGNAL( output(const ProjectExplorer::EvaluatorMessage*) ), outputconsole, SLOT( DisplayMsg(const ProjectExplorer::EvaluatorMessage*) ) );
+  connect( evaluator, SIGNAL( output(const QString&) ), outputconsole, SLOT( DisplayMsg(const QString&) ) );
+  evaluator->startup();
+  addAutoReleasedObject(evaluator);
+  ExtensionSystem::PluginManager::addObject(output_console_pane);
   // ------- */
 
   addAutoReleasedObject(new JuliaCompletionAssistProvider(evaluator));
@@ -248,7 +258,7 @@ void JuliaEditorPlugin::evalCurrFile()
     Core::IDocument* document = editor->document();
     QFileInfo file_info(document->fileName());
 
-    console_pane->outputWidget()->SetBusy(file_info.baseName());
+    output_console_pane->outputWidget()->SetBusy(file_info.baseName());
     evaluator->eval(&file_info);
   }
 }
@@ -262,7 +272,7 @@ void JuliaEditorPlugin::evalSelection()
     if ( btep )
     {
       QString seltext = btep->selectedText();
-      console_pane->outputWidget()->SetBusy("selection");
+      output_console_pane->outputWidget()->SetBusy("selection");
       evaluator->eval( seltext );
     }
   }

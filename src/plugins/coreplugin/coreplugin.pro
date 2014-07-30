@@ -32,6 +32,7 @@ SOURCES += mainwindow.cpp \
     messagemanager.cpp \
     messageoutputwindow.cpp \
     outputpane.cpp \
+    outputoutputpane.cpp \
     outputwindow.cpp \
     vcsmanager.cpp \
     statusbarmanager.cpp \
@@ -88,6 +89,7 @@ SOURCES += mainwindow.cpp \
     editortoolbar.cpp \
     helpmanager.cpp \
     outputpanemanager.cpp \
+    outputoutputpanemanager.cpp \
     navigationsubwidget.cpp \
     sidebarwidget.cpp \
     externaltool.cpp \
@@ -115,6 +117,7 @@ HEADERS += mainwindow.h \
     messagemanager.h \
     messageoutputwindow.h \
     outputpane.h \
+    outputoutputpane.h \
     outputwindow.h \
     vcsmanager.h \
     statusbarmanager.h \
@@ -152,6 +155,7 @@ HEADERS += mainwindow.h \
     infobar.h \
     imode.h \
     ioutputpane.h \
+    ioutputoutputpane.h \
     coreconstants.h \
     iversioncontrol.h \
     ifilewizardextension.h \
@@ -184,6 +188,7 @@ HEADERS += mainwindow.h \
     editortoolbar.h \
     helpmanager.h \
     outputpanemanager.h \
+    outputoutputpanemanager.h \
     navigationsubwidget.h \
     sidebarwidget.h \
     externaltool.h \
