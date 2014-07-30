@@ -48,9 +48,7 @@ If you do have Qt installed, this will force Qt to use.  Don't do this if you do
 sudo mkdir /etc/xdg/qtchooser
 echo "$qtbase/bin" >  default.conf
 echo "$qtbase/lib" >> default.conf
-sudo mv default.conf /etc/xdg/qtchooser/default.conf /etc/xdg/qtchooser/default.conf.bu 
-sudo mv default.conf /etc/xdg/qtchooser/
-/etc/xdg/qtchooser/default.conf
+sudo mv default.conf /etc/xdg/qtchooser/default.conf
 
 ```
 
