@@ -90,7 +90,7 @@ cd /usr/local/bin
 ln -s ~/julia-studio/julia-studio.sh julia-studio
 ```
 
-#Presto!  You can start Julia Studio now with `julia-studio`.
+#Presto!  You can start Julia Studio now.
 
 This document is a work in progress and subject to change as we develope Julia Studio.  Please create an issue if you run into a problem.  We'll get back to you pronto.
 
