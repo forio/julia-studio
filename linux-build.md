@@ -79,9 +79,18 @@ Julia Studio looks for a link to the Julia binary in its bin directory, along si
 ```bash
 cd bin/
 ln -s /usr/bin/julia-basic julia-basic
+cd ~/julia-studio
+ln -s /usr/bin/julia-basic julia-basic
 ```
 
-#Presto!  You can start Julia Studio now.
+Lastly make the command accessible from a shell anywhere with another symbolic link:
+
+```bash
+cd /usr/local/bin
+ln -s ~/julia-studio/julia-studio.sh julia-studio
+```
+
+#Presto!  You can start Julia Studio now with `julia-studio`.
 
 This document is a work in progress and subject to change as we develope Julia Studio.  Please create an issue if you run into a problem.  We'll get back to you pronto.
 
