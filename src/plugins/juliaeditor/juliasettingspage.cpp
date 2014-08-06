@@ -48,9 +48,9 @@ QString JuliaSettings::DefaultName()
   QString default_name;
 
 #if defined(Q_OS_WIN)
-  default_name = QString( "julia-basic.exe" );
+  default_name = QString( "julia.exe" );
 #else
-  default_name = QString( "julia-basic" );
+  default_name = QString( "julia" );
 #endif
 
   return default_name;
