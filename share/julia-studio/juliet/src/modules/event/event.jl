@@ -42,7 +42,7 @@ function new_event(system, event_name, parameters...)
     push!(system.pending_events, EventInfo(event_name, parameters))
 
     if !isready(system.event_signal)
-        put(system.event_signal, nothing)
+        put!(system.event_signal, nothing)
     end
 end
 
@@ -66,7 +66,7 @@ function event_loop(core::Juliet.JulietCore)
     event_system = Juliet.get_system(EventSystem)
 
     while true
-        take(event_system.event_signal)
+        take!(event_system.event_signal)
         for module_bundle in core.modules
             #if module_bundle.update != Nothing
                 module_bundle.mdl.update(module_bundle.system)
@@ -86,7 +86,7 @@ function handle_pending_events(system::EventSystem)
     end
 
     if isready(system.event_signal)
-        take(system.event_signal)
+        take!(system.event_signal)
     end
 
     # Note that more events may have been queued while we were handling
