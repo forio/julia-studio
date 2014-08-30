@@ -1,87 +1,101 @@
-#Building Julia Studio on Ubuntu Linux
+# Building Julia Studio on Ubuntu Linux
 
-Script and/or instructions for building Julia Studio on Linux 64.  Developed for Ubuntu 12.04.3.  YMMV on other platforms. The Qt 5.1.0 installation currently requires some GUI action so cannot be fully automated.  
-
+Script and/or instructions for building Julia Studio on Linux 64. Developed
+for Ubuntu 12.04.3. YMMV on other platforms. The Qt 5.1.1 installation
+currently requires some GUI action so cannot be fully automated.
 
 First, update your system.
+
 ```bash
-#update your system like a good penguin
+# Update your system like a good penguin
 sudo apt-get update
 sudo apt-get --yes --force-yes upgrade
 ```
 
 Next, install Julia--the most recent because we are bleeding edge that way
+
 ```bash
-#get install julia
+# Get install julia
 sudo add-apt-repository --yes ppa:staticfloat/juliareleases
 sudo add-apt-repository --yes ppa:staticfloat/julia-deps
 sudo apt-get update
-sudo apt-get --yes --force-yes install julia 
+sudo apt-get --yes --force-yes install julia
 ```
 
-We need some other requiements to build Julia Studio.  These may be platform dependant. 
-```bash
-#install build prerequisites
-sudo apt-get --yes --force-yes install vim mesa-common-dev build-essential wget
-#12.04
-sudo apt-get --yes --force-yes install libglu1-mesa-dev
+We need some other requiements to build Julia Studio. These may be platform dependant.
 
-#13.10
-#sudo apt-get --yes --force-yes install vim libgl1-nvidia-glx mesa-commonlibglu1-mesa-dev 
+```bash
+# Install build prerequisites
+sudo apt-get --yes --force-yes install vim mesa-common-dev build-essential wget libglu1-mesa-dev
 ```
 
-Julia Studio is currently based on Qt 5.1.  There has been some weirdness getting the PPAs, so let's just download directly and install:
+Julia Studio is currently based on Qt 5.1.1 There has been some weirdness
+getting the PPAs, so let's just download directly and install:
+
 ```bash
-#get specific version of qt
-#64-bit
-wget http://download.qt-project.org/archive/qt/5.1/5.1.0/qt-linux-opensource-5.1.0-x86_64-offline.run
-#32-bit
-#wget http://download.qt-project.org/archive/qt/5.1/5.1.0/qt-linux-opensource-5.1.0-x86-offline.run 
-chmod +x qt-linux-opensource-5.1.0-x86_64-offline.run 
-./qt-linux-opensource-5.1.0-x86_64-offline.run 
+# Get specific version of qt
+
+# 64-bit
+wget http://download.qt-project.org/archive/qt/5.1/5.1.1/qt-linux-opensource-5.1.1-x86_64-offline.run
+
+# 32-bit
+wget http://download.qt-project.org/archive/qt/5.1/5.1.1/qt-linux-opensource-5.1.1-x86-offline.run
+
+chmod +x qt-linux-opensource-5.1.1-x86_64-offline.run
+./qt-linux-opensource-5.1.1-x86_64-offline.run
 ```
 ...run through the installation with default settings, although there is no reason to run Qt Creator.
 
-If you do have Qt installed, this will force Qt to use.  Don't do this if you don't need/want to.  It will impact other Qt-based environments.
+If you do have Qt installed, this will force Qt to use. Don't do this if you
+don't need/want to. It will impact other Qt-based environments.
+
 ```bash
-##if multiple qts are present, this let's us choose without changing path
+# 64-bit
+cd Qt5.1.1/5.1.1/gcc_64
+
+# 32-bit
+cd Qt5.1.1/5.1.1/gcc
+
 sudo mkdir /etc/xdg/qtchooser
-echo "$qtbase/bin" >  default.conf
-echo "$qtbase/lib" >> default.conf
-sudo mv default.conf /etc/xdg/qtchooser/default.conf
-
+sudo sh -c 'echo `pwd`/bin > /etc/xdg/qtchooser/default.conf'
+sudo sh -c 'echo `pwd`/lib >> /etc/xdg/qtchooser/default.conf'
+export PATH=`pwd`/bin:$PATH
+cd -
 ```
 
-Now we need to get our build environment to use this version of Qt.  (Note: only tested on Qt-less systems so far.)
-```bash
-#64-bit
-cd Qt5.1.0/5.1.0/gcc_64
-#32-bit
-#cd Qt5.1.0/5.1.0/gcc
-qtbase=`pwd`
-export PATH=$PATH:$qtbase/bin
-cd ../../../
-```
+Time for Julia Studio. The fastest way to get Julia Studio is to download the
+compressed master branch without the git history.
 
-Time for Julia Studio. Clone from github and then build.  
 ```bash
-#anon clone
-git clone https://github.com/forio/julia-studio.git
-cd julia-studio
+wget https://github.com/forio/julia-studio/archive/master.zip
+unzip master.zip
+cd julia-studio-master
 qmake -r
-make
+
+# Build!
+make release
+make install INSTALL_ROOT=`pwd`/julia-studio-release-linux-x64
+
+# If debug symbols are needed:
+make debug
+make install INSTALL_ROOT=`pwd`/julia-studio-debug-linux-x64
 ```
 
-Julia Studio looks for a link to the Julia binary in its bin directory, along side the Julia Studio binary.  The below will create a symbolic link to the PPA installed Julia binary.  Feel free to point this at another version of Julia if desired.  
+Julia Studio looks for a link to the Julia binary in its bin directory, along
+side the Julia Studio binary. The below will create a symbolic link to the PPA
+installed Julia binary. Feel free to point this at another version of Julia if
+desired.
 
 ```bash
 cd bin/
 ln -s /usr/bin/julia-basic julia-basic
 ```
 
-#Presto!  You can start Julia Studio now.
+# Presto!  You can start Julia Studio now.
 
-This document is a work in progress and subject to change as we develope Julia Studio.  Please create an issue if you run into a problem.  We'll get back to you pronto.
+This document is a work in progress and subject to change as we develope Julia
+Studio. Please create an issue if you run into a problem. We'll get back to
+you pronto.
 
 # To Do
  * move Qt install to PPA once Qt is updated to newer version that is accessible from a PPA
