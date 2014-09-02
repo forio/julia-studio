@@ -67,7 +67,7 @@ OTHER_FILES += $$FILES
 !macx {
     for(data_dir, DATA_DIRS) {
         eval($${data_dir}.files = $$quote($$PWD/$$data_dir))
-        eval($${data_dir}.path = $$QTC_PREFIX/share/qtcreator)
+        eval($${data_dir}.path = $$QTC_PREFIX/share/julia-studio)
         INSTALLS += $$data_dir
     }
 } else {
@@ -119,7 +119,7 @@ QMAKE_EXTRA_COMPILERS += unconditionalCopy2build
 !macx {
     for(data_dir, DATA_DIRS) {
         eval($${data_dir}.files = $$IDE_DATA_PATH/$$data_dir)
-        eval($${data_dir}.path = $$QTC_PREFIX/share/qtcreator)
+        eval($${data_dir}.path = $$QTC_PREFIX/share/julia-studio)
         eval($${data_dir}.CONFIG += no_check_exist)
         INSTALLS += $$data_dir
     }
