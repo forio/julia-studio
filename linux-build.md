@@ -59,7 +59,7 @@ cd Qt5.1.1/5.1.1/gcc
 sudo mkdir /etc/xdg/qtchooser
 sudo sh -c 'echo `pwd`/bin > /etc/xdg/qtchooser/default.conf'
 sudo sh -c 'echo `pwd`/lib >> /etc/xdg/qtchooser/default.conf'
-export PATH=`pwd`/bin:$PATH
+
 cd -
 ```
 
