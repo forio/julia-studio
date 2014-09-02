@@ -1,6 +1,7 @@
-#!/bin/bash -x
+#!/bin/bash
 ################################################################################
 # Copyright (C) 2012 Digia Plc
+# Copyright (C) 2014 Forio Corporation
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
