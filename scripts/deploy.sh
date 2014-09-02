@@ -61,17 +61,11 @@ function fix_rpaths()
 {
    cd $INSTALL_DIR/lib
    find julia-studio/ -maxdepth 1 -name "*.so*" -type f -exec $CHRPATH -r \$ORIGIN {} \;
-   # find julia-studio/plugins/ -mindepth 1 -maxdepth 2 -name "*.so" -type f -exec $CHRPATH -r \$ORIGIN/../QtProject {} \;
-   # all lib of imports and plugins one level underneath bin
+   find julia-studio/plugins/ -iname "*.so*" -type f -exec $CHRPATH -r \$ORIGIN/../../ {} \;
 
-   # all executable files in bin
    cd -
    cd $INSTALL_DIR/bin
    find -maxdepth 1 -type f -executable -exec $CHRPATH -r \$ORIGIN/../lib/julia-studio {} \;
-   find -mindepth 2 -maxdepth 2 -type f -name "*.so"  -exec $CHRPATH -r \$ORIGIN/../../lib/julia-studio {} \;
-   find -mindepth 3 -maxdepth 3 -type f -name "*.so"  -exec $CHRPATH -r \$ORIGIN/../../../lib/julia-studio {} \;
-   find -mindepth 4 -maxdepth 4 -type f -name "*.so"  -exec $CHRPATH -r \$ORIGIN/../../../../lib/julia-studio {} \;
-
 }
 
 function copy_binaries()
