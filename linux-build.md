@@ -100,8 +100,8 @@ you pronto.
 # Package for distribution
 
 Continuing from after the `make install` command above, we'll use the
-`js_unixdeploy.sh` script to create a self-contained Julia Studio directory
-that includes the Qt 5.1 libraries.
+`deploy.sh` script to create a self-contained Julia Studio directory that
+includes the Qt 5.1 libraries.
 
 ```bash
 ./scripts/deploy.sh build/julia-studio-linux-x86_64
