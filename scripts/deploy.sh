@@ -90,7 +90,16 @@ function copy_translations()
     done
 }
 
+function copy_the_copy()
+{
+    PRJPATH=$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd)
+    cp CONTRIBUTING.md COPYRIGHT.txt HACKING LICENSE NOTICE README.md $INSTALL_DIR
+    cd $INSTALL_DIR/bin
+    ln -s /usr/bin/julia-basic julia-basic
+    cd - 2>&1 > /dev/null
+}
+
 copy_binaries
 copy_translations
 fix_rpaths
-
+copy_the_copy
