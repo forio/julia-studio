@@ -70,15 +70,15 @@ compressed master branch without the git history.
 wget https://github.com/forio/julia-studio/archive/master.zip
 unzip master.zip
 cd julia-studio-master
-qmake -r
+mkdir build
+qmake -r CONFIG+=debug_and_release ../julia-studio.pro
 
 # Build!
 make release
-make install INSTALL_ROOT=`pwd`/julia-studio-release-linux-x64
+make install INSTALL_ROOT=`pwd`/julia-studio-linux-x86_64
 
 # If debug symbols are needed:
 make debug
-make install INSTALL_ROOT=`pwd`/julia-studio-debug-linux-x64
 ```
 
 Julia Studio looks for a link to the Julia binary in its bin directory, along
@@ -94,8 +94,18 @@ ln -s /usr/bin/julia-basic julia-basic
 # Presto!  You can start Julia Studio now.
 
 This document is a work in progress and subject to change as we develope Julia
-Studio. Please create an issue if you run into a problem. We'll get back to
+Studio.  Please create an issue if you run into a problem. We'll get back to
 you pronto.
+
+# Package for distribution
+
+Continuing from after the `make install` command above, we'll use the
+`js_unixdeploy.sh` script to create a self-contained Julia Studio directory
+that includes the Qt 5.1 libraries.
+
+```bash
+./scripts/deploy.sh build/julia-studio-linux-x86_64
+```
 
 # To Do
  * move Qt install to PPA once Qt is updated to newer version that is accessible from a PPA
