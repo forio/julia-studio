@@ -93,6 +93,7 @@ function copy_translations()
 function copy_the_copy()
 {
     PRJPATH=$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd)
+    cd $PRJPATH
     cp CONTRIBUTING.md COPYRIGHT.txt HACKING LICENSE NOTICE README.md $INSTALL_DIR
     cd $INSTALL_DIR/bin
     ln -s /usr/bin/julia-basic julia-basic
