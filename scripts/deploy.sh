@@ -60,7 +60,7 @@ tr_languages="$(cd $INSTALL_DIR/share/julia-studio/translations; echo qtcreator_
 function fix_rpaths()
 {
    cd $INSTALL_DIR/lib
-   find julia-studio/ -maxdepth 1 -name "*.so*" -type f -exec $CHRPATH -r \$ORIGIN {} \;
+   find julia-studio/ -maxdepth 1 -iname "*.so*" -type f -exec $CHRPATH -r \$ORIGIN {} \;
    find julia-studio/plugins/ -iname "*.so*" -type f -exec $CHRPATH -r \$ORIGIN/../../ {} \;
 
    cd -
