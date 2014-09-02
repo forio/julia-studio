@@ -1295,7 +1295,7 @@ void HelpPlugin::slotManual()
 
 void HelpPlugin::slotJuliaDocs()
 {
-  QDesktopServices::openUrl( QUrl( "http://docs.julialang.org/en/release-0.2/" ) );
+  QDesktopServices::openUrl( QUrl( "http://docs.julialang.org/en/release-0.3/" ) );
 }
 
 void HelpPlugin::slotGithubIssues()
