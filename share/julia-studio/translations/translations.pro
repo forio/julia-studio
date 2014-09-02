@@ -48,7 +48,7 @@ plugin_sources -= src/plugins/plugins.pro \
     src/plugins/snippets \
     src/plugins/regexp
 sources = src/app src/libs $$plugin_sources src/shared share/julia-studio/qmldesigner \
-          share/qtcreator/welcomescreen share/julia-studio/welcomescreen/widgets
+          share/julia-studio/welcomescreen share/julia-studio/welcomescreen/widgets
 
 files = $$files($$PWD/*_??.ts) $$PWD/qtcreator_untranslated.ts
 for(file, files) {
