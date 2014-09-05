@@ -89,6 +89,15 @@ desired.
 ```bash
 cd bin/
 ln -s /usr/bin/julia-basic julia-basic
+cd ~/julia-studio
+ln -s /usr/bin/julia-basic julia-basic
+```
+
+Lastly make the command accessible from a shell anywhere with another symbolic link:
+
+```bash
+cd /usr/local/bin
+ln -s ~/julia-studio/julia-studio.sh julia-studio
 ```
 
 # Presto!  You can start Julia Studio now.
