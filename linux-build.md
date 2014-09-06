@@ -71,7 +71,7 @@ wget https://github.com/forio/julia-studio/archive/master.zip
 unzip master.zip
 cd julia-studio-master
 mkdir build
-qmake -r CONFIG+=debug_and_release ../julia-studio.pro
+qmake -r CONFIG+=debug_and_release ./julia-studio.pro
 
 # Build!
 make release
