@@ -207,7 +207,7 @@ function on_complete_msg( console::ConsoleLogicSystem, cid, prefix )
   event_system = get_system(Event.EventSystem)
 
   result, range = completions( prefix, length( prefix ) )
-  Event.new_event( event_system, "networkOut", cid, "output-complete", [ [ string( range.start ), string( range.len ) ], result ] )
+  Event.new_event( event_system, "networkOut", cid, "output-complete", [ [ string( range.start ), string( length(range) ) ], result ] )
 end
 
 function on_watch_msg( console::ConsoleLogicSystem, cid, command )
