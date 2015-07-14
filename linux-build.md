@@ -70,7 +70,7 @@ compressed master branch without the git history.
 wget https://github.com/forio/julia-studio/archive/master.zip
 unzip master.zip
 cd julia-studio-master
-mkdir build
+mkdir build && cd build
 qmake -r CONFIG+=debug_and_release ../julia-studio.pro
 
 # Build!
