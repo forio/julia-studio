@@ -22,7 +22,7 @@ sudo apt-get update
 sudo apt-get --yes --force-yes install julia
 ```
 
-We need some other requiements to build Julia Studio. These may be platform dependant.
+We need some other requirements to build Julia Studio. These may be platform dependant.
 
 ```bash
 # Install build prerequisites
